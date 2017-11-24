@@ -1,4 +1,4 @@
-package com.kafka
+package com.kafka.consumers
 
 import java.util
 
@@ -6,7 +6,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer
 
 import scala.collection.JavaConverters._
 
-object Consumer extends App {
+object ConsumerFromY extends App {
 
   import java.util.Properties
 
@@ -17,7 +17,7 @@ object Consumer extends App {
 
   props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
   props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
-  props.put("group.id", "something")
+  props.put("group.id", "consumer-y")
 
   val consumer = new KafkaConsumer[String, String](props)
 

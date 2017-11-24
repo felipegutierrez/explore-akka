@@ -1,6 +1,6 @@
-package com.kafka
+package com.kafka.producers
 
-object Producer extends App {
+object ProducerFromA extends App {
  import java.util.Properties
 
  import org.apache.kafka.clients.producer._
@@ -16,12 +16,13 @@ object Producer extends App {
  val TOPIC="test"
  
  for(i<- 1 to 50){
-  val record = new ProducerRecord(TOPIC, "key", s"hello $i")
+  val record = new ProducerRecord(TOPIC, "key-a", s"hello A - $i")
+  println(s"ProducerRecord($TOPIC, 'key-a', hello A - $i)")
   Thread.sleep(1000)
   producer.send(record)
  }
     
- val record = new ProducerRecord(TOPIC, "key", "the end "+new java.util.Date)
+ val record = new ProducerRecord(TOPIC, "key-a", "the end of A - "+new java.util.Date)
  producer.send(record)
 
  producer.close()
