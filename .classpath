@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src/main/scala"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="lib" path="target/scala-2.11/scala-akka-stream-kafka_2.11-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/kafka_2.11-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/kafka-streams-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/kafka-tools-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/kafka-clients-1.0.0.jar"/>
+	<classpathentry kind="output" path="target/scala-2.11/classes"/>
+</classpath>

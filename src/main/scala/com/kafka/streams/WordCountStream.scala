@@ -5,50 +5,36 @@ import java.util.Properties
 
 import org.apache.kafka.common.serialization._
 import org.apache.kafka.streams._
-import org.apache.kafka.streams.kstream.{KStream, KStreamBuilder, KTable}
+import org.apache.kafka.streams.kstream.{ KStream, KStreamBuilder, KTable }
 
 object WordCountStream extends App {
 
-  val streamsConfiguration: Properties = {
-    val p = new Properties()
-    p.put(StreamsConfig.APPLICATION_ID_CONFIG, "word-count-stream-scala")
-    p.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092")
-    p.put(StreamsConfig.ZOOKEEPER_CONNECT_CONFIG, "localhost:2181")
-    p.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG, Serdes.String.getClass.getName)
-    p.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG, Serdes.String.getClass.getName)
-    p
-  }
-  val stringSerde: Serde[String] = Serdes.String()
-  val longSerde: Serde[Long] = Serdes.Long()
+  val props = new Properties
+  props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-wordcount")
+  props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092")
+  props.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG, Serdes.String.getClass.getName)
+  props.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG, Serdes.String.getClass.getName)
 
-  val builder: KStreamBuilder = new KStreamBuilder()
-  val textLines: KStream[String, String] = builder.stream("streams-plaintext-input")
+  // setting offset reset to earliest so that we can re-run the demo code with the same pre-loaded data
+  // Note: To re-run the demo, you need to use the offset reset tool:
+  // https://cwiki.apache.org/confluence/display/KAFKA/Kafka+Streams+Application+Reset+Tool
 
-  // Scala-Java interoperability: to convert `scala.collection.Iterable` to  `java.util.Iterable`
-  // in `flatMapValues()` below.
   import scala.collection.JavaConverters._
 
-  //  val wordCounts: KTable[String, Long] = textLines
-  //    .flatMapValues(textLine => textLine.toLowerCase.split("\\W+").toIterable.asJava)
-  //    .groupBy((_, word) => word)
-  //    .count("streams-wordcount-output")
-  //  val wordCounts: KTable[String, Long] = textLines.
-  //    flatMapValues[String] { _.toLowerCase(Locale.getDefault).split(" ").toList.asJava }.
-  //    map[String, String] { (key, value) => new KeyValue(value, value) }.
-  //    groupByKey.count("Counts")
-
-  //  val wordCounts: KStream[String, Long] = textLines
-  //    //   .flatMapValues(value => value.toLowerCase.split("\\W+").toIterable.asJava)
-  //    .map((key, word) => new KeyValue(word, word))
-  //    .groupBy((_, word) => word)
-  //    .count("Counts")
-  //    .toStream()
-
-  //  wordCounts.to(stringSerde, longSerde, "streams-wordcount-output")
-
-  //  val uppercasedWithMapValues: KStream[String, String] = textLines.mapValues(_.toUpperCase())
-  //  uppercasedWithMapValues.to("streams-wordcount-output")
-
-  //  val streams: KafkaStreams = new KafkaStreams(builder, streamsConfiguration)
-  //  streams.start()
+  val builder = new KStreamBuilder
+  val source: KStream[String, String] = builder.stream("streams-plaintext-input")
+//  val counts: KTable[String, java.lang.Long] = source
+//    .flatMapValues[String] { _.toLowerCase(Locale.getDefault).split(" ").toList.asJava }
+//    .map[String, String] { (key, value) => new KeyValue(value, value) }
+//    .groupByKey.count("Counts")
+//
+//  // need to override value serde to Long type
+//  counts.to(Serdes.String, Serdes.Long, "streams-wordcount-output")
+//
+//  val streams = new KafkaStreams(builder, props)
+//  streams.start()
+//  // usually the stream application would be running forever,
+//  // in this example we just let it run for some time and stop since the input data is finite.
+//  Thread.sleep(20000L)
+//  streams.close()
 }
