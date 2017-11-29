@@ -6,18 +6,19 @@ import org.apache.kafka.clients.consumer.KafkaConsumer
 
 import scala.collection.JavaConverters._
 
-object ConsumerFromX extends App {
+object ConsumerFromT extends App {
 
   import java.util.Properties
 
-  val TOPIC = "test"
+  val TOPIC = "streams-wordcount-output"
+  // val TOPIC="streams-plaintext-input"
 
   val props = new Properties()
   props.put("bootstrap.servers", "localhost:9092")
 
   props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
   props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
-  props.put("group.id", "consumer-x")
+  props.put("group.id", "consumer-t")
 
   val consumer = new KafkaConsumer[String, String](props)
 

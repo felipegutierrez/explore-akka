@@ -1,6 +1,6 @@
 package com.kafka.producers
 
-object ProducerFromA extends App {
+object ProducerFromT extends App {
 
   import java.util.Properties
 
@@ -14,17 +14,16 @@ object ProducerFromA extends App {
 
   val producer = new KafkaProducer[String, String](props)
 
-  val TOPIC = "test"
+  val TOPIC = "streams-plaintext-input"
 
-  for (i <- 1 to 50) {
-    val record = new ProducerRecord(TOPIC, "key-a", s"hello A - $i")
-    println(s"ProducerRecord($TOPIC, 'key-a', hello A - $i)")
-    Thread.sleep(1000)
+  var flag = true
+  println("Type something ('stop' to finish) : ")
+  while (flag) {
+    val input = scala.io.StdIn.readLine()
+    val record = new ProducerRecord(TOPIC, "key", input)
     producer.send(record)
+    if (input == "stop") flag = false
   }
-
-  val record = new ProducerRecord(TOPIC, "key-a", "the end of A - " + new java.util.Date)
-  producer.send(record)
 
   producer.close()
 }

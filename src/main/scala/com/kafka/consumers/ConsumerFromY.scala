@@ -10,9 +10,9 @@ object ConsumerFromY extends App {
 
   import java.util.Properties
 
-  val TOPIC="test"
+  val TOPIC = "test"
 
-  val  props = new Properties()
+  val props = new Properties()
   props.put("bootstrap.servers", "localhost:9092")
 
   props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
@@ -23,10 +23,10 @@ object ConsumerFromY extends App {
 
   consumer.subscribe(util.Collections.singletonList(TOPIC))
 
-  while(true){
-    val records=consumer.poll(100)
-    for (record<-records.asScala){
-     println(record)
+  while (true) {
+    val records = consumer.poll(100)
+    for (record <- records.asScala) {
+      println(record)
     }
   }
 }
