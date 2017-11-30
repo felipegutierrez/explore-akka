@@ -17,17 +17,18 @@ object ConsumerFromT extends App {
   props.put("bootstrap.servers", "localhost:9092")
 
   props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
-  props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
+  props.put("value.deserializer", "org.apache.kafka.common.serialization.LongDeserializer")
   props.put("group.id", "consumer-t")
 
-  val consumer = new KafkaConsumer[String, String](props)
+  val consumer = new KafkaConsumer[String, java.lang.Long](props)
 
   consumer.subscribe(util.Collections.singletonList(TOPIC))
 
   while (true) {
     val records = consumer.poll(100)
     for (record <- records.asScala) {
-      println(record)
+      // println(record)
+      println(record.key() + " : " + record.value())
     }
   }
 }
