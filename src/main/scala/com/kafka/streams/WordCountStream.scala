@@ -5,7 +5,9 @@ import java.util.Properties
 
 import org.apache.kafka.common.serialization._
 import org.apache.kafka.streams._
-import org.apache.kafka.streams.kstream.{KStream, KStreamBuilder, ValueMapper}
+import org.apache.kafka.streams.kstream.{KStream, KTable}
+
+import scala.collection.JavaConverters.asJavaIterableConverter
 
 object WordCountStream extends App {
 
@@ -15,19 +17,23 @@ object WordCountStream extends App {
   props.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG, Serdes.String.getClass.getName)
   props.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG, Serdes.String.getClass.getName)
 
-  val builder = new KStreamBuilder
-  val source: KStream[String, String] = builder.stream("streams-plaintext-input")
+  val stringSerde: Serde[String] = Serdes.String()
+  val longSerde: Serde[Long] = Serdes.Long()
 
-  val helloStream: KStream[String, java.lang.Long] = source.mapValues(new ValueMapper[String, java.lang.Long] {
-    override def apply(value: String): java.lang.Long =
-      Long.valueOf(String.valueOf(value.length))
-  })
+  val builder = new StreamsBuilder()
+  val textLines: KStream[String, String] = builder.stream("streams-plaintext-input")
 
-  helloStream.to(Serdes.String, Serdes.Long, "streams-wordcount-output")
+  val wordCounts: KTable[String, Long] = textLines
+    .flatMapValues { textLine =>
+      println(textLine)
+      textLine.toLowerCase.split("\\W+").toIterable.asJava
+    }
+    .groupBy((_, word) => word)
+    .count("word-counts")
 
-  val streams = new KafkaStreams(builder, props)
+  wordCounts.to(stringSerde, longSerde, "streams-wordcount-output")
+
+  val streams = new KafkaStreams(builder.build(), props)
   streams.start()
 
-  //  Thread.sleep(20000L)
-  //  streams.close()
 }
