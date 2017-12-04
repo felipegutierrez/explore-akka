@@ -9,7 +9,7 @@ import org.apache.kafka.streams.kstream.{KStream, KTable}
 
 import scala.collection.JavaConverters.asJavaIterableConverter
 
-object WordCountStream extends App {
+object WordCountKafkaStream extends App {
 
   val props = new Properties
   props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-wordcount")
