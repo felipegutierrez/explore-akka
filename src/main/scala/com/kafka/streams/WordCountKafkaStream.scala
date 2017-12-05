@@ -23,17 +23,23 @@ object WordCountKafkaStream extends App {
   val builder = new StreamsBuilder()
   val textLines: KStream[String, String] = builder.stream("streams-plaintext-input")
 
+  val topology: Topology = builder.build()
+
+  println(topology.describe())
+
   val wordCounts: KTable[String, Long] = textLines
     .flatMapValues { textLine =>
       println(textLine)
+      println(topology.describe())
       textLine.toLowerCase.split("\\W+").toIterable.asJava
     }
     .groupBy((_, word) => word)
+    // this is a stateful computation config to the topology
     .count("word-counts")
 
   wordCounts.to(stringSerde, longSerde, "streams-wordcount-output")
 
-  val streams = new KafkaStreams(builder.build(), props)
+  val streams = new KafkaStreams(topology, props)
   streams.start()
 
 }
