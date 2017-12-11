@@ -27,6 +27,8 @@ object WordCountKafkaStream extends App {
 
   println(topology.describe())
 
+  // This code will work only for scalaVersion := "2.12.4"
+  /**
   val wordCounts: KTable[String, Long] = textLines
     .flatMapValues { textLine =>
       println(textLine)
@@ -38,6 +40,7 @@ object WordCountKafkaStream extends App {
     .count("word-counts")
 
   wordCounts.to(stringSerde, longSerde, "streams-wordcount-output")
+  */
 
   val streams = new KafkaStreams(topology, props)
   streams.start()
