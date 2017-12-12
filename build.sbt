@@ -10,8 +10,11 @@ libraryDependencies ++= Seq(
   "org.apache.kafka" % "kafka-streams" % "0.10.2.0",
   "org.apache.spark" %% "spark-core" % "2.2.0",
   "org.apache.spark" %% "spark-streaming" % "2.2.0",
-  "org.apache.spark" %% "spark-streaming-kafka-0-8" % "2.0.0")
+  "org.apache.spark" %% "spark-streaming-kafka-0-10" % "2.0.0")
 
+dependencyOverrides ++= Seq(
+  "com.fasterxml.jackson.core" % "jackson-databind" % "2.6.5",
+  "com.fasterxml.jackson.core" % "jackson-module-scala" % "2.6.5")
 
 resolvers ++= Seq(
  "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
