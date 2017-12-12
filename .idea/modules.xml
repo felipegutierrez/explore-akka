@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/scala-akka-stream-kafka.iml" filepath="$PROJECT_DIR$/.idea/modules/scala-akka-stream-kafka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scala-akka-stream-kafka.iml" filepath="$PROJECT_DIR$/.idea/modules/scala-akka-stream-kafka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scala-akka-stream-kafka-build.iml" filepath="$PROJECT_DIR$/.idea/modules/scala-akka-stream-kafka-build.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/scala-akka-stream-kafka-build.iml" filepath="$PROJECT_DIR$/.idea/modules/scala-akka-stream-kafka-build.iml" />
     </modules>
   </component>
