@@ -3,8 +3,9 @@ package com.kafka.streams
 import java.lang.Long
 import java.util.Properties
 
-import org.apache.kafka.common.serialization._
-import org.apache.kafka.streams._
+import org.apache.kafka.common.serialization.{Serde, Serdes}
+import org.apache.kafka.streams.{KafkaStreams, StreamsBuilder, StreamsConfig, Topology}
+
 import org.apache.kafka.streams.kstream.{KStream, KTable}
 
 import scala.collection.JavaConverters.asJavaIterableConverter

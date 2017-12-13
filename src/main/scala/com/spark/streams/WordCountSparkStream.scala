@@ -2,12 +2,40 @@ package com.spark.streams
 
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.spark.SparkConf
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.streaming.kafka010.{ConsumerStrategies, KafkaUtils, LocationStrategies}
 import org.apache.spark.streaming.{Durations, StreamingContext}
 
 import scala.collection.mutable
 
 object WordCountSparkStream extends App {
+
+//  val spark = SparkSession
+//    .builder
+//    .appName("Spark-Kafka-Integration")
+//    .master("local")
+//    .getOrCreate()
+//
+//  import spark.implicits._
+//
+//  val df = spark
+//    .readStream
+//    .format("kafka")
+//    .option("kafka.bootstrap.servers", "localhost:9092")
+//    .option("subscribe", "streams-plaintext-input")
+//    .load()
+//  df.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)")
+//    .as[(String, String)]
+//
+//  df.writeStream
+//    .format("console")
+//    .option("truncate","false")
+//    .start()
+//    .awaitTermination()
+
+
+
+
 
   val kafkaParam = new mutable.HashMap[String, String]()
   kafkaParam.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092")
