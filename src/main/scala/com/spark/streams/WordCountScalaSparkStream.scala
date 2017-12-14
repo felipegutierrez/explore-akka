@@ -1,14 +1,15 @@
 package com.spark.streams
 
 import org.apache.kafka.clients.consumer.ConsumerConfig
-import org.apache.spark.SparkConf
+import org.apache.spark.{SparkConf, TaskContext}
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.streaming.kafka010.{ConsumerStrategies, KafkaUtils, LocationStrategies}
+import org.apache.spark.streaming.kafka010._
 import org.apache.spark.streaming.{Durations, StreamingContext}
+import org.apache.kafka.common.serialization.StringDeserializer
 
 import scala.collection.mutable
 
-object WordCountSparkStream extends App {
+object WordCountScalaSparkStream extends App {
 
 //  val spark = SparkSession
 //    .builder
@@ -35,15 +36,14 @@ object WordCountSparkStream extends App {
 
 
 
-
-
-  val kafkaParam = new mutable.HashMap[String, String]()
-  kafkaParam.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092")
-  kafkaParam.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer")
-  kafkaParam.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer")
-  kafkaParam.put(ConsumerConfig.GROUP_ID_CONFIG, "group1")
-  kafkaParam.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest")
-  kafkaParam.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true")
+  val kafkaParam = Map[String, Object](
+    "bootstrap.servers" -> "localhost:9092",
+    "key.deserializer" -> classOf[StringDeserializer],
+    "value.deserializer" -> classOf[StringDeserializer],
+    "group.id" -> "use_a_separate_group_id_for_each_stream",
+    "auto.offset.reset" -> "latest",
+    "enable.auto.commit" -> (false: java.lang.Boolean)
+  )
 
   val conf = new SparkConf().setMaster("local[2]").setAppName("WordCountSparkStream")
   // Read messages in batch of 5 seconds
@@ -56,19 +56,22 @@ object WordCountSparkStream extends App {
   val messageStream = KafkaUtils.createDirectStream(sparkStreamingContext,
     LocationStrategies.PreferConsistent,
     ConsumerStrategies.Subscribe[String, String](topicList, kafkaParam))
-  val lines = messageStream.map(consumerRecord => consumerRecord.value().asInstanceOf[String])
 
-  // Break every message into words and return list of words
+  messageStream.map(record => (record.key, record.value))
+
+  messageStream.foreachRDD { rdd =>
+    val offsetRanges = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
+    rdd.foreachPartition { iter =>
+      val o: OffsetRange = offsetRanges(TaskContext.get.partitionId)
+      println(s"${o.topic} ${o.partition} ${o.fromOffset} ${o.untilOffset}")
+    }
+  }
+
+  // Get the lines, split them into words, count the words and print
+  val lines = messageStream.map(_.value)
   val words = lines.flatMap(_.split(" "))
-
-  // Take every word and return Tuple with (word,1)
-  val wordMap = words.map(word => (word, 1))
-
-  // Count occurance of each word
-  val wordCount = wordMap.reduceByKey((first, second) => first + second)
-
-  //Print the word count
-  wordCount.print()
+  val wordCounts = words.map(x => (x, 1L)).reduceByKey(_ + _)
+  wordCounts.print()
 
   sparkStreamingContext.start()
   sparkStreamingContext.awaitTermination()

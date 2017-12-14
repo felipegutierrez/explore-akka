@@ -16,7 +16,7 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
-public class WordCountJavaStream {
+public class WordCountJavaKafkaStream {
 
 	public static void main(final String[] args) throws Exception {
 		Properties props = new Properties();
