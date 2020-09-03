@@ -1,3 +1,6 @@
+
+[![Build Status](https://api.travis-ci.org/felipegutierrez/scala-akka-stream-kafka.svg?branch=master)](https://travis-ci.org/felipegutierrez/scala-akka-stream-kafka)
+
 # scala-akka-stream-kafka
 
 This project is a use case to work mainly with [Kafka](https://kafka.apache.org/). The idea is to have two or more producers and two or more consumer as well. Kafka is going to manage the messages. Between the consumers and producers I will process the data and extract analytics from it.
