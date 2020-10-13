@@ -13,7 +13,6 @@
           </set>
         </option>
         <option name="sbtVersion" value="1.0.3" />
-        <option name="useSbtShell" value="true" />
       </SbtProjectSettings>
     </option>
   </component>
