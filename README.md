@@ -1,12 +1,7 @@
 
-[![Build Status](https://api.travis-ci.org/felipegutierrez/scala-akka-stream-kafka.svg?branch=master)](https://travis-ci.org/felipegutierrez/scala-akka-stream-kafka)
+[![Build Status](https://api.travis-ci.org/felipegutierrez/explore-akka.svg?branch=master)](https://travis-ci.org/felipegutierrez/explore-akka)
 
-# explore-akka
-
+Exploring Akka with Scala 2.12.7 and Java 8
 
 ## Troubleshooting
-
-
-
-
 
