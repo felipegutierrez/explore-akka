@@ -2,7 +2,7 @@ package org.github.explore.recap
 
 import scala.util.Try
 
-object GeneralRecap extends App {
+object BasicRecap extends App {
   val aCondition: Boolean = false
 
   val aExpression = if (aCondition) 1 else 0
