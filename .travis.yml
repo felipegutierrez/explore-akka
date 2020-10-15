@@ -15,4 +15,4 @@ after_success:
   # Log in to the docker CLI. Log in to docker in a single command line
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # take the images and push them to docker.hub
-  #- docker push felipeogutierrez/explore-akka:2.6.10-scala_2.12
+  - docker push felipeogutierrez/explore-akka:2.6.10-scala_2.12
