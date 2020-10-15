@@ -13,3 +13,4 @@ libraryDependencies ++= Seq(
   // test unit
   "org.scalatest" %% "scalatest" % "3.2.2" % Test
 )
+
