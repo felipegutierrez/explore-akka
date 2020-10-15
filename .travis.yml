@@ -10,3 +10,9 @@ script:
   - sbt ++$TRAVIS_SCALA_VERSION compile
   - sbt ++$TRAVIS_SCALA_VERSION package
 
+after_success:
+  - sbt docker:publishLocal
+  # Log in to the docker CLI. Log in to docker in a single command line
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # take the images and push them to docker.hub
+  #- docker push felipeogutierrez/explore-akka:2.6.10-scala_2.12

@@ -14,3 +14,8 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.2.2" % Test
 )
 
+mainClass in Compile := Some("org.github.explore.MainClass")
+
+enablePlugins(JavaAppPackaging)
+enablePlugins(DockerPlugin)
+
