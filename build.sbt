@@ -1,7 +1,5 @@
 name := """explore-akka"""
-
 version := "1.1"
-
 scalaVersion := "2.12.7"
 val akkaVersion = "2.6.10"
 val scalaBinVersion = "2.12"
@@ -18,6 +16,8 @@ mainClass in Compile := Some("org.github.explore.MainClass")
 
 enablePlugins(JavaAppPackaging)
 enablePlugins(DockerPlugin)
+dockerUsername := Some("felipeogutierrez")
+
 
 //enablePlugins(GitVersioning)
 //dockerExposedPorts := Seq(8080)
@@ -25,6 +25,5 @@ enablePlugins(DockerPlugin)
 //  s"$sha".substring(0, 7)
 //}
 //dockerUpdateLatest := true
-//dockerUsername := Some("felipeogutierrez")
 //dockerAlias := DockerAlias(None, dockerUsername.value, (packageName in Docker).value, git.gitDescribedVersion.value)
 
