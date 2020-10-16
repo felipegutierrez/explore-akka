@@ -11,5 +11,7 @@ sbt package
 sbt run
 sbt clean assembly
 sbt docker:publishLocal
+docker images
+docker image rm <IMAGE_ID>
 ```
 

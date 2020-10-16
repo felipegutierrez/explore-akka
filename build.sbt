@@ -19,3 +19,12 @@ mainClass in Compile := Some("org.github.explore.MainClass")
 enablePlugins(JavaAppPackaging)
 enablePlugins(DockerPlugin)
 
+//enablePlugins(GitVersioning)
+//dockerExposedPorts := Seq(8080)
+//git.formattedShaVersion := git.gitHeadCommit.value map { sha =>
+//  s"$sha".substring(0, 7)
+//}
+//dockerUpdateLatest := true
+//dockerUsername := Some("felipeogutierrez")
+//dockerAlias := DockerAlias(None, dockerUsername.value, (packageName in Docker).value, git.gitDescribedVersion.value)
+
