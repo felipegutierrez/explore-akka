@@ -16,4 +16,4 @@ after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # take the images and push them to docker.hub
   - docker push felipeogutierrez/explore-akka:1.1
-  #- sbt docker:publish
+
