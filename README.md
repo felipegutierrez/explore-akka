@@ -5,7 +5,7 @@ Exploring [Akka 2.6.10](https://akka.io/) with Scala 2.12.7 and Java 8. The dock
 
 ## In action
  - Compile the project: `sbt docker:publishLocal` and verify the image created `docker images`.
- - Run the docker image: `docker run felipeogutierrez/explore-akka:1.1`
+ - Run the docker image: `docker run -i felipeogutierrez/explore-akka:1.1` (don't forget the `-i` parameter to allow STDIN open!).
 
 ## Troubleshooting
 
