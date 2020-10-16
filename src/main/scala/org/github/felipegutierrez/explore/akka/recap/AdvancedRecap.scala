@@ -1,4 +1,4 @@
-package org.github.explore.recap
+package org.github.felipegutierrez.explore.akka.recap
 
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{Await, Future}
