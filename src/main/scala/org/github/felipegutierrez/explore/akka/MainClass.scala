@@ -2,7 +2,7 @@ package org.github.felipegutierrez.explore.akka
 
 import java.util.Scanner
 
-import org.github.felipegutierrez.explore.akka.actors.{ActorCapabilities, ActorsIntro, BankAccountActor, Playground}
+import org.github.felipegutierrez.explore.akka.actors._
 import org.github.felipegutierrez.explore.akka.recap.{AdvancedRecap, BasicRecap, MultiThreadRecap}
 
 object MainClass extends App {
@@ -14,7 +14,7 @@ object MainClass extends App {
   println(s"5 - ActorsIntro")
   println(s"6 - ActorsCapabilities")
   println(s"7 - BankAccountActor")
-  println(s"8 - ")
+  println(s"8 - ChangingActorBehavior")
   println(s"9 - ")
 
   println("choose an application: ")
@@ -30,6 +30,7 @@ object MainClass extends App {
     case "5" => ActorsIntro.run()
     case "6" => ActorCapabilities.run()
     case "7" => BankAccountActor.run()
+    case "8" => ChangingActorBehavior.run()
     case _ => println("option unavailable.")
   }
 }
