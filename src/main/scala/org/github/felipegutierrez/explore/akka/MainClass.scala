@@ -2,7 +2,7 @@ package org.github.felipegutierrez.explore.akka
 
 import java.util.Scanner
 
-import org.github.felipegutierrez.explore.akka.actors.Playground
+import org.github.felipegutierrez.explore.akka.actors.{ActorsIntro, Playground}
 import org.github.felipegutierrez.explore.akka.recap.{AdvancedRecap, BasicRecap, MultiThreadRecap}
 
 object MainClass extends App {
@@ -11,7 +11,7 @@ object MainClass extends App {
   println(s"2 - AdvancedRecap")
   println(s"3 - MultiThreadRecap")
   println(s"4 - Simple actor")
-  println(s"5 - ")
+  println(s"5 - ActorsIntro")
   println(s"6 - ")
   println(s"7 - ")
   println(s"8 - ")
@@ -27,6 +27,7 @@ object MainClass extends App {
     case "2" => AdvancedRecap.run()
     case "3" => MultiThreadRecap.run()
     case "4" => Playground.run()
+    case "5" => ActorsIntro.run()
     case _ => println("option unavailable.")
   }
 }
