@@ -1,0 +1,6 @@
+{
+  "aJsonProperty": "rocktheJVM",
+  "akka": {
+    "loglevel": "DEBUG"
+  }
+}

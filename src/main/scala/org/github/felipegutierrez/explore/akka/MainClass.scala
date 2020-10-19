@@ -23,7 +23,7 @@ object MainClass extends App {
   println(s"14 - ChildActorsNaiveBank")
   println(s"15 - WordCountUsingChildActors")
   println(s"16 - ActorLogging")
-  println(s"17 - ")
+  println(s"17 - IntroAkkaConfig")
   println(s"18 - ")
 
   println("choose an application: ")
@@ -48,6 +48,7 @@ object MainClass extends App {
     case "14" => ChildActorsNaiveBank.run()
     case "15" => WordCountUsingChildActors.run()
     case "16" => ActorLogging.run()
+    case "17" => IntroAkkaConfig.run()
     case _ => println("option unavailable.")
   }
 }
