@@ -21,7 +21,7 @@ object MainClass extends App {
   println(s"12 - VotingSystemStateless")
   println(s"13 - ChildActors")
   println(s"14 - ChildActorsNaiveBank")
-  println(s"15 - ")
+  println(s"15 - WordCountUsingChildActors")
   println(s"16 - ")
   println(s"17 - ")
   println(s"18 - ")
@@ -46,6 +46,7 @@ object MainClass extends App {
     case "12" => VotingSystemStateless.run()
     case "13" => ChildActors.run()
     case "14" => ChildActorsNaiveBank.run()
+    case "15" => WordCountUsingChildActors.run()
     case _ => println("option unavailable.")
   }
 }

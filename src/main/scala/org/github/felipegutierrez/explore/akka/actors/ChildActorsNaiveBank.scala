@@ -61,6 +61,8 @@ object ChildActorsNaiveBank extends App {
   object CreditCard {
 
     // DANGER: NEVER PASS AN ACTOR TO THE ACTOR MESSAGE!!!!
+    // THE RIGHT WAY TO DO IS USING ActorRef on the parameters of the message.
+    // THIS CALL 'close over' OF MUTABLE STATE
     case class AttachToAccount(bankAccount: NaiveBankAccount)
 
     case object CheckStatus
