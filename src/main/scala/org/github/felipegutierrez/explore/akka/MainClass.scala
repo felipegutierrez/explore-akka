@@ -19,8 +19,8 @@ object MainClass extends App {
   println(s"10 - CounterChangeBehaviorActor")
   println(s"11 - VotingSystemStateful")
   println(s"12 - VotingSystemStateless")
-  println(s"13 - ")
-  println(s"14 - ")
+  println(s"13 - ChildActors")
+  println(s"14 - ChildActorsNaiveBank")
   println(s"15 - ")
   println(s"16 - ")
   println(s"17 - ")
@@ -44,6 +44,8 @@ object MainClass extends App {
     case "10" => CounterChangeBehaviorActor.run()
     case "11" => VotingSystemStateful.run()
     case "12" => VotingSystemStateless.run()
+    case "13" => ChildActors.run()
+    case "14" => ChildActorsNaiveBank.run()
     case _ => println("option unavailable.")
   }
 }
