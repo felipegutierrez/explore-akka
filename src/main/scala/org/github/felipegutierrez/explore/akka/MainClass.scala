@@ -15,7 +15,7 @@ object MainClass extends App {
   println(s"6 - ActorsCapabilities")
   println(s"7 - BankAccountActor")
   println(s"8 - ChangingActorBehavior")
-  println(s"9 - ")
+  println(s"9 - CounterActor")
 
   println("choose an application: ")
   val scanner = new Scanner(System.in)
@@ -31,6 +31,7 @@ object MainClass extends App {
     case "6" => ActorCapabilities.run()
     case "7" => BankAccountActor.run()
     case "8" => ChangingActorBehavior.run()
+    case "9" => CounterActor.run()
     case _ => println("option unavailable.")
   }
 }
