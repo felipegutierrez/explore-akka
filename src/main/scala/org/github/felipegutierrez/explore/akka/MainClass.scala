@@ -22,7 +22,7 @@ object MainClass extends App {
   println(s"13 - ChildActors")
   println(s"14 - ChildActorsNaiveBank")
   println(s"15 - WordCountUsingChildActors")
-  println(s"16 - ")
+  println(s"16 - ActorLogging")
   println(s"17 - ")
   println(s"18 - ")
 
@@ -47,6 +47,7 @@ object MainClass extends App {
     case "13" => ChildActors.run()
     case "14" => ChildActorsNaiveBank.run()
     case "15" => WordCountUsingChildActors.run()
+    case "16" => ActorLogging.run()
     case _ => println("option unavailable.")
   }
 }

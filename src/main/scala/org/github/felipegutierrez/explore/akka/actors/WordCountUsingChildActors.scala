@@ -21,11 +21,12 @@ object WordCountUsingChildActors extends App {
         val master = context.actorOf(Props[WordCounterMaster], "master")
         master ! Initialize(3)
         val texts = List("testing word count with Akka and Scala and using the distributed pattern",
-          "I love Akka because it is distributed and thread safe", "Make sure to not call methods but only send messages",
+          "I love Akka because it is distributed and thread safe",
+          "Make sure to not call methods but only send messages",
           "now should be the time to come back to worker 0 because we are using round-robin strategy",
           "do you confirm that it worker ?")
         texts.foreach(text => master ! text)
-      case count: Int => println(s"[test actor] i received a reply: $count")
+      case count: Int => println(s"[test actor] I received a reply: $count")
     }
   }
 
