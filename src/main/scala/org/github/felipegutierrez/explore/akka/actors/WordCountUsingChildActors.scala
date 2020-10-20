@@ -1,6 +1,6 @@
 package org.github.felipegutierrez.explore.akka.actors
 
-import akka.actor.{Actor, ActorRef, ActorSystem, Props}
+import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 
 object WordCountUsingChildActors extends App {
   run()
@@ -39,6 +39,8 @@ object WordCountUsingChildActors extends App {
     case class WordCountTask(id: Int, text: String)
 
     case class WordCountReply(id: Int, count: Int)
+
+    case class WordCountReplyDenied(id: Int)
 
     val propsMaster = {
       Props(new WordCounterMaster)
@@ -81,17 +83,26 @@ object WordCountUsingChildActors extends App {
         val originalSender = requestMap(id)
         originalSender ! count
         context.become(withWorkers(workers, currentWorkIndex, currentTaskId, requestMap - id))
+      case WordCountReplyDenied(id) =>
+        throw new RuntimeException("I can't handle strings which has credit card")
     }
   }
 
-  class WordCounterWorker extends Actor {
+  class WordCounterWorker extends Actor with ActorLogging {
 
     import WordCounterMaster._
 
     override def receive: Receive = {
       case WordCountTask(id, text) => {
-        println(s"${self.path} I have received tasks $id with $text")
-        sender() ! WordCountReply(id, text.split(" ").length)
+        // it is denied to inspect strings with credit card
+        if (text.contains("credit") || text.contains("creditcard")|| text.contains("credit card")) {
+          sender() ! WordCountReplyDenied(id)
+        } else {
+          println(s"${self.path} I have received task $id with $text")
+          val count = text.split(" ").length
+          log.info(s"I have received task $id with $text which contains $count words")
+          sender() ! WordCountReply(id, count)
+        }
       }
     }
   }
