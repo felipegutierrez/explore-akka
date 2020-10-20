@@ -49,6 +49,7 @@ object MainClass extends App {
     case "15" => WordCountUsingChildActors.run()
     case "16" => ActorLogging.run()
     case "17" => IntroAkkaConfig.run()
+    case "18" =>
     case _ => println("option unavailable.")
   }
 }

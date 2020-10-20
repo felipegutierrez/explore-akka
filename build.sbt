@@ -3,13 +3,12 @@ version := "1.1"
 scalaVersion := "2.12.7"
 val akkaVersion = "2.6.10"
 val scalaBinVersion = "2.12"
+val scalaTestVersion = "3.2.0"
 
 libraryDependencies ++= Seq(
-  // akka
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
   "com.typesafe.akka" %% "akka-testkit" % akkaVersion,
-  // test unit
-  "org.scalatest" %% "scalatest" % "3.2.2" % Test
+  "org.scalatest" %% "scalatest" % scalaTestVersion
 )
 
 mainClass in Compile := Some("org.github.felipegutierrez.explore.akka.MainClass")

@@ -9,6 +9,8 @@ Exploring [Akka 2.6.10](https://akka.io/) with Scala 2.12.7 and Java 8. The dock
 
 ## Troubleshooting
 
+ - Release notes for [scalatest 3.2.0](https://www.scalatest.org/release_notes/3.2.0)
+ - useful commands:
 ```
 sbt compile
 sbt package
