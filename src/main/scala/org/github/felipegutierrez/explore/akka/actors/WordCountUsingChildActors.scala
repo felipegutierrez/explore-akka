@@ -34,10 +34,15 @@ object WordCountUsingChildActors extends App {
 
     case class Initialize(nChildren: Int)
 
+    case object InitializeAck
+
     case class WordCountTask(id: Int, text: String)
 
     case class WordCountReply(id: Int, count: Int)
 
+    val propsMaster = {
+      Props(new WordCounterMaster)
+    }
   }
 
   class WordCounterMaster extends Actor {
@@ -48,6 +53,9 @@ object WordCountUsingChildActors extends App {
       case Initialize(nWorkers) => {
         println(s"initializing...")
         val workerSeq: Seq[ActorRef] = for (w <- 1 to nWorkers) yield context.actorOf(Props[WordCounterWorker], s"worker_$w")
+        for (w <- 1 to workerSeq.size) {
+          sender() ! InitializeAck
+        }
         context.become(withWorkers(workerSeq, 0, 0, Map()))
       }
     }

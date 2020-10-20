@@ -35,12 +35,19 @@ object ActorsIntro extends App {
 
   object Person {
     def props(name: String) = Props(new Person(name))
+
+    val propsPersonActor = {
+      Props(new Person(""))
+    }
   }
 
   class Person(name: String) extends Actor {
     override def receive: Receive = {
-      case "hi" => println(s"Hi, my name is $name")
-      case _ =>
+      case "hi" =>
+        val reply = s"Hi, my name is $name"
+        println(reply)
+        sender() ! reply
+      case message => sender() ! message
     }
   }
 

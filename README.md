@@ -13,6 +13,7 @@ Exploring [Akka 2.6.10](https://akka.io/) with Scala 2.12.7 and Java 8. The dock
  - useful commands:
 ```
 sbt compile
+sbt test
 sbt package
 sbt run
 sbt clean assembly
