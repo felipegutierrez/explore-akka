@@ -33,7 +33,9 @@ object CounterActor extends App {
     override def receive: Receive = {
       case Increment => count += 1
       case Decrement => count -= 1
-      case Print => println(s"[counter] current count is: $count")
+      case Print =>
+        sender() ! count
+        println(s"[counter] current count is: $count")
     }
   }
 
