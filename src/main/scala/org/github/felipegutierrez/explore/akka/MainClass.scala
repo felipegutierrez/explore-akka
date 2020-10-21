@@ -3,7 +3,7 @@ package org.github.felipegutierrez.explore.akka
 import java.util.Scanner
 
 import org.github.felipegutierrez.explore.akka.actors._
-import org.github.felipegutierrez.explore.akka.falttolerance.{DefaultSupervisionStrategy, StartingStoppingActors, WatchingActors}
+import org.github.felipegutierrez.explore.akka.falttolerance._
 import org.github.felipegutierrez.explore.akka.recap.{AdvancedRecap, BasicRecap, MultiThreadRecap}
 
 object MainClass extends App {
@@ -28,6 +28,10 @@ object MainClass extends App {
   println(s"18 - StartingStoppingActors")
   println(s"19 - WatchingActors")
   println(s"20 - DefaultSupervisionStrategy")
+  println(s"21 - OneForOneSupervisionStrategy")
+  println(s"22 - AllForOneSupervisionStrategy")
+  println(s"23 - BackoffSupervisorPattern")
+  println(s"24 - ")
 
   println("choose an application: ")
   val scanner = new Scanner(System.in)
@@ -55,6 +59,10 @@ object MainClass extends App {
     case "18" => StartingStoppingActors.run()
     case "19" => WatchingActors.run()
     case "20" => DefaultSupervisionStrategy.run()
+    case "21" => OneForOneSupervisionStrategy.run()
+    case "22" => AllForOneSupervisionStrategy.run()
+    case "23" => BackoffSupervisorPattern.run()
+    case "24" => ???
     case _ => println("option unavailable.")
   }
 }
