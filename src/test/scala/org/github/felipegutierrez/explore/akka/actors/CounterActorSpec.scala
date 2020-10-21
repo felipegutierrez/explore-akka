@@ -36,7 +36,7 @@ class CounterActorSpec extends AnyWordSpecLike with BeforeAndAfterAll {
 
       // makes the actor run in asynchronous manner. probe.send will take some time and the test will fail
       // val counter = system.actorOf(Props[Counter])
-      
+
       val probe = TestProbe()
 
       probe.send(counter, Print)

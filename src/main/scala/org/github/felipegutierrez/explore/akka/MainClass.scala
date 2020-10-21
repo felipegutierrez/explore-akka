@@ -3,6 +3,7 @@ package org.github.felipegutierrez.explore.akka
 import java.util.Scanner
 
 import org.github.felipegutierrez.explore.akka.actors._
+import org.github.felipegutierrez.explore.akka.falttolerance.{StartingStoppingActors, WatchingActors}
 import org.github.felipegutierrez.explore.akka.recap.{AdvancedRecap, BasicRecap, MultiThreadRecap}
 
 object MainClass extends App {
@@ -24,7 +25,8 @@ object MainClass extends App {
   println(s"15 - WordCountUsingChildActors")
   println(s"16 - ActorLogging")
   println(s"17 - IntroAkkaConfig")
-  println(s"18 - ")
+  println(s"18 - StartingStoppingActors")
+  println(s"19 - WatchingActors")
 
   println("choose an application: ")
   val scanner = new Scanner(System.in)
@@ -49,7 +51,8 @@ object MainClass extends App {
     case "15" => WordCountUsingChildActors.run()
     case "16" => ActorLogging.run()
     case "17" => IntroAkkaConfig.run()
-    case "18" =>
+    case "18" => StartingStoppingActors.run()
+    case "19" => WatchingActors.run()
     case _ => println("option unavailable.")
   }
 }
