@@ -37,6 +37,13 @@ object MainClass extends App {
   println(s"26 - TimerBasedHeartbeatDemo")
   println(s"27 - Routers")
   println(s"28 - Dispatchers")
+  println(s"29 - Mailboxes")
+  println(s"30 - ")
+  println(s"31 - ")
+  println(s"32 - ")
+  println(s"33 - ")
+  println(s"34 - ")
+  println(s"35 - ")
 
   println("choose an application: ")
   val scanner = new Scanner(System.in)
@@ -72,6 +79,11 @@ object MainClass extends App {
     case "26" => TimerBasedHeartbeatDemo.run()
     case "27" => Routers.run()
     case "28" => Dispatchers.run()
+    case "29" => Mailboxes.run()
+    case "30" => ???
+    case "31" => ???
+    case "32" => ???
+    case "33" => ???
     case _ => println("option unavailable.")
   }
 }
