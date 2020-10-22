@@ -4,7 +4,7 @@ import java.util.Scanner
 
 import org.github.felipegutierrez.explore.akka.actors._
 import org.github.felipegutierrez.explore.akka.falttolerance._
-import org.github.felipegutierrez.explore.akka.infra.{Routers, SelfClosingScheduler, TimerBasedHeartbeatDemo, TimersSchedulers}
+import org.github.felipegutierrez.explore.akka.infra._
 import org.github.felipegutierrez.explore.akka.recap.{AdvancedRecap, BasicRecap, MultiThreadRecap}
 
 object MainClass extends App {
@@ -36,6 +36,7 @@ object MainClass extends App {
   println(s"25 - SelfClosingScheduler")
   println(s"26 - TimerBasedHeartbeatDemo")
   println(s"27 - Routers")
+  println(s"28 - Dispatchers")
 
   println("choose an application: ")
   val scanner = new Scanner(System.in)
@@ -70,6 +71,7 @@ object MainClass extends App {
     case "25" => SelfClosingScheduler.run()
     case "26" => TimerBasedHeartbeatDemo.run()
     case "27" => Routers.run()
+    case "28" => Dispatchers.run()
     case _ => println("option unavailable.")
   }
 }

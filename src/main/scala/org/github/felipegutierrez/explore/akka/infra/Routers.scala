@@ -1,13 +1,8 @@
 package org.github.felipegutierrez.explore.akka.infra
 
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props, Terminated}
-import akka.pattern.ask
 import akka.routing._
-import akka.util.Timeout
 import com.typesafe.config.ConfigFactory
-
-import scala.concurrent.Await
-import scala.concurrent.duration._
 
 object Routers extends App {
 
@@ -68,15 +63,15 @@ object Routers extends App {
 
     override def receive: Receive = {
       // define a handler to route the messages
-      case message =>
-        // step 3 - route the message without involving the Master, but the sender()
-        router.route(message, sender())
       case Terminated(ref) =>
         // step 4 - handle the termination/lifecycle of the routees
         router.removeRoutee(ref)
         val newWorker = context.actorOf(Props[Worker])
         context.watch(newWorker)
         router.addRoutee(newWorker)
+      case message =>
+        // step 3 - route the message without involving the Master, but the sender()
+        router.route(message, sender())
     }
   }
 
