@@ -5,6 +5,7 @@ import java.util.Scanner
 import org.github.felipegutierrez.explore.akka.actors._
 import org.github.felipegutierrez.explore.akka.falttolerance._
 import org.github.felipegutierrez.explore.akka.infra._
+import org.github.felipegutierrez.explore.akka.patterns.StashDemo
 import org.github.felipegutierrez.explore.akka.recap.{AdvancedRecap, BasicRecap, MultiThreadRecap}
 
 object MainClass extends App {
@@ -38,7 +39,7 @@ object MainClass extends App {
   println(s"27 - Routers")
   println(s"28 - Dispatchers")
   println(s"29 - Mailboxes")
-  println(s"30 - ")
+  println(s"30 - StashDemo")
   println(s"31 - ")
   println(s"32 - ")
   println(s"33 - ")
@@ -80,7 +81,7 @@ object MainClass extends App {
     case "27" => Routers.run()
     case "28" => Dispatchers.run()
     case "29" => Mailboxes.run()
-    case "30" => ???
+    case "30" => StashDemo.run()
     case "31" => ???
     case "32" => ???
     case "33" => ???
