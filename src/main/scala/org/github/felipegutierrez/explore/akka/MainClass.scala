@@ -5,7 +5,7 @@ import java.util.Scanner
 import org.github.felipegutierrez.explore.akka.actors._
 import org.github.felipegutierrez.explore.akka.falttolerance._
 import org.github.felipegutierrez.explore.akka.infra._
-import org.github.felipegutierrez.explore.akka.patterns.{AskPatternDemo, StashDemo}
+import org.github.felipegutierrez.explore.akka.patterns.{AskPatternDemo, StashDemo, VendingMachineDemo}
 import org.github.felipegutierrez.explore.akka.recap.{AdvancedRecap, BasicRecap, MultiThreadRecap}
 
 object MainClass extends App {
@@ -41,7 +41,7 @@ object MainClass extends App {
   println(s"29 - Mailboxes")
   println(s"30 - StashDemo")
   println(s"31 - AskPatternDemo")
-  println(s"32 - ")
+  println(s"32 - VendingMachineDemo")
   println(s"33 - ")
   println(s"34 - ")
   println(s"35 - ")
@@ -83,7 +83,7 @@ object MainClass extends App {
     case "29" => Mailboxes.run()
     case "30" => StashDemo.run()
     case "31" => AskPatternDemo.run()
-    case "32" => ???
+    case "32" => VendingMachineDemo.run()
     case "33" => ???
     case _ => println("option unavailable.")
   }
