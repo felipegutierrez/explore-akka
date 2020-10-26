@@ -1,8 +1,12 @@
 package org.github.felipegutierrez.explore.akka.recap
 
+import scala.annotation.tailrec
 import scala.util.Try
 
 object BasicRecap extends App {
+
+  run()
+
   def run(): Unit = {
     val aCondition: Boolean = false
 
@@ -12,6 +16,10 @@ object BasicRecap extends App {
       if (aCondition) 1
       0
     }
+
+    println(s"factorial of 6: ${factorial(6)}")
+    println(s"factorialWithTailrec of 6: ${factorialWithTailrec(6)}")
+
 
     val aTypeUnit = println("Hello Scala")
     val aDog: Animal = new Dog
@@ -50,10 +58,10 @@ object BasicRecap extends App {
     println("for comprehensions")
     val pairs = for {
       num <- List(1, 2, 3, 4, 5)
-      char <- List('a', 'b', 'c', 'd')
+      char <- List('a', 'b')
     } yield num + "-" + char
     println(pairs)
-    val pairsAgain = List(1, 2, 3, 4, 5).flatMap(num => List('a', 'b', 'c', 'd').map(char => num + "-" + char))
+    val pairsAgain = List(1, 2, 3, 4, 5).flatMap(num => List('a', 'b').map(char => num + "-" + char))
     println(pairsAgain)
 
     // Option and Try
@@ -66,15 +74,11 @@ object BasicRecap extends App {
     // functions
     def aFunction(x: Int): Int = x + 1
 
-    def factorial(n: Int, acc: Int): Int =
-      if (n <= 0) acc
-      else factorial(n - 1, acc * n)
-
     aCrocodile.eat(aDog)
     aCrocodile eat aDog
-
-
     aCarnivore eat aDog
+
+
   }
 
   // Object oriented
@@ -99,4 +103,21 @@ object BasicRecap extends App {
   // companion objects
   object MyList
 
+  def factorial(n: Int): Int = {
+    def factorial(n: Int, acc: Int): Int = {
+      if (n <= 0) acc
+      else factorial(n - 1, acc * n)
+    }
+
+    factorial(n, 1)
+  }
+
+  def factorialWithTailrec(n: Int): Int = {
+    // recursion: stack and tail
+    @tailrec def factorialWithTailrec(n: Int, accumulator: Int): Int = {
+      if (n <= 0) accumulator
+      else factorialWithTailrec(n - 1, n * accumulator)
+    }
+    factorialWithTailrec(n, 1)
+  }
 }

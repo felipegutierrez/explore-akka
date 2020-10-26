@@ -6,12 +6,13 @@ import org.github.felipegutierrez.explore.akka.actors._
 import org.github.felipegutierrez.explore.akka.falttolerance._
 import org.github.felipegutierrez.explore.akka.infra._
 import org.github.felipegutierrez.explore.akka.patterns.{AskPatternDemo, StashDemo, VendingMachineDemo, VendingMachineFSMDemo}
-import org.github.felipegutierrez.explore.akka.recap.{AdvancedRecap, BasicRecap, MultiThreadRecap}
+import org.github.felipegutierrez.explore.akka.recap.{AdvancedPatternMatching, AdvancedRecap, BasicRecap, MultiThreadRecap}
 
 object MainClass extends App {
   println(s"0 - out")
   println(s"1 - BasicRecap")
   println(s"2 - AdvancedRecap")
+  println(s"2.1 - AdvancedPatternMatching")
   println(s"3 - MultiThreadRecap")
   println(s"4 - Simple actor")
   println(s"5 - ActorsIntro")
@@ -54,6 +55,7 @@ object MainClass extends App {
     case "0" => println(s"Bye, see you next time.")
     case "1" => BasicRecap.run()
     case "2" => AdvancedRecap.run()
+    case "2.1" => AdvancedPatternMatching.run()
     case "3" => MultiThreadRecap.run()
     case "4" => Playground.run()
     case "5" => ActorsIntro.run()

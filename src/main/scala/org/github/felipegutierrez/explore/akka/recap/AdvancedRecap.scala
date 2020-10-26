@@ -5,6 +5,9 @@ import scala.concurrent.{Await, Future}
 import scala.util.{Failure, Success}
 
 object AdvancedRecap extends App {
+
+  run()
+
   def run(): Unit = {
     type ReceiveFunction = PartialFunction[Any, Unit]
 
@@ -28,9 +31,17 @@ object AdvancedRecap extends App {
       case e: Exception => println("Exception: " + e.getMessage)
     }
 
+    val anInstance: Action = new Action {
+      override def act(x: Int): Int = x + 1
+    }
+    val anotherInstance: Action = (x: Int) => (x + 1)
+    println(s"anInstance: ${anInstance.act(1)}")
+    println(s"anotherInstance: ${anotherInstance.act(1)}")
 
-
-
+    val prependedList = 1 :: 2 :: List(3, 4)
+    println(s"prependedList ${prependedList.toString()}")
+    val samePrependedList = List(3, 4).::(2).::(1)
+    println(s"samePrependedList ${samePrependedList.toString()}")
 
     // orElse
     println("orElse ................")
@@ -97,12 +108,28 @@ object AdvancedRecap extends App {
 
     val personListSorted: List[Person] = List(Person("Bob"), Person("X9"), Person("Alice"), Person("Peter")).sorted
     println(personListSorted)
+
+    val aMutableContainer: MutableContainer = new MutableContainer
+    aMutableContainer.member = 42
+    println(s"aMutableContainer.member ${aMutableContainer.member}")
+  }
+
+  trait Action {
+    def act(x: Int): Int
   }
 
   println("implicit classes ....................")
 
   implicit class Dog(name: String) {
     def bark = println("bark!!")
+  }
+
+  // syntax sugar for setters and getter in mutable containers
+  class MutableContainer {
+    private var internalMember: Int = 0
+
+    def member = internalMember // getter
+    def member_=(value: Int): Unit = internalMember = value // setter
   }
 
   case class Person(name: String) {
