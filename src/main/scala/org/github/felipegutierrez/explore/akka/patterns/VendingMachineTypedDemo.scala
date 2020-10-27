@@ -1,7 +1,6 @@
 package org.github.felipegutierrez.explore.akka.patterns
 
-import akka.actor.ActorRef
-import akka.actor.typed.{ActorSystem, Behavior}
+import akka.actor.typed.{ActorRef, ActorSystem, Behavior}
 import akka.actor.typed.scaladsl.Behaviors
 
 object VendingMachineTypedDemo extends App {
@@ -15,9 +14,9 @@ object VendingMachineTypedDemo extends App {
 
     functionalVendingMachineSystem ! Initialize(Map("coke" -> 10), Map("coke" -> 3))
     functionalVendingMachineSystem ! RequestProduct("coke")
-    functionalVendingMachineSystem ! ReceiveMoney(10)
+//    functionalVendingMachineSystem ! ReceiveMoney(10)
 
-    Thread.sleep(1000)
+    Thread.sleep(2000)
     functionalVendingMachineSystem.terminate()
   }
 
@@ -35,21 +34,21 @@ object VendingMachineTypedDemo extends App {
       def prices(): Map[String, Int]
       def product(): Option[String]
       def money(): Int
-      def requester(): Option[ActorRef]
+      def requester(): Option[ActorRef[VendingData]]
     }
     case object Uninitialized extends VendingData {
       override def inventory(): Map[String, Int] = Map[String, Int]()
       override def prices(): Map[String, Int] = Map[String, Int]()
       override def product(): Option[String] = None
       override def money(): Int = 0
-      override def requester(): Option[ActorRef] = None
+      override def requester(): Option[ActorRef[VendingData]] = None
     }
     case class Initialized(inventory: Map[String, Int], prices: Map[String, Int]) extends VendingData {
       override def product(): Option[String] = None
       override def money(): Int = 0
-      override def requester(): Option[ActorRef] = None
+      override def requester(): Option[ActorRef[VendingData]] = None
     }
-    case class WaitingForMoneyData(inventory: Map[String, Int], prices: Map[String, Int], product: Option[String], money: Int, requester: Option[ActorRef]) extends VendingData
+    case class WaitingForMoneyData(inventory: Map[String, Int], prices: Map[String, Int], product: Option[String], money: Int, requester: Option[ActorRef[VendingData]]) extends VendingData
 
     // messages
     trait VendingMessage
@@ -69,40 +68,54 @@ object VendingMachineTypedDemo extends App {
     message match {
       case Initialize(inventory, prices) =>
         context.log.info(s"Vending machine initializing")
-        functionalVendingMachine(Operational, Initialized(inventory, prices))
+        if (state == Idle) functionalVendingMachine(Operational, Initialized(inventory, prices))
+        else {
+          context.self ! VendingError("MachineNotInitialized")
+          Behaviors.same
+        }
       case RequestProduct(product) =>
         context.log.info(s"Vending machine receive request")
-        data.inventory().get(product) match {
-          case None | Some(0) =>
-            // sender() ! VendingError("ProductNotAvailable")
-            Behaviors.same
-          case Some(_) =>
-            val price = data.prices().get(product)
-            // sender() ! Instruction(s"Please insert $price dollars")
-            functionalVendingMachine(WaitingForMoney, WaitingForMoneyData(data.inventory(), data.prices(), Some(product), 0, None))
+        if (state == Operational) {
+          data.inventory().get(product) match {
+            case None | Some(0) =>
+              context.self ! VendingError("ProductNotAvailable")
+              Behaviors.same
+            case Some(_) =>
+              val price = data.prices().get(product)
+              context.self ! Instruction(s"Please insert $price dollars")
+              functionalVendingMachine(WaitingForMoney, WaitingForMoneyData(data.inventory(), data.prices(), Some(product), 0, None))
+          }
+        } else {
+          context.self ! VendingError("MachineNotInitialized")
+          Behaviors.same
         }
       case ReceiveMoney(amount) =>
         context.log.info(s"Vending machine received money")
-        val price = data.prices().get(data.product().get).getOrElse(0)
-        if (data.money() + amount >= price) {
-          // user buys product
-          data.requester().get ! Deliver(data.product().get)
-          // deliver the change
-          if (data.money() + amount - price > 0) data.requester().get ! GiveBackChange(data.money() + amount - price)
-          // updating inventory
-          val newStock = data.inventory()(data.product().get) - 1
-          val newInventory = data.inventory() + (data.product().get -> newStock)
-          functionalVendingMachine(Operational, Initialized(newInventory, data.prices()))
+        if (state == WaitingForMoney) {
+          val price = data.prices().get(data.product().get).getOrElse(0)
+          if (data.money() + amount >= price) {
+            // user buys product
+            context.self ! Deliver(data.product().get)
+            // deliver the change
+            if (data.money() + amount - price > 0) context.self ! GiveBackChange(data.money() + amount - price)
+            // updating inventory
+            val newStock = data.inventory()(data.product().get) - 1
+            val newInventory = data.inventory() + (data.product().get -> newStock)
+            functionalVendingMachine(Operational, Initialized(newInventory, data.prices()))
+          } else {
+            val remainingMoney = price - data.money() - amount
+            context.self ! Instruction(s"Please insert $remainingMoney dollars")
+            // Behaviors.same
+            functionalVendingMachine(WaitingForMoney,
+              WaitingForMoneyData(
+                data.inventory(), data.prices(), data.product(), // don't change
+                data.money() + amount, // user has inserted some money
+                data.requester())
+            )
+          }
         } else {
-          val remainingMoney = price - data.money() - amount
-          data.requester().get ! Instruction(s"Please insert $remainingMoney dollars")
-          // Behaviors.same
-          functionalVendingMachine(WaitingForMoney,
-            WaitingForMoneyData(
-              data.inventory(), data.prices(), data.product(), // don't change
-              data.money() + amount, // user has inserted some money
-              data.requester())
-          )
+          context.self ! VendingError("MachineNotInitialized")
+          Behaviors.same
         }
     }
   }
