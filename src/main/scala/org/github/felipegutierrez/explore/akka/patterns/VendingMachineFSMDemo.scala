@@ -1,6 +1,6 @@
 package org.github.felipegutierrez.explore.akka.patterns
 
-import akka.actor.{ActorRef, FSM}
+import akka.actor.{ActorRef, ActorSystem, FSM, Props}
 
 import scala.concurrent.duration._
 
@@ -10,6 +10,16 @@ object VendingMachineFSMDemo extends App {
 
   def run() = {
 
+    import VendingMachineFSMDemo.VendingMachineFSM._
+
+    val system = ActorSystem("VendingMachineFSMDemo")
+    val vendingMachineFSM = system.actorOf(Props[VendingMachineFSM])
+
+    vendingMachineFSM ! RequestProduct("coke")
+    vendingMachineFSM ! Initialize(Map("coke" -> 10), Map("coke" -> 3))
+    vendingMachineFSM ! RequestProduct("coke")
+    vendingMachineFSM ! ReceiveMoney(10)
+    vendingMachineFSM ! RequestProduct("coke")
   }
 
   object VendingMachineFSM {
