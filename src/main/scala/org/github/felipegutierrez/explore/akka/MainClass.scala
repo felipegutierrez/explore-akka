@@ -5,7 +5,7 @@ import java.util.Scanner
 import org.github.felipegutierrez.explore.akka.actors._
 import org.github.felipegutierrez.explore.akka.falttolerance._
 import org.github.felipegutierrez.explore.akka.infra._
-import org.github.felipegutierrez.explore.akka.patterns.{AskPatternDemo, StashDemo, VendingMachineDemo, VendingMachineFSMDemo}
+import org.github.felipegutierrez.explore.akka.patterns._
 import org.github.felipegutierrez.explore.akka.recap.{AdvancedPatternMatching, AdvancedRecap, BasicRecap, MultiThreadRecap}
 
 object MainClass extends App {
@@ -44,8 +44,13 @@ object MainClass extends App {
   println(s"31 - AskPatternDemo")
   println(s"32 - VendingMachineDemo")
   println(s"33 - VendingMachineFSMDemo")
-  println(s"34 - ")
+  println(s"34 - VendingMachineTypedDemo")
   println(s"35 - ")
+  println(s"36 - ")
+  println(s"37 - ")
+  println(s"38 - ")
+  println(s"39 - ")
+  println(s"40 - ")
 
   println("choose an application: ")
   val scanner = new Scanner(System.in)
@@ -87,6 +92,16 @@ object MainClass extends App {
     case "31" => AskPatternDemo.run()
     case "32" => VendingMachineDemo.run()
     case "33" => VendingMachineFSMDemo.run()
+    case "34" => VendingMachineTypedDemo.run()
+    case "35" => ???
+    case "36" => ???
+    case "37" => ???
+    case "38" => ???
+    case "39" => ???
+    case "40" => ???
+    case "41" => ???
+    case "42" => ???
+    case "43" => ???
     case _ => println("option unavailable.")
   }
 }
