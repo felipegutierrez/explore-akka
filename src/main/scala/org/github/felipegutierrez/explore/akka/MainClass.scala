@@ -6,7 +6,7 @@ import org.github.felipegutierrez.explore.akka.actors._
 import org.github.felipegutierrez.explore.akka.falttolerance._
 import org.github.felipegutierrez.explore.akka.infra._
 import org.github.felipegutierrez.explore.akka.patterns._
-import org.github.felipegutierrez.explore.akka.recap.{AdvancedPartialFunctions, AdvancedPatternMatching, AdvancedRecap, BasicRecap, MultiThreadRecap}
+import org.github.felipegutierrez.explore.akka.recap._
 
 object MainClass extends App {
   println(s"0 - out")
@@ -14,6 +14,7 @@ object MainClass extends App {
   println(s"2 - AdvancedRecap")
   println(s"2.1 - AdvancedPatternMatching")
   println(s"2.2 - AdvancedPartialFunctions")
+  println(s"2.3 - AdvancedFunctionalCollections")
   println(s"3 - MultiThreadRecap")
   println(s"4 - Simple actor")
   println(s"5 - ActorsIntro")
@@ -63,6 +64,7 @@ object MainClass extends App {
     case "2" => AdvancedRecap.run()
     case "2.1" => AdvancedPatternMatching.run()
     case "2.2" => AdvancedPartialFunctions.run()
+    case "2.3" => AdvancedFunctionalCollections.run()
     case "3" => MultiThreadRecap.run()
     case "4" => Playground.run()
     case "5" => ActorsIntro.run()
