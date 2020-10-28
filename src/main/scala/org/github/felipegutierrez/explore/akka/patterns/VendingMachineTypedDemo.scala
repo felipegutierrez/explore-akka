@@ -18,7 +18,7 @@ object VendingMachineTypedDemo extends App {
     functionalVendingMachineSystem ! ReceiveMoney(10)
     functionalVendingMachineSystem ! RequestProduct("coke")
 
-    Thread.sleep(2000)
+    Thread.sleep(5000)
     functionalVendingMachineSystem.terminate()
   }
 
