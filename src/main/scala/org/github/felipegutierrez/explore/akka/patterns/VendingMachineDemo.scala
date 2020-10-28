@@ -12,31 +12,39 @@ object VendingMachineDemo extends App {
   def run() = {
     import VendingMachine._
     val system = ActorSystem("VendingMachineDemo")
-    val vendingMachine = system.actorOf(Props[VendingMachine], "VendingMachine")
-    vendingMachine ! RequestProduct("coke")
-    vendingMachine ! Initialize(Map("coke" -> 10), Map("coke" -> 3))
-    vendingMachine ! RequestProduct("coke")
-    vendingMachine ! ReceiveMoney(10)
-    vendingMachine ! RequestProduct("coke")
+    val customer = system.actorOf(Props[Customer], "Customer")
+    customer ! RequestProduct("coke")
+    customer ! Initialize(Map("coke" -> 10), Map("coke" -> 3))
+    customer ! RequestProduct("coke")
+    customer ! "some unknown message"
+    customer ! ReceiveMoney(10)
+    customer ! RequestProduct("coke")
+
+    Thread.sleep(5000)
+    system.terminate()
+  }
+
+  class Customer extends Actor with ActorLogging {
+    protected val vendingMachineActor = context.actorOf(Props[VendingMachine], "VendingMachine")
+    import VendingMachine._
+    override def receive: Receive = {
+      case msg: OperationMessage => vendingMachineActor ! msg
+      case msg: ReplyMessage => log.info(s"reply message: ${msg.toString}")
+      case msg => log.info(s"something else: ${msg.toString}")
+    }
   }
 
   object VendingMachine {
-
-    case class Initialize(inventory: Map[String, Int], prices: Map[String, Int])
-
-    case class RequestProduct(product: String)
-
-    case class Instruction(instruction: String) // message the VM will show on its "screen"
-    case class ReceiveMoney(amount: Int)
-
-    case class Deliver(product: String)
-
-    case class GiveBackChange(amount: Int)
-
-    case class VendingError(reason: String)
-
-    case object ReceiveMoneyTimeout
-
+    trait OperationMessage
+    trait ReplyMessage
+    case class Initialize(inventory: Map[String, Int], prices: Map[String, Int]) extends OperationMessage
+    case class RequestProduct(product: String) extends OperationMessage
+    case class Instruction(instruction: String) extends ReplyMessage // message the VM will show on its "screen"
+    case class ReceiveMoney(amount: Int) extends OperationMessage
+    case class Deliver(product: String) extends ReplyMessage
+    case class GiveBackChange(amount: Int) extends ReplyMessage
+    case class VendingError(reason: String) extends ReplyMessage
+    case object ReceiveMoneyTimeout extends OperationMessage
   }
 
   class VendingMachine extends Actor with ActorLogging {

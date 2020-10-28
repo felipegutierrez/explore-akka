@@ -1,6 +1,6 @@
 package org.github.felipegutierrez.explore.akka.patterns
 
-import akka.actor.{ActorRef, ActorSystem, FSM, Props}
+import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, FSM, Props}
 
 import scala.concurrent.duration._
 
@@ -13,53 +13,53 @@ object VendingMachineFSMDemo extends App {
     import VendingMachineFSMDemo.VendingMachineFSM._
 
     val system = ActorSystem("VendingMachineFSMDemo")
-    val vendingMachineFSM = system.actorOf(Props[VendingMachineFSM])
 
-    vendingMachineFSM ! RequestProduct("coke")
-    vendingMachineFSM ! Initialize(Map("coke" -> 10), Map("coke" -> 3))
-    vendingMachineFSM ! RequestProduct("coke")
-    vendingMachineFSM ! ReceiveMoney(10)
-    vendingMachineFSM ! RequestProduct("coke")
+    val customer = system.actorOf(Props[Customer], "Customer")
+    customer ! RequestProduct("coke")
+    customer ! Initialize(Map("coke" -> 10), Map("coke" -> 3))
+    customer ! RequestProduct("coke")
+    customer ! "some unknown message"
+    customer ! ReceiveMoney(10)
+    customer ! RequestProduct("coke")
+
+    Thread.sleep(5000)
+    system.terminate()
+  }
+
+  class Customer extends Actor with ActorLogging {
+    protected val vendingMachineFSMActor = context.actorOf(Props[VendingMachineFSM], "VendingMachineFSM")
+    import VendingMachineFSM._
+    override def receive: Receive = {
+      case msg: OperationMessage => vendingMachineFSMActor ! msg
+      case msg: ReplyMessage => log.info(s"reply message: ${msg.toString}")
+      case msg => log.info(s"something else: ${msg.toString}")
+    }
   }
 
   object VendingMachineFSM {
-
+    trait OperationMessage
+    trait ReplyMessage
     // Step 1 - define state and data for the Finite State Machine Actor
     trait VendingState
-
     // the states are the receive methods of the old VendingMachine
     case object Idle extends VendingState
-
     case object Operational extends VendingState
-
     case object WaitingForMoney extends VendingState
-
     // the data are the properties of the receive methods of the old VendingMachine.
     // the WaitingForMoneyData does NOT need 'moneyTimeoutSchedule: Cancellable' because the FSM Actor implements it out of the box for us
-    trait VendingData
-
+    trait VendingData extends OperationMessage
     case object Uninitialized extends VendingData
-
     case class Initialized(inventory: Map[String, Int], prices: Map[String, Int]) extends VendingData
-
     case class WaitingForMoneyData(inventory: Map[String, Int], prices: Map[String, Int], product: String, money: Int, requester: ActorRef) extends VendingData
-
     // messages
-    case class Initialize(inventory: Map[String, Int], prices: Map[String, Int])
-
-    case class RequestProduct(product: String)
-
-    case class Instruction(instruction: String) // message the VM will show on its "screen"
-    case class ReceiveMoney(amount: Int)
-
-    case class Deliver(product: String)
-
-    case class GiveBackChange(amount: Int)
-
-    case class VendingError(reason: String)
-
-    case object ReceiveMoneyTimeout
-
+    case class Initialize(inventory: Map[String, Int], prices: Map[String, Int]) extends OperationMessage
+    case class RequestProduct(product: String) extends OperationMessage
+    case class Instruction(instruction: String) extends ReplyMessage // message the VM will show on its "screen"
+    case class ReceiveMoney(amount: Int) extends OperationMessage
+    case class Deliver(product: String) extends ReplyMessage
+    case class GiveBackChange(amount: Int) extends ReplyMessage
+    case class VendingError(reason: String) extends ReplyMessage
+    case object ReceiveMoneyTimeout extends OperationMessage
   }
 
   import VendingMachineFSM._
