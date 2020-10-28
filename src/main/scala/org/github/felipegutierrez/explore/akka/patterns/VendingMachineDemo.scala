@@ -12,7 +12,7 @@ object VendingMachineDemo extends App {
   def run() = {
     import VendingMachine._
     val system = ActorSystem("VendingMachineDemo")
-    val vendingMachine = system.actorOf(Props[VendingMachine])
+    val vendingMachine = system.actorOf(Props[VendingMachine], "VendingMachine")
     vendingMachine ! RequestProduct("coke")
     vendingMachine ! Initialize(Map("coke" -> 10), Map("coke" -> 3))
     vendingMachine ! RequestProduct("coke")
