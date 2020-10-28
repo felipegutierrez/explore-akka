@@ -1,7 +1,8 @@
 package org.github.felipegutierrez.explore.akka.recap
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.duration._
+import scala.concurrent.{Await, Future, Promise}
 import scala.util.{Failure, Random, Success, Try}
 
 object AdvancedFutures extends App {
@@ -84,6 +85,30 @@ object AdvancedFutures extends App {
       case Failure(exception) => exception.printStackTrace()
     }
     Thread.sleep(5000)
+
+    println()
+    println("with Await we dont need thread.sleep anymore and we can have a timeout for the future")
+    println(BankingApp.purchase("Daniel", "iPhone 12", "rock the jvm store", 3000))
+
+    println()
+    println("promises....")
+    val promise = Promise[Int]() // "controller" over a future
+    val consumerFuture = promise.future
+
+    // thread 1 - "consumer"
+    consumerFuture.onComplete {
+      case Success(r) => println("[consumerFuture] I've received " + r)
+    }
+
+    // thread 2 - "producer"
+    val producer = new Thread(() => {
+      println("[producer] crunching numbers...")
+      Thread.sleep(500)
+      // "fulfilling" the promise
+      promise.success(42)
+      println("[producer] done")
+    }).start()
+    Thread.sleep(1000)
   }
 
   class AdvancedFutures {
@@ -145,5 +170,35 @@ object AdvancedFutures extends App {
       Profile(bfId, names(bfId))
     }
   }
+
+  // online banking app
+  case class User(name: String)
+  case class Transaction(sender: String, receiver: String, amount: Double, status: String)
+
+  object BankingApp {
+    val name = "Rock the JVM banking"
+
+    def fetchUser(name: String): Future[User] = Future {
+      // simulate fetching from the DB
+      Thread.sleep(500)
+      User(name)
+    }
+
+    def createTransaction(user: User, merchantName: String, amount: Double): Future[Transaction] = Future {
+      // simulate some processes
+      Thread.sleep(1000)
+      Transaction(user.name, merchantName, amount, "SUCCESS")
+    }
+
+    def purchase(username: String, item: String, merchantName: String, cost: Double): String = {
+      val transactionStatusFuture = for {
+        user <- fetchUser(username) // fetch the user from the DB
+        transaction <- createTransaction(user, merchantName, cost) // create a transaction
+      } yield transaction.status
+      Await.result(transactionStatusFuture, 2.seconds) // WAIT for the transaction to finish
+    }
+  }
+
+
 
 }
