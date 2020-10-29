@@ -109,6 +109,31 @@ object AdvancedFutures extends App {
       println("[producer] done")
     }).start()
     Thread.sleep(1000)
+
+    println()
+    val fast = Future {
+      Thread.sleep(100)
+      42
+    }
+
+    val slow = Future {
+      Thread.sleep(200)
+      45
+    }
+    advancedFutures.alwaysFutureFirstFinished(fast, slow).foreach(f => println("FIRST: " + f))
+    advancedFutures.alwaysFutureLastFinished(fast, slow).foreach(l => println("LAST: " + l))
+
+    Thread.sleep(1000)
+
+    val random = new Random()
+    val action = () => Future {
+      Thread.sleep(100)
+      val nextValue = random.nextInt(100)
+      println("generated " + nextValue)
+      nextValue
+    }
+    advancedFutures.retryUntil(action, (x: Int) =>  x < 10).foreach(result => println("settled at " + result))
+    Thread.sleep(10000)
   }
 
   class AdvancedFutures {
@@ -136,6 +161,60 @@ object AdvancedFutures extends App {
       Thread.sleep(2000)
       42
     }
+
+    // insequence
+    def inSequence[A, B](first: Future[A], second: Future[B]): Future[B] = first.flatMap(_ => second)
+
+    def alwaysFutureFirstFinished[A](future1: Future[A], future2: Future[A]): Future[A] = {
+
+      def tryComplete(promise: Promise[A], result: Try[A]) = result match {
+        case Success(value) => try {
+          promise.success(value)
+        } catch {
+          case _ =>
+        }
+        case Failure(exception) => try {
+          promise.failure(exception)
+        } catch {
+          case _ =>
+        }
+      }
+
+      val promise = Promise[A]
+      future1.onComplete(tryComplete(promise, _))
+      future2.onComplete(tryComplete(promise, _))
+
+      // or use the promise.tryComplete method
+      // future1.onComplete(promise.tryComplete)
+      // future2.onComplete(promise.tryComplete)
+      promise.future
+    }
+
+    // 4 - last out of the two futures
+    def alwaysFutureLastFinished[A](fa: Future[A], fb: Future[A]): Future[A] = {
+      // 1 promise which both futures will try to complete
+      // 2 promise which the LAST future will complete
+      val bothPromise = Promise[A]
+      val lastPromise = Promise[A]
+      val checkAndComplete = (result: Try[A]) =>
+        if (!bothPromise.tryComplete(result))
+          lastPromise.complete(result)
+
+      fa.onComplete(checkAndComplete)
+      fb.onComplete(checkAndComplete)
+
+      lastPromise.future
+    }
+
+    // retry until
+    def retryUntil[A](action: () => Future[A], condition: A => Boolean): Future[A] =
+      action()
+        .filter(condition)
+        .recoverWith {
+          case _ => retryUntil(action, condition)
+        }
+
+
   }
 
   // mini social network
@@ -169,10 +248,24 @@ object AdvancedFutures extends App {
       val bfId = friends(profile.id)
       Profile(bfId, names(bfId))
     }
+
+    def fetchProfileNoMatterWhat(id: String): Future[Profile] = {
+      val aProfileNoMatterWhat: Future[Profile] = SocialNetwork.fetchProfile(id).recover {
+        case e: Throwable => Profile("fb.id.0-dummy", "Forever alone")
+      }
+      aProfileNoMatterWhat
+    }
+
+    def fetchProfileOrElse(id: String, idOrElse: String): Future[Profile] = {
+      val fallbackResult: Future[Profile] = SocialNetwork.fetchProfile(id)
+        .fallbackTo(SocialNetwork.fetchProfile(idOrElse))
+      fallbackResult
+    }
   }
 
   // online banking app
   case class User(name: String)
+
   case class Transaction(sender: String, receiver: String, amount: Double, status: String)
 
   object BankingApp {
@@ -198,7 +291,6 @@ object AdvancedFutures extends App {
       Await.result(transactionStatusFuture, 2.seconds) // WAIT for the transaction to finish
     }
   }
-
 
 
 }
