@@ -2,6 +2,7 @@ package org.github.felipegutierrez.explore.akka.recap
 
 import org.scalatest.flatspec.AnyFlatSpec
 
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{Await, Future}

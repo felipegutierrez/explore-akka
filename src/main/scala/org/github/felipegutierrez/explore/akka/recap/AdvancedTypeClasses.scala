@@ -32,6 +32,27 @@ object AdvancedTypeClasses extends App {
     val anotherJohn = User("John", 32, "another_john@rockthejvm.com")
 
     println(Equal.apply(john, anotherJohn))
+
+    println(new HTMLEnrichment[User](john).toHTML(UserSerializer))
+    println(john.toHTML(UserSerializer))
+    println(john.toHTML)
+
+    /*
+    john.===(anotherJohn)
+    new TypeSafeEqual[User](john).===(anotherJohn)
+    new TypeSafeEqual[User](john).===(anotherJohn)(NameEquality)
+   */
+    println(s"john === anotherJohn: ${john === anotherJohn}")
+    println(s"john !== anotherJohn: ${john !== anotherJohn}")
+    println(john == 43)
+    // println(john === 43) // TYPE SAFE
+
+    // implicitly
+    case class Permissions(mask: String)
+    implicit val defaultPermissions: Permissions = Permissions("0744")
+
+    // in some other part of the  code
+    val standardPerms = implicitly[Permissions]
   }
 
   trait HTMLWritable {
@@ -86,6 +107,12 @@ object AdvancedTypeClasses extends App {
     override def equal(value1: User, value2: User): Boolean = value1.email == value2.email
   }
 
+  implicit class TypeSafeEqual[T](value: T) {
+    def ===(anotherValue: T)(implicit equalizer: Equal[T]): Boolean = equalizer.equal(value, anotherValue)
+
+    def !==(anotherValue: T)(implicit equalizer: Equal[T]): Boolean = !equalizer.equal(value, anotherValue)
+  }
+
   // defining implicit serializers
   object HTMLSerializer {
     def serialize[T](value: T)(implicit serializer: HTMLSerializer[T]): String =
@@ -98,5 +125,10 @@ object AdvancedTypeClasses extends App {
     def apply[T](value1: T, value2: T)(implicit equalizer: Equal[T]): Boolean =
       equalizer.equal(value1, value2)
   }
+
+  implicit class HTMLEnrichment[T](value: T) {
+    def toHTML(implicit serializer: HTMLSerializer[T]): String = serializer.serialize(value)
+  }
+
 
 }
