@@ -41,7 +41,7 @@ class TimeAssertionsSpec
     }
     "reply to a test probe in a timely manner" in {
       // timeout of 0.5 seconds from the special config, and it overwrites the the within(1 second)
-      within(1 second) {
+      within(2 second) {
         val probe = TestProbe()
         probe.send(workerActor, "work")
         // this fails
