@@ -12,6 +12,8 @@ lazy val akkaGrpcVersion = "1.0.2"
 
 enablePlugins(AkkaGrpcPlugin)
 
+akkaGrpcGeneratedLanguages := Seq(AkkaGrpc.Java)
+
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
   "com.typesafe.akka" %% "akka-testkit" % akkaVersion,
@@ -26,7 +28,8 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % Test,
   "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
   "ch.qos.logback" % "logback-classic" % logbackVersion,
-  "org.scalatest" %% "scalatest" % scalaTestVersion
+  "org.scalatest" %% "scalatest" % scalaTestVersion,
+  "junit" % "junit" % "4.13" % Test,
 )
 
 mainClass in Compile := Some("org.github.felipegutierrez.explore.akka.MainClass")
