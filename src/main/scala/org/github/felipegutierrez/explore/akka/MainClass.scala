@@ -7,7 +7,7 @@ import org.github.felipegutierrez.explore.akka.falttolerance._
 import org.github.felipegutierrez.explore.akka.infra._
 import org.github.felipegutierrez.explore.akka.patterns._
 import org.github.felipegutierrez.explore.akka.recap._
-import org.github.felipegutierrez.explore.akka.remote.ClusteringPlayground
+import org.github.felipegutierrez.explore.akka.remote.{ClusteringPlayground, LocalActor, RemoteActor}
 
 object MainClass extends App {
   println(s"0 - out")
@@ -60,7 +60,7 @@ object MainClass extends App {
   println(s"33 - VendingMachineFSMDemo using Akka Finite State Machine")
   println(s"34 - VendingMachineTypedDemo using Akka typed")
   println(s"35 - ClusteringPlayground")
-  println(s"36 - ")
+  println(s"36 - RemoteActor and LocalActor communicating")
   println(s"37 - ")
   println(s"38 - ")
   println(s"39 - ")
@@ -121,7 +121,10 @@ object MainClass extends App {
     case "33" => VendingMachineFSMDemo.run()
     case "34" => VendingMachineTypedDemo.run()
     case "35" => ClusteringPlayground.run()
-    case "36" => ???
+    case "36" =>
+      RemoteActor.run()
+      Thread.sleep(1000)
+      LocalActor.run()
     case "37" => ???
     case "38" => ???
     case "39" => ???
