@@ -8,6 +8,7 @@ import org.github.felipegutierrez.explore.akka.infra._
 import org.github.felipegutierrez.explore.akka.patterns._
 import org.github.felipegutierrez.explore.akka.recap._
 import org.github.felipegutierrez.explore.akka.remote._
+import org.github.felipegutierrez.explore.akka.remote.deployment.{LocalDeployment, RemoteDeployment}
 import org.github.felipegutierrez.explore.akka.remote.hello.{LocalActor, RemoteActor}
 import org.github.felipegutierrez.explore.akka.remote.wordcount.{MasterApp, WorkerApp}
 
@@ -64,7 +65,7 @@ object MainClass extends App {
   println(s"35 - ClusteringPlayground")
   println(s"36 - RemoteActor and LocalActor communicating")
   println(s"37 - RemoteActorWordCount master and 5 workers")
-  println(s"38 - ")
+  println(s"38 - RemoteDeployment and LocalDeployment of Actors")
   println(s"39 - ")
   println(s"40 - ")
 
@@ -131,7 +132,10 @@ object MainClass extends App {
       WorkerApp.run()
       Thread.sleep(2000)
       MasterApp.run()
-    case "38" => ???
+    case "38" =>
+      RemoteDeployment.run()
+      Thread.sleep(2000)
+      LocalDeployment.run()
     case "39" => ???
     case "40" => ???
     case "41" => ???
