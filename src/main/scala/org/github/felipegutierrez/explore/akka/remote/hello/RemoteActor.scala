@@ -1,4 +1,4 @@
-package org.github.felipegutierrez.explore.akka.remote
+package org.github.felipegutierrez.explore.akka.remote.hello
 
 import akka.actor.{ActorSystem, Props}
 import com.typesafe.config.ConfigFactory

@@ -1,4 +1,4 @@
-package org.github.felipegutierrez.explore.akka.remote
+package org.github.felipegutierrez.explore.akka.remote.hello
 
 import akka.actor.{Actor, ActorIdentity, ActorLogging, ActorRef, ActorSystem, Identify, Props}
 import akka.util.Timeout
@@ -45,5 +45,5 @@ object LocalActor extends App {
       case ActorIdentity(42, Some(actorRef)) => actorRef ! "thank you for identifying yourself :-)"
     }
   }
-}
 
+}

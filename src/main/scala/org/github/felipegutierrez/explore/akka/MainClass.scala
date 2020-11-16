@@ -8,6 +8,8 @@ import org.github.felipegutierrez.explore.akka.infra._
 import org.github.felipegutierrez.explore.akka.patterns._
 import org.github.felipegutierrez.explore.akka.recap._
 import org.github.felipegutierrez.explore.akka.remote._
+import org.github.felipegutierrez.explore.akka.remote.hello.{LocalActor, RemoteActor}
+import org.github.felipegutierrez.explore.akka.remote.wordcount.{MasterApp, WorkerApp}
 
 object MainClass extends App {
   println(s"0 - out")

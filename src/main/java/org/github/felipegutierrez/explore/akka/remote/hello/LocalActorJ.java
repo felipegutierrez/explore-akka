@@ -1,4 +1,4 @@
-package org.github.felipegutierrez.explore.akka.remote;
+package org.github.felipegutierrez.explore.akka.remote.hello;
 
 import akka.actor.*;
 import com.typesafe.config.ConfigFactory;
@@ -38,7 +38,7 @@ public class LocalActorJ {
         final Integer identifyId = 42;
 
         static Props props() {
-            return Props.create(ActorResolverJ.class, () -> new ActorResolverJ());
+            return Props.create(ActorResolverJ.class);
         }
 
         @Override
@@ -48,7 +48,6 @@ public class LocalActorJ {
         }
 
         public Receive createReceive() {
-            // case ActorIdentity(42, Some(actorRef)) => actorRef ! "thank you for identifying yourself :-)"
             return receiveBuilder().match(
                     ActorIdentity.class,
                     id -> id.getActorRef() != null, // id -> id.getActorRef().isPresent(),

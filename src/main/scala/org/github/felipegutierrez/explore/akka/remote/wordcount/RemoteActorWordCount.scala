@@ -1,4 +1,4 @@
-package org.github.felipegutierrez.explore.akka.remote
+package org.github.felipegutierrez.explore.akka.remote.wordcount
 
 import akka.actor.{Actor, ActorIdentity, ActorLogging, ActorRef, ActorSystem, Identify, PoisonPill, Props}
 import com.typesafe.config.ConfigFactory
@@ -36,7 +36,6 @@ class WordCountMaster extends Actor with ActorLogging {
   override def receive: Receive = {
     case Initialize(nWorkers) =>
       log.info("WordCountMaster initializing...")
-
       /** identify the workers in the remote JVM */
       // 1 - create actor selections for every worker from 1 to nWorkers
       val remoteWorkerSelections = (1 to nWorkers).map(id => context.system.actorSelection(s"akka://WorkersSystem@localhost:2552/user/wordCountWorker$id"))
