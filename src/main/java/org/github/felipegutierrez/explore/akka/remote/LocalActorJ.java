@@ -10,11 +10,11 @@ public class LocalActorJ {
     public LocalActorJ() {
         final ActorSystem localSystem = ActorSystem.create("LocalSystem", ConfigFactory.load("remote/remoteActors.conf"));
         ActorRef localSimpleActor = localSystem.actorOf(SimpleActorJ.props(), "localSimpleActor");
-        localSimpleActor.tell("Hello from LOCAL SimpleActorJ", localSimpleActor);
+        localSimpleActor.tell(new SimpleMessage("Hello from LOCAL SimpleActorJ"), localSimpleActor);
 
         /** 1 - send a message to the REMOTE simple actor using actor selection */
         ActorSelection remoteActorSelection = localSystem.actorSelection("akka://RemoteSystem@localhost:2552/user/remoteSimpleActorJ");
-        remoteActorSelection.tell("Hello from the \"LOCAL\" JVM", localSimpleActor);
+        remoteActorSelection.tell(new SimpleMessage("Hello from the \"LOCAL\" JVM"), localSimpleActor);
 
         /** 2 - using actor ref */
         CompletionStage<ActorRef> remoteActorRefFuture = remoteActorSelection.resolveOne(Duration.ofSeconds(3));
@@ -22,7 +22,7 @@ public class LocalActorJ {
             if (exception != null) {
                 System.out.println("failed because: " + exception);
             } else {
-                actorRef.tell("Hello message from a FUTURE Actor Ref =)", actorRef);
+                actorRef.tell(new SimpleMessage("Hello message from a FUTURE Actor Ref =)"), actorRef);
             }
         });
 
@@ -34,7 +34,7 @@ public class LocalActorJ {
         new LocalActorJ();
     }
 
-    private static class ActorResolverJ extends AbstractActor {
+    private static class ActorResolverJ extends AbstractLoggingActor {
         final Integer identifyId = 42;
 
         static Props props() {
@@ -54,7 +54,7 @@ public class LocalActorJ {
                     id -> id.getActorRef() != null, // id -> id.getActorRef().isPresent(),
                     id -> {
                         ActorRef actorRef = id.getActorRef().get();
-                        actorRef.tell("thank you for identifying yourself :-)", actorRef);
+                        actorRef.tell(new SimpleMessage("thank you for identifying yourself :-)"), actorRef);
                     }).build();
         }
     }

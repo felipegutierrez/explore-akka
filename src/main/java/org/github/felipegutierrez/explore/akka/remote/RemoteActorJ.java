@@ -8,7 +8,7 @@ public class RemoteActorJ {
     public RemoteActorJ() {
         final ActorSystem remoteSystem = ActorSystem.create("RemoteSystem", ConfigFactory.load("remote/remoteActors.conf").getConfig("remoteSystem"));
         ActorRef remoteSimpleActor = remoteSystem.actorOf(SimpleActorJ.props(), "remoteSimpleActorJ");
-        remoteSimpleActor.tell("Hello from REMOTE SimpleActorJ", remoteSimpleActor);
+        remoteSimpleActor.tell(new SimpleMessage("Hello from REMOTE SimpleActorJ"), remoteSimpleActor);
     }
 
     public static void main(String[] args) {
