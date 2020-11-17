@@ -4,27 +4,80 @@ import akka.actor.*;
 import akka.remote.RemoteScope;
 import com.typesafe.config.ConfigFactory;
 
-public class AdComOperator {
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
-    public AdComOperator(int nAdComPhysicalOperators) {
+public class AdComOperator {
+    private final int MIN_POLL = 0;
+    private final int MAX_POLL = 100;
+    private final int MIN_THROUGHPUT = 0;
+    private final int MAX_THROUGHPUT = 10000;
+
+    private final List<ActorRef> monitorActors = new ArrayList<ActorRef>();
+    private final List<Cancellable> monitorActorCancellables = new ArrayList<Cancellable>();
+
+    public AdComOperator(int nAdComPhysicalOperators) throws InterruptedException {
         final ActorSystem localSystem = ActorSystem.create("TaskManagerActorSystem",
                 ConfigFactory.load("remote/controller.conf").getConfig("adcomApp"));
+
+        // ID of the global monitor
+        int globalID = ThreadLocalRandom.current().nextInt(1, 100001);
 
         /** Remote deployment programmatically on the JobManager that handles the PIController */
         Address remoteSystemAddress = AddressFromURIString.parse("akka://JobManagerActorSystem@localhost:2552");
         Deploy deploy = new Deploy(new RemoteScope(remoteSystemAddress));
-        ActorRef remotelyDeployedActor = localSystem.actorOf(AdComMonitorSignals.props().withDeploy(deploy));
 
-        remotelyDeployedActor.tell("Hi remotely deployed actor programmatically!", remotelyDeployedActor);
+        for (int i = 1; i <= nAdComPhysicalOperators; i++) {
+            ActorRef remotelyDeployedActor = localSystem.actorOf(AdComMonitorSignals.props().withDeploy(deploy), "remotelyDeployedActor" + i);
+            monitorActors.add(remotelyDeployedActor);
+            remotelyDeployedActor.tell("Hi [" + i + "] remotely deployed actor programmatically!", remotelyDeployedActor);
+
+            // create only one global monitor actor
+            if (i == 1) {
+                remotelyDeployedActor.tell(new MessageCreateGlobalMonitorSignals(globalID), remotelyDeployedActor);
+            }
+
+            Cancellable cancellable = localSystem.scheduler()
+                    .scheduleWithFixedDelay(
+                            Duration.ZERO,
+                            Duration.ofSeconds(2),
+                            remotelyDeployedActor,
+                            collectSignals(),
+                            localSystem.dispatcher(),
+                            remotelyDeployedActor);
+            monitorActorCancellables.add(cancellable);
+        }
 
 
+        // Thread.sleep(2000);
+        // for (ActorRef monitor : monitorActors) {
+        // monitor.tell(PoisonPill.getInstance(), monitor);
+        // org.github.felipegutierrez.explore.akka.remote.controller.MessageSignals
+        // system.actorSelection("akka://RemoteActorSystem@localhost:2552/remote/akka/LocalActorSystem@localhost:2551/user/watcher/remoteChild") ! PoisonPill
+        // }
+        // for (ActorRef monitor : monitorActors) {
+        // monitor.tell("hi again. but this should not be send", monitor);
+        // }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         new AdComOperator(3);
     }
 
     private Object collectSignals() {
-        return new MessageSignals(50, 75, 10000, 4000);
+        int outPollAvg = ThreadLocalRandom.current().nextInt(MIN_POLL, MAX_POLL + 1);
+        int outPoll75Qt = ThreadLocalRandom.current().nextInt(MIN_POLL, MAX_POLL + 1);
+        int throughputIn = ThreadLocalRandom.current().nextInt(MIN_THROUGHPUT, MAX_THROUGHPUT + 1);
+        int throughputOut = ThreadLocalRandom.current().nextInt(MIN_THROUGHPUT, MAX_THROUGHPUT + 1);
+        return new MessageSignals(outPollAvg, outPoll75Qt, throughputIn, throughputOut);
+    }
+
+    private void cancelSchedulers() {
+        /** This cancels further MessageSignals to be sent */
+        for (Cancellable cancellable : monitorActorCancellables) {
+            cancellable.cancel();
+        }
     }
 }

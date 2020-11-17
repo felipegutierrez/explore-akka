@@ -14,4 +14,14 @@ public class MessageSignals implements Serializable {
         this.throughputIn = throughputIn;
         this.throughputOut = throughputOut;
     }
+
+    @Override
+    public String toString() {
+        return "MessageSignals{" +
+                "outPollAvg=" + outPollAvg +
+                ", outPoll75Qt=" + outPoll75Qt +
+                ", throughputIn=" + throughputIn +
+                ", throughputOut=" + throughputOut +
+                '}';
+    }
 }
