@@ -17,19 +17,19 @@ public class MasterAppJ {
         Config config = ConfigFactory.parseString("akka.remote.artery.canonical.port = 2551")
                 .withFallback(ConfigFactory.load("remote/remoteActorsWordCount.conf"));
         ActorSystem system = ActorSystem.create("MasterSystem", config);
-        ActorRef master = system.actorOf(WordCountMasterJ.props(), "WordCountMaster");
+        ActorRef master = system.actorOf(WordCountMasterJ.props(), "wordCountMaster");
 
         master.tell(new Initialize(5), master);
         Thread.sleep(2000);
 
-//        InputStream inputStream = getFileFromResourceAsStream("txt/hamlet.txt");
-//
-//        InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-//        BufferedReader reader = new BufferedReader(streamReader);
-//        for (String line; (line = reader.readLine()) != null; ) {
-//            // Process line
-//            master.tell(line, ActorRef.noSender());
-//        }
+        InputStream inputStream = getFileFromResourceAsStream("txt/hamlet.txt");
+
+        InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+        BufferedReader reader = new BufferedReader(streamReader);
+        for (String line; (line = reader.readLine()) != null; ) {
+            // Process line
+            master.tell(line, ActorRef.noSender());
+        }
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {

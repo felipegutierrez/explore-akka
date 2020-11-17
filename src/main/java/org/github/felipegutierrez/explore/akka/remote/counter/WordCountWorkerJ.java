@@ -13,11 +13,13 @@ public class WordCountWorkerJ extends AbstractLoggingActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(ActorIdentity.class, id -> {
-                    log().info("received ActorIdentity message: " + id.correlationId());
-                    ActorRef actorRef = id.getActorRef().get();
-                    actorRef.tell("thank you for identifying yourself work actor: " + actorRef, ActorRef.noSender());
-                })
+                .match(ActorIdentity.class,
+                        id -> id.getActorRef().isPresent(),
+                        id -> {
+                            log().info("received ActorIdentity message: " + id.correlationId());
+                            ActorRef actorRef = id.getActorRef().get();
+                            actorRef.tell("thank you for identifying yourself work actor: " + actorRef, ActorRef.noSender());
+                        })
                 // .match(ActorIdentity.class, this::onIdentity) // id -> id.getActorRef() != null
                 .match(WordCountTask.class, this::onTask)
                 .build();
