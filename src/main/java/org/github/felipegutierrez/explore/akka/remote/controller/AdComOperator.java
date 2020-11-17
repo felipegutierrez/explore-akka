@@ -16,7 +16,7 @@ public class AdComOperator {
     private final int MAX_THROUGHPUT = 10000;
 
     private final List<ActorRef> monitorActors = new ArrayList<ActorRef>();
-    private final List<Cancellable> monitorActorCancellables = new ArrayList<Cancellable>();
+    private final List<Cancellable> monitorActorCancellers = new ArrayList<Cancellable>();
 
     public AdComOperator(int nAdComPhysicalOperators) throws InterruptedException {
         final ActorSystem localSystem = ActorSystem.create("TaskManagerActorSystem",
@@ -35,9 +35,8 @@ public class AdComOperator {
             remotelyDeployedActor.tell("Hi [" + i + "] remotely deployed actor programmatically!", remotelyDeployedActor);
 
             // create only one global monitor actor
-            if (i == 1) {
-                remotelyDeployedActor.tell(new MessageCreateGlobalMonitorSignals(globalID), remotelyDeployedActor);
-            }
+            remotelyDeployedActor.tell(new MessageCreateGlobalMonitorSignals(globalID), remotelyDeployedActor);
+            Thread.sleep(1000);
 
             Cancellable cancellable = localSystem.scheduler()
                     .scheduleWithFixedDelay(
@@ -47,19 +46,8 @@ public class AdComOperator {
                             collectSignals(),
                             localSystem.dispatcher(),
                             remotelyDeployedActor);
-            monitorActorCancellables.add(cancellable);
+            monitorActorCancellers.add(cancellable);
         }
-
-
-        // Thread.sleep(2000);
-        // for (ActorRef monitor : monitorActors) {
-        // monitor.tell(PoisonPill.getInstance(), monitor);
-        // org.github.felipegutierrez.explore.akka.remote.controller.MessageSignals
-        // system.actorSelection("akka://RemoteActorSystem@localhost:2552/remote/akka/LocalActorSystem@localhost:2551/user/watcher/remoteChild") ! PoisonPill
-        // }
-        // for (ActorRef monitor : monitorActors) {
-        // monitor.tell("hi again. but this should not be send", monitor);
-        // }
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -76,7 +64,7 @@ public class AdComOperator {
 
     private void cancelSchedulers() {
         /** This cancels further MessageSignals to be sent */
-        for (Cancellable cancellable : monitorActorCancellables) {
+        for (Cancellable cancellable : monitorActorCancellers) {
             cancellable.cancel();
         }
     }

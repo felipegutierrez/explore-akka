@@ -1,9 +1,6 @@
 package org.github.felipegutierrez.explore.akka.remote.controller;
 
-import akka.actor.AbstractLoggingActor;
-import akka.actor.ActorRef;
-import akka.actor.Props;
-import akka.actor.Terminated;
+import akka.actor.*;
 
 import java.time.Duration;
 import java.util.concurrent.CompletionStage;
@@ -23,15 +20,22 @@ public class AdComMonitorSignals extends AbstractLoggingActor {
                 .match(String.class, this::onString)
                 .match(MessageCreateGlobalMonitorSignals.class, this::createGlobalMonitorSignals)
                 .match(MessageSignals.class, this::receiveMessageSignals)
+                .match(MessageParameter.class, this::listenNewParameter)
                 .match(Terminated.class, t -> {
                     log().info("Terminated actor: " + t.actor());
                 })
                 .build();
     }
 
+    private void listenNewParameter(MessageParameter message) {
+        log().info("new parameter: " + message + " applied to [" + getSelf() + "] from " + getSender());
+    }
+
     private void receiveMessageSignals(MessageSignals messageSignals) {
         log().info("Received message signals: " + messageSignals.toString() + " from " + sender());
         System.out.println("let's sent to : " + globalMonitor);
+
+        globalMonitor.tell(new MessageGlobalSignal(messageSignals), getSelf());
     }
 
     private void onString(String message) {
@@ -39,34 +43,38 @@ public class AdComMonitorSignals extends AbstractLoggingActor {
     }
 
     private void createGlobalMonitorSignals(MessageCreateGlobalMonitorSignals message) throws InterruptedException {
+        /** handle message to create only one global actor */
         System.out.println("received create message: " + message.globalID);
-        // ActorRef remotelyDeployedActor = localSystem.actorOf(AdComMonitorSignals.props().withDeploy(deploy), "remotelyDeployedActor" + i);
-        // PIControllerMonitorSignals
-
-
         CompletionStage<ActorRef> globalMonitorAttempt = getContext()
-                .actorSelection("akka://JobManagerActorSystem/remote/akka/TaskManagerActorSystem@localhost:2551/user/remotelyDeployedActor*/globalMonitor" + message.globalID)
+                .actorSelection("akka://JobManagerActorSystem/remote/akka/TaskManagerActorSystem@localhost:2551/user/remotelyDeployedActor1/globalMonitor" + message.globalID)
                 .resolveOne(Duration.ofMillis(1000));
         globalMonitorAttempt.whenComplete((actorRef, exception) -> {
             try {
                 if (exception != null) {
                     globalMonitor = getContext()
                             .actorOf(PIControllerMonitorSignals.props(), "globalMonitor" + message.globalID);
+
+                    Cancellable cancellable = getContext().system()
+                            .scheduler()
+                            .scheduleWithFixedDelay(
+                                    Duration.ofSeconds(2),
+                                    Duration.ofSeconds(10),
+                                    globalMonitor,
+                                    new MessageTrigger(),
+                                    getContext().dispatcher(),
+                                    globalMonitor);
+
                 } else {
                     globalMonitor = getContext()
-                            .actorSelection("akka://JobManagerActorSystem/remote/akka/TaskManagerActorSystem@localhost:2551/user/remotelyDeployedActor*/globalMonitor" + message.globalID)
+                            .actorSelection("akka://JobManagerActorSystem/remote/akka/TaskManagerActorSystem@localhost:2551/user/remotelyDeployedActor1/globalMonitor" + message.globalID)
                             .resolveOne(Duration.ofMillis(1000))
                             .toCompletableFuture()
                             .get();
                 }
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
-                e.printStackTrace();
             }
         });
-
-        Thread.sleep(2000);
-        System.out.println("print globalMonitor");
-        System.out.println(globalMonitor);
+        Thread.sleep(1000);
     }
 }
