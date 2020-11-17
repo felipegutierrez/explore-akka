@@ -1,6 +1,7 @@
 package org.github.felipegutierrez.explore.akka.remote.wordcount
 
 import akka.actor.{Actor, ActorIdentity, ActorLogging, ActorRef, ActorSystem, Identify, PoisonPill, Props}
+import akka.routing.FromConfig
 import com.typesafe.config.ConfigFactory
 
 object WordCountDomain {
@@ -33,16 +34,47 @@ class WordCountMaster extends Actor with ActorLogging {
 
   import WordCountDomain._
 
-  override def receive: Receive = {
+  val workerRouter = context.actorOf(FromConfig.props(Props[WordCountWorker]), "workerRouter")
+
+  override def receive: Receive = onlineWithRouter(0, 0)
+
+  def onlineWithRouter(remainingTasks: Int, totalCount: Int): Receive = {
+    case text: String =>
+      // split into sentences
+      val sentences = text.split("\\. ")
+      // send sentences to worker in turn
+      sentences.foreach(sentence => workerRouter ! WordCountTask(sentence))
+      context.become(onlineWithRouter(remainingTasks + sentences.length, totalCount))
+    case WordCountResult(count) =>
+      if (remainingTasks == 1) {
+        log.info(s"TOTAL RESULT: ${totalCount + count}")
+        context.stop(self)
+      } else {
+        context.become(onlineWithRouter(remainingTasks - 1, totalCount + count))
+      }
+  }
+
+  /** @deprecated because we are using routers */
+  def receiveOld: Receive = {
     case Initialize(nWorkers) =>
-      log.info("WordCountMaster initializing...")
-      /** identify the workers in the remote JVM */
-      // 1 - create actor selections for every worker from 1 to nWorkers
-      val remoteWorkerSelections = (1 to nWorkers).map(id => context.system.actorSelection(s"akka://WorkersSystem@localhost:2552/user/wordCountWorker$id"))
-      // 2 - send Identify messages to the actor selections
-      remoteWorkerSelections.foreach(actorRef => actorRef ! Identify("word_count_identity"))
-      // 3 - get into an initialization state, while you are receiving ActorIdentities
-      context.become(initializing(List(), nWorkers))
+
+      /** deploying the workers REMOTELY on the worker App using "/wordCountMaster/" at remoteActorsWordCount.conf */
+      val workers = (1 to nWorkers).map(id => context.actorOf(Props[WordCountWorker], s"wordCountWorker$id"))
+      context.become(online(workers.toList, 0, 0))
+  }
+
+  /**
+   * @deprecated because we are not using Selection but deploying the workers remotely using the Initialize case.
+   */
+  def identifyWorkers(nWorkers: Int) = {
+    log.info("WordCountMaster initializing...")
+    /** identify the workers in the remote JVM */
+    // 1 - create actor selections for every worker from 1 to nWorkers
+    val remoteWorkerSelections = (1 to nWorkers).map(id => context.system.actorSelection(s"akka://WorkersSystem@localhost:2552/user/wordCountWorker$id"))
+    // 2 - send Identify messages to the actor selections
+    remoteWorkerSelections.foreach(actorRef => actorRef ! Identify("word_count_identity"))
+    // 3 - get into an initialization state, while you are receiving ActorIdentities
+    context.become(initializing(List(), nWorkers))
   }
 
   def initializing(workers: List[ActorRef], remainingWorkers: Int): Receive = {
@@ -52,6 +84,7 @@ class WordCountMaster extends Actor with ActorLogging {
       else context.become(initializing(workerRef :: workers, remainingWorkers - 1))
   }
 
+  /** @deprecated because we are using routers at onlineWithRouter() */
   def online(workers: List[ActorRef], remainingTasks: Int, totalCount: Int): Receive = {
     case text: String =>
       // split into sentences
@@ -85,7 +118,7 @@ object MasterApp extends App {
       """.stripMargin)
       .withFallback(ConfigFactory.load("remote/remoteActorsWordCount.conf"))
     val system = ActorSystem("MasterSystem", config)
-    val master = system.actorOf(Props[WordCountMaster], "WordCountMaster")
+    val master = system.actorOf(Props[WordCountMaster], "wordCountMaster")
     master ! Initialize(5)
     Thread.sleep(1000)
 
@@ -106,6 +139,7 @@ object WorkerApp extends App {
       """.stripMargin)
       .withFallback(ConfigFactory.load("remote/remoteActorsWordCount.conf"))
     val system = ActorSystem("WorkersSystem", config)
-    (1 to 5).map(i => system.actorOf(Props[WordCountWorker], s"wordCountWorker$i"))
+    // deploying the worker REMOTELY and not creating then from the WorkerApp
+    // (1 to 5).map(i => system.actorOf(Props[WordCountWorker], s"wordCountWorker$i"))
   }
 }
