@@ -1,17 +1,17 @@
-package org.github.felipegutierrez.explore.akka.remote.hello;
+package org.github.felipegutierrez.explore.akka.remote.controller;
 
 import akka.actor.AbstractLoggingActor;
 import akka.actor.Props;
 
-public class SimpleActorJ extends AbstractLoggingActor {
+public class AdComMonitorSignals extends AbstractLoggingActor {
 
     public static Props props() {
-        return Props.create(SimpleActorJ.class);
+        return Props.create(AdComMonitorSignals.class);
     }
 
+    @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(SimpleMessage.class, this::onMessage)
                 .match(String.class, this::onString)
                 .build();
     }
@@ -20,7 +20,4 @@ public class SimpleActorJ extends AbstractLoggingActor {
         System.out.println("Received [" + message + "] from " + sender());
     }
 
-    private void onMessage(SimpleMessage simpleMessage) {
-        System.out.println("Received [" + simpleMessage.msg + "] from " + sender());
-    }
 }
