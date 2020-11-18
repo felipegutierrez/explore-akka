@@ -3,6 +3,7 @@ package org.github.felipegutierrez.explore.akka
 import java.util.Scanner
 
 import org.github.felipegutierrez.explore.akka.actors._
+import org.github.felipegutierrez.explore.akka.clustering.basic.{ClusteringBasics, ClusteringManualRegistration}
 import org.github.felipegutierrez.explore.akka.falttolerance._
 import org.github.felipegutierrez.explore.akka.infra._
 import org.github.felipegutierrez.explore.akka.patterns._
@@ -66,8 +67,14 @@ object MainClass extends App {
   println(s"36 - RemoteActor and LocalActor communicating")
   println(s"37 - RemoteActorWordCount master and 5 workers")
   println(s"38 - RemoteDeployment and LocalDeployment of Actors")
-  println(s"39 - ")
-  println(s"40 - ")
+  println(s"39 - ClusteringBasics")
+  println(s"40 - ClusteringManualRegistration")
+  println(s"41 - ")
+  println(s"42 - ")
+  println(s"43 - ")
+  println(s"44 - ")
+  println(s"45 - ")
+  println(s"46 - ")
 
   println("choose an application: ")
   val scanner = new Scanner(System.in)
@@ -136,11 +143,17 @@ object MainClass extends App {
       RemoteDeployment.run()
       Thread.sleep(2000)
       LocalDeployment.run()
-    case "39" => ???
-    case "40" => ???
+    case "39" => ClusteringBasics.run()
+    case "40" =>
+      ClusteringBasics.run()
+      Thread.sleep(3000)
+      ClusteringManualRegistration.run()
     case "41" => ???
     case "42" => ???
     case "43" => ???
+    case "44" => ???
+    case "45" => ???
+    case "46" => ???
     case _ => println("option unavailable.")
   }
 }
