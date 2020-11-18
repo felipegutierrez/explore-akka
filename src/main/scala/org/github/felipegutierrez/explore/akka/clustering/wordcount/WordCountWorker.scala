@@ -9,6 +9,7 @@ class WordCountWorker extends Actor with ActorLogging {
   override def receive: Receive = {
     case ProcessLine(line, aggregator) =>
       log.info(s"Processing: $line")
+      aggregator ! ProcessLineResult(line.split(" ").length)
     case m => log.info(s"cannot handle message: $m")
   }
 }

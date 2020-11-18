@@ -20,10 +20,11 @@ object ClusteringWordCount extends App {
     val master = SeedNodes.createNode(2551, "master", Props[WordCountMaster], "master")
     SeedNodes.createNode(2552, "worker", Props[WordCountWorker], "worker")
     SeedNodes.createNode(2553, "worker", Props[WordCountWorker], "worker")
+    SeedNodes.createNode(2554, "worker", Props[WordCountWorker], "worker")
+    SeedNodes.createNode(2555, "worker", Props[WordCountWorker], "worker")
 
     Thread.sleep(10000)
-    // import ClusteringExampleDomain._
-    // master ! ProcessFile("src/main/resources/txt/hamlet.txt")
+    import ClusteringExampleDomain._
+    master ! ProcessFile("src/main/resources/txt/hamlet.txt")
   }
-
 }

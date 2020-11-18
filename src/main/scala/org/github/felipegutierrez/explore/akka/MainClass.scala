@@ -4,6 +4,7 @@ import java.util.Scanner
 
 import org.github.felipegutierrez.explore.akka.actors._
 import org.github.felipegutierrez.explore.akka.clustering.basic.{ClusteringBasics, ClusteringManualRegistration}
+import org.github.felipegutierrez.explore.akka.clustering.wordcount.ClusteringWordCount
 import org.github.felipegutierrez.explore.akka.falttolerance._
 import org.github.felipegutierrez.explore.akka.infra._
 import org.github.felipegutierrez.explore.akka.patterns._
@@ -69,7 +70,7 @@ object MainClass extends App {
   println(s"38 - RemoteDeployment and LocalDeployment of Actors")
   println(s"39 - ClusteringBasics")
   println(s"40 - ClusteringManualRegistration")
-  println(s"41 - ")
+  println(s"41 - ClusteringWordCount")
   println(s"42 - ")
   println(s"43 - ")
   println(s"44 - ")
@@ -148,7 +149,7 @@ object MainClass extends App {
       ClusteringBasics.run()
       Thread.sleep(3000)
       ClusteringManualRegistration.run()
-    case "41" => ???
+    case "41" => ClusteringWordCount.run()
     case "42" => ???
     case "43" => ???
     case "44" => ???

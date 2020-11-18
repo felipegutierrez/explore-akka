@@ -1,15 +1,17 @@
 package org.github.felipegutierrez.explore.akka.clustering.wordcount
 
-import akka.actor.{Actor, ActorLogging, ActorRef, Address}
+import akka.actor.{Actor, ActorLogging, ActorRef, Address, Props}
 import akka.cluster.Cluster
 import akka.cluster.ClusterEvent._
 import akka.pattern.pipe
 import akka.util.Timeout
 
 import scala.concurrent.duration._
+import scala.util.Random
 
 class WordCountMaster extends Actor with ActorLogging {
 
+  import ClusteringWordCount.ClusteringExampleDomain._
   import context.dispatcher
 
   implicit val timeout = Timeout(3 seconds)
@@ -34,7 +36,9 @@ class WordCountMaster extends Actor with ActorLogging {
     cluster.unsubscribe(self)
   }
 
-  override def receive: Receive = handleClusterEvents.orElse(handleWorkerRegistration)
+  override def receive: Receive = handleClusterEvents
+    .orElse(handleWorkerRegistration)
+    .orElse(handleJob)
 
   def handleClusterEvents: Receive = {
     case MemberUp(member) if member.hasRole("worker") =>
@@ -63,5 +67,19 @@ class WordCountMaster extends Actor with ActorLogging {
     case pair: (Address, ActorRef) =>
       log.info(s"Registering worker: $pair")
       workers = workers + pair
+  }
+
+  def handleJob: Receive = {
+    case ProcessFile(filename) =>
+      val aggregator = context.actorOf(Props[WordCountAggregator], "aggregator")
+      scala.io.Source.fromFile(filename).getLines().foreach { line =>
+        self ! ProcessLine(line, aggregator)
+      }
+
+    case ProcessLine(line, aggregator) =>
+      val workerIndex = Random.nextInt((workers -- pendingRemoval.keys).size)
+      val worker: ActorRef = (workers -- pendingRemoval.keys).values.toSeq(workerIndex)
+      worker ! ProcessLine(line, aggregator)
+      Thread.sleep(10)
   }
 }
