@@ -4,7 +4,7 @@ import java.util.Scanner
 
 import org.github.felipegutierrez.explore.akka.actors._
 import org.github.felipegutierrez.explore.akka.clustering.basic.{ClusteringBasics, ClusteringManualRegistration}
-import org.github.felipegutierrez.explore.akka.clustering.wordcount.ClusteringWordCount
+import org.github.felipegutierrez.explore.akka.clustering.wordcount.{ClusteringWordCount, ClusteringWordCountAdditionalWorkers}
 import org.github.felipegutierrez.explore.akka.falttolerance._
 import org.github.felipegutierrez.explore.akka.infra._
 import org.github.felipegutierrez.explore.akka.patterns._
@@ -149,7 +149,10 @@ object MainClass extends App {
       ClusteringBasics.run()
       Thread.sleep(3000)
       ClusteringManualRegistration.run()
-    case "41" => ClusteringWordCount.run()
+    case "41" =>
+      ClusteringWordCount.run()
+      Thread.sleep(5000)
+      ClusteringWordCountAdditionalWorkers.run()
     case "42" => ???
     case "43" => ???
     case "44" => ???
