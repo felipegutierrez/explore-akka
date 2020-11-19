@@ -11,6 +11,11 @@ public class AdComMonitorActor extends AbstractLoggingActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
+                .match(MessageAdComParameter.class, this::receiveAdComParameter)
                 .build();
+    }
+
+    private void receiveAdComParameter(MessageAdComParameter message) {
+        log().info("received AdCom parameter: {}", message);
     }
 }

@@ -4,11 +4,7 @@ import akka.actor.AbstractLoggingActor;
 import akka.actor.Props;
 import akka.cluster.Cluster;
 import akka.cluster.ClusterEvent;
-import akka.cluster.ClusterEvent.MemberJoined;
-import akka.cluster.ClusterEvent.MemberEvent;
-import akka.cluster.ClusterEvent.MemberRemoved;
-import akka.cluster.ClusterEvent.MemberUp;
-import akka.cluster.ClusterEvent.UnreachableMember;
+import akka.cluster.ClusterEvent.*;
 
 public class PIControllerActor extends AbstractLoggingActor {
 
@@ -37,21 +33,44 @@ public class PIControllerActor extends AbstractLoggingActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(MemberJoined.class, mJoin -> {
-                    log().info("Member joined: {}", mJoin.member());
-                })
-                .match(MemberUp.class, mUp -> {
-                    log().info("Member is Up: {}", mUp.member());
-                })
-                .match(UnreachableMember.class, mUnreachable -> {
-                    log().info("Member detected as unreachable: {}", mUnreachable.member());
-                })
-                .match(MemberRemoved.class, mRemoved -> {
-                    log().info("Member is Removed: {}", mRemoved.member());
-                })
-                .match(MemberEvent.class, message -> {
-                    log().info("Member unhandled: {}", message.member());
-                })
+                .match(MemberJoined.class, this::receivedMemberJoined)
+                .match(MemberUp.class, this::receivedMemberUp)
+                .match(UnreachableMember.class, this::receivedUnreachableMember)
+                .match(MemberRemoved.class, this::receivedMemberRemoved)
+                .match(MemberEvent.class, this::receivedMemberEvent)
+                .match(MessageAdcomSignals.class, this::receiveAdcomSignals)
+                .match(MessageControllerTrigger.class, this::receiveControllerTrigger)
                 .build();
+    }
+
+    private void receivedMemberJoined(MemberJoined message) {
+        log().info("Member joined: {}", message.member());
+    }
+
+    private void receivedMemberUp(MemberUp message) {
+        log().info("Member is Up: {}", message.member());
+    }
+
+    private void receivedUnreachableMember(UnreachableMember message) {
+        log().info("Member detected as unreachable: {}", message.member());
+    }
+
+    private void receivedMemberRemoved(MemberRemoved message) {
+        log().info("Member is Removed: {}", message.member());
+    }
+
+    private void receivedMemberEvent(MemberEvent message) {
+        log().info("Member event: {}", message.member());
+    }
+
+    private void receiveAdcomSignals(MessageAdcomSignals message) {
+        log().info("received AdCom signals: {}", message);
+        // TODO: add signals at the global state
+    }
+
+    private void receiveControllerTrigger(MessageControllerTrigger message) {
+        log().info("received trigger: {}", message);
+        // TODO: compute new parameter based on the global state
+        // TODO: send new parameter to all AdCom operators
     }
 }
