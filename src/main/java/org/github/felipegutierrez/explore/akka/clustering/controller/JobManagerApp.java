@@ -10,7 +10,8 @@ public class JobManagerApp {
     public static void main(String[] args) {
         // 1 - configure the Actor System
         Config config = ConfigFactory
-                .parseString("akka.remote.artery.canonical.port = 2551")
+                .parseString("akka.cluster.roles = [master]" +
+                        ",akka.remote.artery.canonical.port = 2551")
                 .withFallback(ConfigFactory.load("clustering/controller.conf"));
         final ActorSystem system = ActorSystem.create("JobManagerActorSystem", config);
 
