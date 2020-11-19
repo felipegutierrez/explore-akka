@@ -17,7 +17,6 @@ public class WordCountMasterJ extends AbstractLoggingActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                // .match(Initialize.class, this::onInitialize)
                 .match(Object.class,
                         object -> {
                             getContext().become(onlineWithRouter(0, 0));
