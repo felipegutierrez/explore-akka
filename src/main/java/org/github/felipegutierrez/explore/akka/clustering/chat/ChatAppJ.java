@@ -22,9 +22,9 @@ public class ChatAppJ {
             System.out.println("Input is: " + input);
             if (input.equalsIgnoreCase("quit")) {
                 System.out.println("sending message to leave the chat...");
-                chatActor.tell(new MessageQuitJ(), chatActor);
+                chatActor.tell(new MessageQuitJ(), ActorRef.noSender());
             } else {
-                chatActor.tell(new MessageUserJ(input), chatActor);
+                chatActor.tell(new MessageUserJ(input), ActorRef.noSender());
             }
         }
     }
