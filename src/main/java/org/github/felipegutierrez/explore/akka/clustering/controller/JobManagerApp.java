@@ -13,7 +13,7 @@ public class JobManagerApp {
     public static void main(String[] args) {
         // 1 - configure the Actor System
         Config config = ConfigFactory
-                .parseString("akka.cluster.roles = [master]" +
+                .parseString("akka.cluster.roles = [" + Utils.ROLE_CONTROLLER + "]" +
                         ",akka.remote.artery.canonical.port = 2551")
                 .withFallback(ConfigFactory.load("clustering/controller.conf"));
         final ActorSystem system = ActorSystem.create("JobManagerActorSystem", config);
@@ -24,7 +24,7 @@ public class JobManagerApp {
         // 3 - schedule the PI Controller to send parameters in a fixed rate
         Cancellable cancellable = system.scheduler().scheduleWithFixedDelay(
                 Duration.ofSeconds(2),
-                Duration.ofSeconds(10),
+                Duration.ofSeconds(20),
                 controllerActor,
                 new MessageControllerTrigger(),
                 system.dispatcher(),

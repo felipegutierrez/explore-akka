@@ -1,14 +1,22 @@
 package org.github.felipegutierrez.explore.akka.clustering.controller;
 
 import akka.actor.AbstractLoggingActor;
+import akka.actor.ActorSelection;
+import akka.actor.Address;
 import akka.actor.Props;
 import akka.cluster.Cluster;
 import akka.cluster.ClusterEvent;
 import akka.cluster.ClusterEvent.*;
+import akka.cluster.Member;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class PIControllerActor extends AbstractLoggingActor {
 
     private final Cluster cluster = Cluster.get(getContext().getSystem());
+    private final Set<Address> adComOperators = new HashSet<Address>();
+    private int newParameter = 0;
 
     public static Props props() {
         return Props.create(PIControllerActor.class);
@@ -49,6 +57,11 @@ public class PIControllerActor extends AbstractLoggingActor {
 
     private void receivedMemberUp(MemberUp message) {
         log().info("Member is Up: {}", message.member());
+        // add new member on the data structure of AdCom operators
+        Member newMember = message.member();
+        if (newMember.hasRole(Utils.ROLE_ADCOM)) {
+            adComOperators.add(newMember.address());
+        }
     }
 
     private void receivedUnreachableMember(UnreachableMember message) {
@@ -65,12 +78,30 @@ public class PIControllerActor extends AbstractLoggingActor {
 
     private void receiveAdcomSignals(MessageAdcomSignals message) {
         log().info("received AdCom signals: {}", message);
-        // TODO: add signals at the global state
+        // add signals at the global state and compute new parameter based on the global state
+        computeGlobalSignal(message);
     }
 
     private void receiveControllerTrigger(MessageControllerTrigger message) {
         log().info("received trigger: {}", message);
-        // TODO: compute new parameter based on the global state
-        // TODO: send new parameter to all AdCom operators
+        // send new parameter to all AdCom operators
+        for (Address adComAddress : adComOperators) {
+            ActorSelection adComOp = getContext().actorSelection("akka://" + adComAddress.hostPort() + "/user/adComOperator");
+            adComOp.tell(new MessageAdComParameter(newParameter), getSelf());
+        }
+    }
+
+    private void computeGlobalSignal(MessageAdcomSignals message) {
+        if (message.outPollAvg < 50 || message.outPollAvg > 80) {
+            if (message.outPollAvg < 50) {
+                // NO BACK PRESSURE
+                newParameter = newParameter - 5;
+            } else {
+                // BACK PRESSURE
+                newParameter = newParameter + 5;
+            }
+        } else {
+            // within the range
+        }
     }
 }
