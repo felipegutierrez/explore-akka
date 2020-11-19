@@ -3,7 +3,7 @@ package org.github.felipegutierrez.explore.akka.clustering.chat
 import akka.actor.ActorSystem
 import com.typesafe.config.ConfigFactory
 
-class ChatApp(nickname: String, port: Int) extends App {
+class ChatApp(nickname: String, port: Int, authorized: Boolean) extends App {
 
   val config = ConfigFactory.parseString(
     s"""
@@ -12,7 +12,7 @@ class ChatApp(nickname: String, port: Int) extends App {
     .withFallback(ConfigFactory.load("clustering/clusteringChat.conf"))
 
   val system = ActorSystem("RTJVMCluster", config)
-  val chatActor = system.actorOf(ChatActor.props(nickname, port), "chatActor")
+  val chatActor = system.actorOf(ChatActor.props(nickname, port, authorized), "chatActor")
 
   import ChatDomain._
 
@@ -21,8 +21,10 @@ class ChatApp(nickname: String, port: Int) extends App {
   }
 }
 
-object Alice extends ChatApp("Alice", 2551)
+object Alice extends ChatApp("Alice", 2551, true)
 
-object Bob extends ChatApp("Bob", 2552)
+object Bob extends ChatApp("Bob", 2552, true)
 
-object Felipe extends ChatApp("Felipe", 2553)
+object Felipe extends ChatApp("Felipe", 2553, true)
+
+object Fabio extends ChatApp("Fabio", 2554, false)

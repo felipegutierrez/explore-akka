@@ -18,30 +18,38 @@ object ChatDomain {
 }
 
 object ChatActor {
-  def props(nickname: String, port: Int) = Props(new ChatActor(nickname, port))
+  def props(nickname: String, port: Int, authorized: Boolean) = Props(new ChatActor(nickname, port, authorized))
 }
 
-class ChatActor(nickname: String, port: Int) extends Actor with ActorLogging {
+class ChatActor(nickname: String, port: Int, authorized: Boolean) extends Actor with ActorLogging {
 
   import ChatDomain._
 
   implicit val timeout = Timeout(3 seconds)
 
   // 1: initialize the cluster object
-  val cluster = Cluster(context.system)
+  val cluster: Option[Cluster] = if (authorized) Some(Cluster(context.system)) else None
 
   // 2: subscribe to cluster event in preStart
   override def preStart(): Unit = {
-    cluster.subscribe(
-      self,
-      initialStateMode = InitialStateAsEvents,
-      classOf[MemberEvent]
-    )
+    if (authorized) {
+      cluster match {
+        case Some(c) => c.subscribe(
+          self,
+          initialStateMode = InitialStateAsEvents,
+          classOf[MemberEvent]
+        )
+        case None => log.info(s"user [$nickname] is not authorized to enter in the cluster =(. Please leave the cluster.")
+      }
+    }
   }
 
   // 3: unsubscribe self in postStop
   override def postStop(): Unit = {
-    cluster.unsubscribe(self)
+    cluster match {
+      case Some(c) => c.unsubscribe(self)
+      case None => log.info(s"user [$nickname] is not authorized to enter in the cluster =(.")
+    }
   }
 
   override def receive: Receive = online(Map())
@@ -50,7 +58,7 @@ class ChatActor(nickname: String, port: Int) extends Actor with ActorLogging {
   def online(chatRoom: Map[String, String]): Receive = {
     case MemberUp(member) =>
       // 4: send a special EnterRoom message to the chatActor deployed on a new node (hint: use Actor selection)
-      log.info(s"Member deployed on a new node: ${member.address}")
+      log.info(s"User $nickname enter in the cluster new node: ${member.address}")
       val remoteActorSelection: ActorSelection = context.actorSelection(s"${member.address}/user/chatActor")
       remoteActorSelection ! EnterRoom(s"${self.path.address}@localhost:$port", nickname)
     case MemberRemoved(member, previousStatus) =>
@@ -65,7 +73,7 @@ class ChatActor(nickname: String, port: Int) extends Actor with ActorLogging {
       }
       context.become(online(chatRoom + (remoteAddress -> remoteNickname)))
     }
-    case UserMessage(content) =>
+    case UserMessage(content) if (authorized) =>
       // 7: broadcast the content (as ChatMessage) to the rest of the cluster members
       chatRoom.keys.foreach { address =>
         val chatActorSelection: ActorSelection = context.actorSelection(s"${address}/user/chatActor")
