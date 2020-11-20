@@ -16,7 +16,7 @@ public class PIControllerActor extends AbstractLoggingActor {
 
     private final Cluster cluster = Cluster.get(getContext().getSystem());
     private final Set<Address> adComOperators = new HashSet<Address>();
-    private int newParameter = 0;
+    private int globalAdComParameter = 0;
 
     public static Props props() {
         return Props.create(PIControllerActor.class);
@@ -81,26 +81,27 @@ public class PIControllerActor extends AbstractLoggingActor {
         // send new parameter to all AdCom operators
         for (Address adComAddress : adComOperators) {
             ActorSelection adComOp = getContext().actorSelection("akka://" + adComAddress.hostPort() + "/user/adComOperator");
-            adComOp.tell(new MessageAdComParameter(newParameter), getSelf());
+            adComOp.tell(new MessageAdComParameter(globalAdComParameter), getSelf());
         }
     }
 
     private void receiveAdcomSignals(MessageAdcomSignals message) {
         log().info("received AdCom signals: {}. Now let's merge it in the global state.", message);
         // add signals to the global state
+        computeGlobalSignal(message);
     }
 
     private void computeGlobalSignal(MessageAdcomSignals message) {
-        if (message.outPollAvg < 50 || message.outPollAvg > 80) {
+        if (message.outPollAvg < 50 || message.outPollAvg > 70) {
             if (message.outPollAvg < 50) {
-                // NO BACK PRESSURE
-                newParameter = newParameter - 5;
+                globalAdComParameter = globalAdComParameter - 5;
+                log().info("LOW PRESSURE: {}. New parameter: {}", message.outPollAvg, globalAdComParameter);
             } else {
-                // BACK PRESSURE
-                newParameter = newParameter + 5;
+                log().info("BACK PRESSURE: {}. New parameter: {}", message.outPollAvg, globalAdComParameter);
+                globalAdComParameter = globalAdComParameter + 5;
             }
         } else {
-            // within the range
+            log().info("IN A GOOD SHAPE: {}. Parameter not changed: {}", message.outPollAvg, globalAdComParameter);
         }
     }
 }
