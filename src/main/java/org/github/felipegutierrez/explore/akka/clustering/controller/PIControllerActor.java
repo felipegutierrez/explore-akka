@@ -70,6 +70,8 @@ public class PIControllerActor extends AbstractLoggingActor {
 
     private void receivedMemberRemoved(MemberRemoved message) {
         log().info("Member is Removed: {}", message.member());
+        Member member = message.member();
+        adComOperators.remove(member.address());
     }
 
     private void receivedMemberEvent(MemberEvent message) {
@@ -77,16 +79,17 @@ public class PIControllerActor extends AbstractLoggingActor {
     }
 
     private void receiveControllerTrigger(MessageControllerTrigger message) {
-        log().info("received trigger: {}", message);
+        log().info("received trigger: {} from my schedule task: {}", message, getSender());
         // send new parameter to all AdCom operators
         for (Address adComAddress : adComOperators) {
-            ActorSelection adComOp = getContext().actorSelection("akka://" + adComAddress.hostPort() + "/user/adComOperator");
+            ActorSelection adComOp = getContext().actorSelection("akka://" + adComAddress.hostPort() + "/user/" + Utils.ACTOR_ADCOM);
+            log().info("sending the new global parameter: {} to AdCom: {}", globalAdComParameter, adComOp);
             adComOp.tell(new MessageAdComParameter(globalAdComParameter), getSelf());
         }
     }
 
     private void receiveAdcomSignals(MessageAdcomSignals message) {
-        log().info("received AdCom signals: {}. Now let's merge it in the global state.", message);
+        log().info("received AdCom signals: {} from {}. Now let's merge it in the global state.", message, getSender());
         // add signals to the global state
         computeGlobalSignal(message);
     }
@@ -97,8 +100,8 @@ public class PIControllerActor extends AbstractLoggingActor {
                 globalAdComParameter = globalAdComParameter - 5;
                 log().info("LOW PRESSURE: {}. New parameter: {}", message.outPollAvg, globalAdComParameter);
             } else {
-                log().info("BACK PRESSURE: {}. New parameter: {}", message.outPollAvg, globalAdComParameter);
                 globalAdComParameter = globalAdComParameter + 5;
+                log().info("BACK PRESSURE: {}. New parameter: {}", message.outPollAvg, globalAdComParameter);
             }
         } else {
             log().info("IN A GOOD SHAPE: {}. Parameter not changed: {}", message.outPollAvg, globalAdComParameter);

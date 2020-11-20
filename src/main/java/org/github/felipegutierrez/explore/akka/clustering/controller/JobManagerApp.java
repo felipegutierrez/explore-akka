@@ -9,19 +9,16 @@ import com.typesafe.config.ConfigFactory;
 import java.time.Duration;
 
 public class JobManagerApp {
-
     public static void main(String[] args) {
-        // 1 - configure the Actor System
-        Config config = ConfigFactory
-                .parseString("akka.cluster.roles = [" + Utils.ROLE_CONTROLLER + "]" +
-                        ",akka.remote.artery.canonical.port = 2551")
-                .withFallback(ConfigFactory.load("clustering/controller.conf"));
-        final ActorSystem system = ActorSystem.create("JobManagerActorSystem", config);
+        // Configure the Actor System
+        Config config = ConfigFactory.load("clustering/controller.conf")
+                .getConfig("jobManagerPIController");
+        final ActorSystem system = ActorSystem.create(Utils.ACTOR_SYSTEM, config);
 
-        // 2 - start the PI Controller actor
-        ActorRef controllerActor = system.actorOf(PIControllerActor.props(), "controllerActor");
+        // Deploy the PI Controller actor
+        ActorRef controllerActor = system.actorOf(PIControllerActor.props(), Utils.ACTOR_CONTROLLER);
 
-        // 3 - schedule the PI Controller to send parameters in a fixed rate
+        // schedule the PI Controller to send parameters in a fixed rate
         Cancellable scheduleAdComGlobalParameter = system.scheduler().scheduleWithFixedDelay(
                 Duration.ofSeconds(2),
                 Duration.ofSeconds(20),

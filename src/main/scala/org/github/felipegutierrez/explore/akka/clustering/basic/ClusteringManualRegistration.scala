@@ -11,21 +11,22 @@ object ClusteringManualRegistration extends App {
   def run() = {
     val system = ActorSystem("RTJVMCluster",
       ConfigFactory.load("clustering/clusteringBasics.conf")
-        .getConfig("manualRegistration"))
+        .getConfig("manualRegistration")
+    )
 
     val cluster = Cluster(system)
 
     // joinExistingCluster
-    cluster.joinSeedNodes(List(
-      Address("akka", "RTJVMCluster", "localhost", 2551), // akka://RTJVMCluster@localhost:2551
-      Address("akka", "RTJVMCluster", "localhost", 2552) // equivalent with AddressFromURIString("akka://RTJVMCluster@localhost:2552")
-    ))
+//    cluster.joinSeedNodes(List(
+//      Address("akka", "RTJVMCluster", "localhost", 2551), // akka://RTJVMCluster@localhost:2551
+//      Address("akka", "RTJVMCluster", "localhost", 2552) // equivalent with AddressFromURIString("akka://RTJVMCluster@localhost:2552")
+//    ))
 
     // joinExistingNode
     // cluster.join(Address("akka", "RTJVMCluster", "localhost", 37215))
 
     // joinMyself
-    // cluster.join(Address("akka", "RTJVMCluster", "localhost", 2555))
+    cluster.join(Address("akka", "RTJVMCluster", "localhost", 2555))
 
     val clusterSubscriber = system.actorOf(Props[ClusterSubscriber], "clusterSubscriber")
   }
