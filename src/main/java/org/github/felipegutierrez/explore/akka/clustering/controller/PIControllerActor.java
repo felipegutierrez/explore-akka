@@ -76,12 +76,6 @@ public class PIControllerActor extends AbstractLoggingActor {
         log().info("Member event: {}", message.member());
     }
 
-    private void receiveAdcomSignals(MessageAdcomSignals message) {
-        log().info("received AdCom signals: {}", message);
-        // add signals at the global state and compute new parameter based on the global state
-        computeGlobalSignal(message);
-    }
-
     private void receiveControllerTrigger(MessageControllerTrigger message) {
         log().info("received trigger: {}", message);
         // send new parameter to all AdCom operators
@@ -89,6 +83,11 @@ public class PIControllerActor extends AbstractLoggingActor {
             ActorSelection adComOp = getContext().actorSelection("akka://" + adComAddress.hostPort() + "/user/adComOperator");
             adComOp.tell(new MessageAdComParameter(newParameter), getSelf());
         }
+    }
+
+    private void receiveAdcomSignals(MessageAdcomSignals message) {
+        log().info("received AdCom signals: {}. Now let's merge it in the global state.", message);
+        // add signals to the global state
     }
 
     private void computeGlobalSignal(MessageAdcomSignals message) {

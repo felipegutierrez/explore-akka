@@ -29,7 +29,7 @@ public class TaskManagerApp {
             // 2 - instantiate the monitor actors for each AdCom operator
             ActorRef adComOperator = system.actorOf(AdComMonitorActor.props(), "adComOperator");
 
-            Cancellable cancellable = system.scheduler().scheduleWithFixedDelay(
+            Cancellable scheduleAdcomSignalsTrigger = system.scheduler().scheduleWithFixedDelay(
                     Duration.ofSeconds(2),
                     Duration.ofSeconds(5),
                     adComOperator,

@@ -22,7 +22,7 @@ public class JobManagerApp {
         ActorRef controllerActor = system.actorOf(PIControllerActor.props(), "controllerActor");
 
         // 3 - schedule the PI Controller to send parameters in a fixed rate
-        Cancellable cancellable = system.scheduler().scheduleWithFixedDelay(
+        Cancellable scheduleAdComGlobalParameter = system.scheduler().scheduleWithFixedDelay(
                 Duration.ofSeconds(2),
                 Duration.ofSeconds(20),
                 controllerActor,
