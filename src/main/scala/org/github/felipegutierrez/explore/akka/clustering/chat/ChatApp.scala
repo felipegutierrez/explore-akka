@@ -5,19 +5,23 @@ import com.typesafe.config.ConfigFactory
 
 class ChatApp(nickname: String, port: Int, authorized: Boolean) extends App {
 
-  val config = ConfigFactory.parseString(
-    s"""
-       |akka.remote.artery.canonical.port = $port
+  run()
+
+  def run() = {
+    val config = ConfigFactory.parseString(
+      s"""
+         |akka.remote.artery.canonical.port = $port
        """.stripMargin)
-    .withFallback(ConfigFactory.load("clustering/clusteringChat.conf"))
+      .withFallback(ConfigFactory.load("clustering/clusteringChat.conf"))
 
-  val system = ActorSystem("RTJVMCluster", config)
-  val chatActor = system.actorOf(ChatActor.props(nickname, port, authorized), "chatActor")
+    val system = ActorSystem("RTJVMCluster", config)
+    val chatActor = system.actorOf(ChatActor.props(nickname, port, authorized), "chatActor")
 
-  import ChatDomain._
+    import ChatDomain._
 
-  scala.io.Source.stdin.getLines().foreach { line =>
-    chatActor ! UserMessage(line)
+    scala.io.Source.stdin.getLines().foreach { line =>
+      chatActor ! UserMessage(line)
+    }
   }
 }
 

@@ -4,6 +4,7 @@ import java.util.Scanner
 
 import org.github.felipegutierrez.explore.akka.actors._
 import org.github.felipegutierrez.explore.akka.clustering.basic.{ClusteringBasics, ClusteringManualRegistration}
+import org.github.felipegutierrez.explore.akka.clustering.chat.ChatApp
 import org.github.felipegutierrez.explore.akka.clustering.wordcount.{ClusteringWordCount, ClusteringWordCountAdditionalWorkers}
 import org.github.felipegutierrez.explore.akka.falttolerance._
 import org.github.felipegutierrez.explore.akka.infra._
@@ -71,7 +72,11 @@ object MainClass extends App {
   println(s"39 - ClusteringBasics")
   println(s"40 - ClusteringManualRegistration")
   println(s"41 - ClusteringWordCount")
-  println(s"42 - ")
+  println(s"42 - Cluster chat")
+  println(s"42.1 - Alice chat")
+  println(s"42.2 - Bob chat")
+  println(s"42.3 - Felipe chat")
+  println(s"42.4 - Fabio chat")
   println(s"43 - ")
   println(s"44 - ")
   println(s"45 - ")
@@ -153,7 +158,19 @@ object MainClass extends App {
       ClusteringWordCount.run()
       Thread.sleep(5000)
       ClusteringWordCountAdditionalWorkers.run()
-    case "42" => ???
+    case "42" => println("This is the cluster chat. You must chose 42.1, 42.2, 42.3, or 42.4")
+    case "42.1" =>
+      val alice = new ChatApp("Alice", 2551, true)
+      alice.run()
+    case "42.2" =>
+      val bob = new ChatApp("Bob", 2552, true)
+      bob.run()
+    case "42.3" =>
+      val felipe = new ChatApp("Felipe", 2553, true)
+      felipe.run()
+    case "42.4" =>
+      val fabio = new ChatApp("Fabio", 2554, false)
+      fabio.run()
     case "43" => ???
     case "44" => ???
     case "45" => ???
