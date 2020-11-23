@@ -7,6 +7,14 @@ Exploring [Akka 2.6.10](https://akka.io/) with Scala 2.12.7 and Java 8. The dock
  - Compile the project: `sbt docker:publishLocal` and verify the image created `docker images`.
  - Run the docker image: `docker run -i felipeogutierrez/explore-akka:1.1` (don't forget the `-i` parameter to allow STDIN open!).
 
+## Running in k8s
+
+```
+minikube start --cpus 4 --memory 8192
+kubectl create namespace akka
+kubectl apply -f k8s/.yml -n akka
+```
+
 ## Troubleshooting
 
  - Release notes for [scalatest 3.2.0](https://www.scalatest.org/release_notes/3.2.0)

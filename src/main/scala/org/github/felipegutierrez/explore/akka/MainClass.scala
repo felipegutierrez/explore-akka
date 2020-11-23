@@ -82,9 +82,15 @@ object MainClass extends App {
   println(s"45 - ")
   println(s"46 - ")
 
-  println("choose an application: ")
-  val scanner = new Scanner(System.in)
-  val option = scanner.nextLine()
+  var option: String = ""
+  if (args.length == 0) {
+    println("choose an application: ")
+    val scanner = new Scanner(System.in)
+    option = scanner.nextLine()
+  } else {
+    option = args(0)
+  }
+  
   println(s"you chose the option $option")
   option match {
     case "0" => println(s"Bye, see you next time.")
