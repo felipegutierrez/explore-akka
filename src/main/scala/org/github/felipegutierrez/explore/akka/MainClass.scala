@@ -90,7 +90,7 @@ object MainClass extends App {
   } else {
     option = args(0)
   }
-  
+
   println(s"you chose the option $option")
   option match {
     case "0" => println(s"Bye, see you next time.")

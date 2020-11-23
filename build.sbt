@@ -9,10 +9,10 @@ val scalaTestVersion = "3.2.0"
 val logbackVersion = "1.2.3"
 lazy val akkaHttpVersion = "10.2.0"
 lazy val akkaGrpcVersion = "1.0.2"
-lazy val protobufVersion = "3.6.1"
+lazy val protobufVersion = "3.11.4"
 lazy val aeronVersion = "1.30.0"
 
-enablePlugins(AkkaGrpcPlugin)
+enablePlugins(JavaAppPackaging, JavaServerAppPackaging, AkkaGrpcPlugin, DockerPlugin)
 
 akkaGrpcGeneratedLanguages := Seq(AkkaGrpc.Java)
 
@@ -43,6 +43,4 @@ libraryDependencies ++= Seq(
 
 mainClass in Compile := Some("org.github.felipegutierrez.explore.akka.MainClass")
 
-enablePlugins(JavaAppPackaging)
-enablePlugins(DockerPlugin)
 dockerUsername := Some("felipeogutierrez")
