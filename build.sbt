@@ -11,6 +11,14 @@ lazy val akkaHttpVersion = "10.2.0"
 lazy val akkaGrpcVersion = "1.0.2"
 lazy val protobufVersion = "3.11.4"
 lazy val aeronVersion = "1.30.0"
+lazy val leveldbVersion = "0.7"
+lazy val leveldbjniVersion = "1.8"
+lazy val postgresVersion = "42.2.2"
+lazy val cassandraVersion = "0.91"
+lazy val json4sVersion = "3.2.11"
+
+// some libs are available in Bintray's JCenter
+resolvers += Resolver.jcenterRepo
 
 enablePlugins(JavaAppPackaging, JavaServerAppPackaging, AkkaGrpcPlugin, DockerPlugin)
 
@@ -30,6 +38,19 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-discovery" % akkaVersion,
   "com.typesafe.akka" %% "akka-stream" % akkaVersion,
   "com.typesafe.akka" %% "akka-pki" % akkaVersion,
+  // Akka persistence library and related libraries
+  "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
+  // local levelDB stores
+  "org.iq80.leveldb" % "leveldb" % leveldbVersion,
+  "org.fusesource.leveldbjni" % "leveldbjni-all" % leveldbjniVersion,
+  // JDBC with PostgreSQL
+  "org.postgresql" % "postgresql" % postgresVersion,
+  "com.github.dnvriend" %% "akka-persistence-jdbc" % "3.4.0",
+  // Cassandra
+  "com.typesafe.akka" %% "akka-persistence-cassandra" % cassandraVersion,
+  "com.typesafe.akka" %% "akka-persistence-cassandra-launcher" % cassandraVersion % Test,
+  // Google Protocol Buffers
+  "com.google.protobuf" % "protobuf-java"  % protobufVersion,
   // The Akka HTTP overwrites are required because Akka-gRPC depends on 10.1.x
   "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
   "com.typesafe.akka" %% "akka-http2-support" % akkaHttpVersion,
