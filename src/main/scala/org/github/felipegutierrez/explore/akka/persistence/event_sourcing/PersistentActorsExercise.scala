@@ -56,6 +56,7 @@ object PersistentActorsExercise extends App {
     override def receiveRecover: Receive = {
       /** Best practice: follow the logic in the persist step of receiveCommand */
       case recoveredVote@Vote(citizenPID, candidate) =>
+        citizens += citizenPID
         val candidateVotes = polls.getOrElse(candidate, 0)
         polls += (candidate -> (candidateVotes + 1))
         log.info(s"recovered vote from $citizenPID for $candidate ,polls: $polls")
