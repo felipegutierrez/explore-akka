@@ -28,6 +28,7 @@ object PersistentActorsExercise extends App {
   class VotingActor extends PersistentActor with ActorLogging {
 
     val CANDIDATES: Set[String] = Set("Martin", "Roland", "Jonas", "Daniel")
+    var citizens: Set[String] = Set()
     var polls: Map[String, Int] = Map()
 
     override def persistenceId: String = "votingIds"
@@ -35,6 +36,7 @@ object PersistentActorsExercise extends App {
     override def receiveCommand: Receive = {
       case vote@Vote(citizenPID, candidate) =>
         if (!CANDIDATES.contains(candidate)) sender() ! VoteRejected("invalid candidate")
+        else if (citizens.contains(citizenPID)) sender() ! VoteRejected(s"the citizen $citizenPID already voted")
         else {
           /* When we receive a command
          * 1 - we create an EVENT to persist into the store
@@ -43,6 +45,7 @@ object PersistentActorsExercise extends App {
          */
           log.info(s"received vote from $citizenPID to $candidate")
           persist(vote) { e =>
+            citizens += vote.citizenPID
             val candidateVotes = polls.getOrElse(candidate, 0)
             polls += (candidate -> (candidateVotes + 1))
             log.info(s"Persisted $e as vote from #${e.citizenPID} to ${e.candidate}. Polls: $polls")
