@@ -9,6 +9,7 @@ import org.github.felipegutierrez.explore.akka.clustering.wordcount.{ClusteringW
 import org.github.felipegutierrez.explore.akka.falttolerance._
 import org.github.felipegutierrez.explore.akka.infra._
 import org.github.felipegutierrez.explore.akka.patterns._
+import org.github.felipegutierrez.explore.akka.persistence.event_sourcing.PersistentActors
 import org.github.felipegutierrez.explore.akka.recap._
 import org.github.felipegutierrez.explore.akka.remote._
 import org.github.felipegutierrez.explore.akka.remote.deployment.{LocalDeployment, RemoteDeployment}
@@ -80,7 +81,11 @@ object MainClass extends App {
   println(s"43 - ")
   println(s"44 - ")
   println(s"45 - ")
-  println(s"46 - ")
+  println(s"46 - PersistentActors")
+  println(s"47 - ")
+  println(s"48 - ")
+  println(s"49 - ")
+  println(s"50 - ")
 
   var option: String = ""
   if (args.length == 0) {
@@ -180,7 +185,11 @@ object MainClass extends App {
     case "43" => ???
     case "44" => ???
     case "45" => ???
-    case "46" => ???
+    case "46" => PersistentActors.run()
+    case "47" => ???
+    case "48" => ???
+    case "49" => ???
+    case "50" => ???
     case _ => println("option unavailable.")
   }
 }

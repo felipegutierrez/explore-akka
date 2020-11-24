@@ -69,8 +69,7 @@ object PersistentActors extends App {
           /* update the state. SAFE to access mutable state here because
            * there is NO RACE CONDITION inside the persist method. All the
            * messages sent to this actor are STASHED
-           *
-           * */
+           **/
           latestInvoiceId += 1
           totalAmount += amount
           // sender() ! InvoiceACK("your invoice was persisted")
