@@ -15,8 +15,11 @@ object PersistentActorsExercise extends App {
     val system = ActorSystem("PersistentVotingActors", ConfigFactory.load().getConfig("votingPersistentExercise"))
     val votingActor = system.actorOf(Props[VotingActor], "votingActor")
 
+    println(s"choose one candidate: ${VotingActor.CANDIDATES}")
     scala.io.Source.stdin.getLines().foreach { line =>
       votingActor ! Vote(UUID.randomUUID().toString, line)
+
+      println(s"choose one candidate: ${VotingActor.CANDIDATES}")
     }
   }
 
@@ -25,9 +28,11 @@ object PersistentActorsExercise extends App {
 
   case class VoteRejected(msg: String)
 
-  class VotingActor extends PersistentActor with ActorLogging {
-
+  object VotingActor {
     val CANDIDATES: Set[String] = Set("Martin", "Roland", "Jonas", "Daniel")
+  }
+
+  class VotingActor extends PersistentActor with ActorLogging {
     var citizens: Set[String] = Set()
     var polls: Map[String, Int] = Map()
 
@@ -35,7 +40,7 @@ object PersistentActorsExercise extends App {
 
     override def receiveCommand: Receive = {
       case vote@Vote(citizenPID, candidate) =>
-        if (!CANDIDATES.contains(candidate)) sender() ! VoteRejected("invalid candidate")
+        if (!VotingActor.CANDIDATES.contains(candidate)) sender() ! VoteRejected("invalid candidate")
         else if (citizens.contains(citizenPID)) sender() ! VoteRejected(s"the citizen $citizenPID already voted")
         else {
           /* When we receive a command
