@@ -20,24 +20,20 @@ object PersistentActorsExercise extends App {
     }
   }
 
-  // COMMANDS
+  // COMMANDS used as EVENTS too
   case class Vote(citizenPID: String, candidate: String)
-
-  // EVENTS
-  case class VoteRecorded(voteId: Int, citizenPID: String, candidate: String)
 
   case class VoteRejected(msg: String)
 
   class VotingActor extends PersistentActor with ActorLogging {
 
     val CANDIDATES: Set[String] = Set("Martin", "Roland", "Jonas", "Daniel")
-    var latestVoteIndex = 0
     var polls: Map[String, Int] = Map()
 
     override def persistenceId: String = "votingIds"
 
     override def receiveCommand: Receive = {
-      case Vote(citizenPID, candidate) =>
+      case vote@Vote(citizenPID, candidate) =>
         if (!CANDIDATES.contains(candidate)) sender() ! VoteRejected("invalid candidate")
         else {
           /* When we receive a command
@@ -46,8 +42,7 @@ object PersistentActorsExercise extends App {
          * 3 - we update the actor's state when the event has persisted
          */
           log.info(s"received vote from $citizenPID to $candidate")
-          persist(VoteRecorded(latestVoteIndex, citizenPID, candidate)) { e =>
-            latestVoteIndex += 1
+          persist(vote) { e =>
             val candidateVotes = polls.getOrElse(candidate, 0)
             polls += (candidate -> (candidateVotes + 1))
             log.info(s"Persisted $e as vote from #${e.citizenPID} to ${e.candidate}. Polls: $polls")
@@ -57,12 +52,10 @@ object PersistentActorsExercise extends App {
 
     override def receiveRecover: Receive = {
       /** Best practice: follow the logic in the persist step of receiveCommand */
-      case VoteRecorded(voteIndex, citizenPID, candidate) =>
-        latestVoteIndex = voteIndex
-        // totalAmount += amount
+      case recoveredVote@Vote(citizenPID, candidate) =>
         val candidateVotes = polls.getOrElse(candidate, 0)
         polls += (candidate -> (candidateVotes + 1))
-        log.info(s"recovered vote #$voteIndex from $citizenPID for $candidate ,polls: $polls")
+        log.info(s"recovered vote from $citizenPID for $candidate ,polls: $polls")
     }
   }
 
