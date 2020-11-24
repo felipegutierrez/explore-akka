@@ -68,6 +68,7 @@ class VotingAggregator extends PersistentActor with ActorLogging {
    * its state somewhere when the master singleton dies another singleton takes over
    * (hang-over protocol) and the state has to be transferred.
    */
+  @deprecated
   def online(personsVoted: Set[String], polls: Map[String, Int]): Receive = {
     case Vote(Person(id, age), candidate) =>
       if (personsVoted.contains(id)) sender() ! VoteRejected("already voted")
