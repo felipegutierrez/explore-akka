@@ -10,6 +10,7 @@ import org.github.felipegutierrez.explore.akka.falttolerance._
 import org.github.felipegutierrez.explore.akka.infra._
 import org.github.felipegutierrez.explore.akka.patterns._
 import org.github.felipegutierrez.explore.akka.persistence.event_sourcing._
+import org.github.felipegutierrez.explore.akka.persistence.stores.LocalStores
 import org.github.felipegutierrez.explore.akka.recap._
 import org.github.felipegutierrez.explore.akka.remote._
 import org.github.felipegutierrez.explore.akka.remote.deployment.{LocalDeployment, RemoteDeployment}
@@ -86,6 +87,16 @@ object MainClass extends App {
   println(s"48 - Snapshots")
   println(s"49 - RecoveryDemo")
   println(s"50 - PersistAsyncDemo")
+  println(s"51 - LocalStores")
+  println(s"52 - ")
+  println(s"53 - ")
+  println(s"54 - ")
+  println(s"55 - ")
+  println(s"56 - ")
+  println(s"57 - ")
+  println(s"58 - ")
+  println(s"59 - ")
+  println(s"60 - ")
 
   var option: String = ""
   if (args.length == 0) {
@@ -190,6 +201,16 @@ object MainClass extends App {
     case "48" => Snapshots.run()
     case "49" => RecoveryDemo.run()
     case "50" => PersistAsyncDemo.run()
+    case "51" => LocalStores.run()
+    case "52" =>
+    case "53" =>
+    case "54" =>
+    case "55" =>
+    case "56" =>
+    case "57" =>
+    case "58" =>
+    case "59" =>
+    case "60" =>
     case _ => println("option unavailable.")
   }
 }
