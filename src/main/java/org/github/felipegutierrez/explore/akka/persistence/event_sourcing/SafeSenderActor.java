@@ -1,12 +1,11 @@
 package org.github.felipegutierrez.explore.akka.persistence.event_sourcing;
 
-import akka.actor.ActorLogging;
 import akka.actor.Props;
 import akka.persistence.AbstractPersistentActorWithAtLeastOnceDelivery;
 
 import java.util.UUID;
 
-public class SafeSenderActor extends AbstractPersistentActorWithAtLeastOnceDelivery implements ActorLogging {
+public class SafeSenderActor extends AbstractPersistentActorWithAtLeastOnceDelivery {
 
     public static Props props() {
         return Props.create(SafeSenderActor.class);
@@ -37,7 +36,7 @@ public class SafeSenderActor extends AbstractPersistentActorWithAtLeastOnceDeliv
      */
     @Override
     public void onPersistFailure(Throwable cause, Object event, long seqNr) {
-        log().error("fail to persist $event because of: {}", cause);
+        System.err.println("fail to persist $event because of: " + cause.getMessage());
         super.onPersistFailure(cause, event, seqNr);
     }
 
@@ -46,7 +45,7 @@ public class SafeSenderActor extends AbstractPersistentActorWithAtLeastOnceDeliv
      */
     @Override
     public void onPersistRejected(Throwable cause, Object event, long seqNr) {
-        log().error("persist rejected for {} because of: {}", event, cause);
+        System.err.println("persist rejected for " + event + " because of: " + cause);
         super.onPersistRejected(cause, event, seqNr);
     }
 
