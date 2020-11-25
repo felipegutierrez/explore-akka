@@ -10,6 +10,7 @@ import org.github.felipegutierrez.explore.akka.falttolerance._
 import org.github.felipegutierrez.explore.akka.infra._
 import org.github.felipegutierrez.explore.akka.patterns._
 import org.github.felipegutierrez.explore.akka.persistence.event_sourcing._
+import org.github.felipegutierrez.explore.akka.persistence.schema.EventAdapters
 import org.github.felipegutierrez.explore.akka.persistence.stores.{CassandraStores, LocalStores, PostgresStores}
 import org.github.felipegutierrez.explore.akka.recap._
 import org.github.felipegutierrez.explore.akka.remote._
@@ -90,7 +91,7 @@ object MainClass extends App {
   println(s"51 - LocalStores")
   println(s"52 - PostgresStores")
   println(s"53 - CassandraStores")
-  println(s"54 - ")
+  println(s"54 - EventAdapters")
   println(s"55 - ")
   println(s"56 - ")
   println(s"57 - ")
@@ -204,7 +205,7 @@ object MainClass extends App {
     case "51" => LocalStores.run()
     case "52" => PostgresStores.run()
     case "53" => CassandraStores.run()
-    case "54" =>
+    case "54" => EventAdapters.run()
     case "55" =>
     case "56" =>
     case "57" =>
