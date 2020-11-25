@@ -2,7 +2,6 @@ package org.github.felipegutierrez.explore.akka.persistence.schema
 
 import akka.actor.ActorLogging
 import akka.persistence.PersistentActor
-import org.github.felipegutierrez.explore.akka.persistence.schema.GuitarDomain.ACOUSTIC
 
 import scala.collection.mutable
 
@@ -45,13 +44,18 @@ class InventoryManager extends PersistentActor with ActorLogging {
   }
 
   override def receiveRecover: Receive = {
+    /** it is not necessary because we have GuitarEventAdapter */
+    /*
     case event@GuitarAdded(id, model, make, quantity) =>
       log.info(s"Recovered $event")
       val guitar = Guitar(id, model, make, ACOUSTIC)
       addGuitarInventory(guitar, quantity)
+    */
+    /** we handle only the latest version of GuitarAdded */
     case event@GuitarAddedVersion2(id, model, make, quantity, guitarType) =>
       log.info(s"Recovered $event")
       val guitar = Guitar(id, model, make, guitarType)
       addGuitarInventory(guitar, quantity)
   }
 }
+
