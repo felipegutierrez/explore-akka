@@ -25,6 +25,12 @@ import com.typesafe.config.ConfigFactory
  * persistence_id          | partition_nr | sequence_nr | timestamp                            | timebucket    | used | event                          | event_manifest | message | meta | meta_ser_id | meta_ser_manifest | ser_id | ser_manifest | tags | writer_uuid
  * -------------------------+--------------+-------------+--------------------------------------+---------------+------+--------------------------------+----------------+---------+------+-------------+-------------------+--------+--------------+------+--------------------------------------
  * simple-persistent-actor |            0 |           1 | 7137ba50-2f0d-11eb-bb5e-7dbe0752d467 | 1606302000000 | True |   0x69206c6f766520616b6b612031
+ *
+ * cqlsh> select * from akka_snapshot.snapshots;
+ *
+ * persistence_id          | sequence_nr | meta | meta_ser_id | meta_ser_manifest | ser_id | ser_manifest | snapshot | snapshot_data | timestamp
+ * -------------------------+-------------+------+-------------+-------------------+--------+--------------+----------+---------------+---------------
+ * simple-persistent-actor |          30 | null |        null |              null |     19 |              |     null |    0x1e000000 | 1606302085064
  */
 object CassandraStores extends App {
 
