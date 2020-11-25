@@ -14,10 +14,10 @@ object EventAdapters extends App {
     val system = ActorSystem("eventAdapters", ConfigFactory.load().getConfig("eventAdapters"))
     val inventoryManager = system.actorOf(Props[InventoryManager], "inventoryManager")
 
-    val guitars = for (i <- 1 to 10) yield Guitar(s"$i", s"Hakker $i", "RockTheJVM")
-    guitars.foreach { guitar =>
-      inventoryManager ! AddGuitar(guitar, 5)
-    }
+//    val guitars = for (i <- 1 to 10) yield Guitar(s"$i", s"Hakker $i", "RockTheJVM", if (i % 2 == 0) GuitarDomain.ACOUSTIC else GuitarDomain.ELECTRIC)
+//    guitars.foreach { guitar =>
+//      inventoryManager ! AddGuitar(guitar, 5)
+//    }
     inventoryManager ! "print"
   }
 
