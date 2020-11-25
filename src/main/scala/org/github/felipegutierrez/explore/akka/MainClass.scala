@@ -9,6 +9,7 @@ import org.github.felipegutierrez.explore.akka.clustering.wordcount.{ClusteringW
 import org.github.felipegutierrez.explore.akka.falttolerance._
 import org.github.felipegutierrez.explore.akka.infra._
 import org.github.felipegutierrez.explore.akka.patterns._
+import org.github.felipegutierrez.explore.akka.persistence.detaching.DetachingModels
 import org.github.felipegutierrez.explore.akka.persistence.event_sourcing._
 import org.github.felipegutierrez.explore.akka.persistence.schema.EventAdapters
 import org.github.felipegutierrez.explore.akka.persistence.stores.{CassandraStores, LocalStores, PostgresStores}
@@ -92,7 +93,7 @@ object MainClass extends App {
   println(s"52 - PostgresStores")
   println(s"53 - CassandraStores")
   println(s"54 - EventAdapters")
-  println(s"55 - ")
+  println(s"55 - DetachingModels")
   println(s"56 - ")
   println(s"57 - ")
   println(s"58 - ")
@@ -206,7 +207,7 @@ object MainClass extends App {
     case "52" => PostgresStores.run()
     case "53" => CassandraStores.run()
     case "54" => EventAdapters.run()
-    case "55" =>
+    case "55" => DetachingModels.run()
     case "56" =>
     case "57" =>
     case "58" =>
