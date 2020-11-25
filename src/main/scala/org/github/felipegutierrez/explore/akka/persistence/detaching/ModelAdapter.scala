@@ -13,7 +13,10 @@ class ModelAdapter extends EventAdapter {
   override def fromJournal(event: Any, manifest: String): EventSeq = event match {
     case event@WrittenCouponApplied(code, userId, userEmail) =>
       println(s"Converting $event to DOMAIN model")
-      EventSeq.single(CouponApplied(code, User(userId, userEmail)))
+      EventSeq.single(CouponApplied(code, User(userId, userEmail, "")))
+    case event@WrittenCouponAppliedVersion2(code, userId, userEmail, userName) =>
+      println(s"Converting $event to DOMAIN model")
+      EventSeq.single(CouponApplied(code, User(userId, userEmail, userName)))
     case other =>
       println(s"other unknown event: $other")
       EventSeq.single(other)
@@ -23,6 +26,6 @@ class ModelAdapter extends EventAdapter {
   override def toJournal(event: Any): Any = event match {
     case event@CouponApplied(code, user) =>
       println(s"Converting $event to DATA model")
-      WrittenCouponApplied(code, user.id, user.email)
+      WrittenCouponAppliedVersion2(code, user.id, user.email, user.name)
   }
 }

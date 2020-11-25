@@ -7,7 +7,7 @@ import scala.collection.mutable
 
 object DomainModel {
 
-  case class User(id: String, email: String)
+  case class User(id: String, email: String, name: String)
 
   case class Coupon(code: String, promotionAmount: Int)
 
@@ -22,6 +22,8 @@ object DomainModel {
 object DataModel {
 
   case class WrittenCouponApplied(code: String, userId: String, userEmail: String)
+
+  case class WrittenCouponAppliedVersion2(code: String, userId: String, userEmail: String, username: String)
 
 }
 
