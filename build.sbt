@@ -25,8 +25,15 @@ enablePlugins(JavaAppPackaging, JavaServerAppPackaging, AkkaGrpcPlugin, DockerPl
 akkaGrpcGeneratedLanguages := Seq(AkkaGrpc.Java)
 
 libraryDependencies ++= Seq(
+  // Akka basics
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
   "com.typesafe.akka" %% "akka-testkit" % akkaVersion,
+
+  // Akka typed
+  "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
+  "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % Test,
+
+  // Akka remote and cluster
   "com.typesafe.akka" %% "akka-remote" % akkaVersion,
   "com.typesafe.akka" %% "akka-cluster" % akkaVersion,
   "com.typesafe.akka" %% "akka-cluster-typed" % akkaVersion,
@@ -34,31 +41,41 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-cluster-tools" % akkaVersion,
   "io.aeron" % "aeron-driver" % aeronVersion,
   "io.aeron" % "aeron-client" % aeronVersion,
-  "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
+
+  // Akka streams
   "com.typesafe.akka" %% "akka-discovery" % akkaVersion,
-  "com.typesafe.akka" %% "akka-stream" % akkaVersion,
+  // "com.typesafe.akka" %% "akka-stream" % akkaVersion,
   "com.typesafe.akka" %% "akka-pki" % akkaVersion,
-  // Akka persistence library and related libraries
+  "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % Test,
+
+  // Akka persistence
   "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
   "com.typesafe.akka" %% "akka-persistence-query" % akkaVersion,
+
   // local levelDB stores
   "org.iq80.leveldb" % "leveldb" % leveldbVersion,
   "org.fusesource.leveldbjni" % "leveldbjni-all" % leveldbjniVersion,
+
   // JDBC with PostgreSQL
   "org.postgresql" % "postgresql" % postgresVersion,
   "com.github.dnvriend" %% "akka-persistence-jdbc" % "3.4.0",
+
   // Cassandra
   "com.typesafe.akka" %% "akka-persistence-cassandra" % cassandraVersion,
   "com.typesafe.akka" %% "akka-persistence-cassandra-launcher" % cassandraVersion % Test,
+
   // Google Protocol Buffers
   "com.google.protobuf" % "protobuf-java"  % protobufVersion,
+
   // The Akka HTTP overwrites are required because Akka-gRPC depends on 10.1.x
   "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
   "com.typesafe.akka" %% "akka-http2-support" % akkaHttpVersion,
-  "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % Test,
-  "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % Test,
+
+  // Akka log
   "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
   "ch.qos.logback" % "logback-classic" % logbackVersion,
+
+  // Scala test
   "org.scalatest" %% "scalatest" % scalaTestVersion,
   "junit" % "junit" % "4.13" % Test,
 )
