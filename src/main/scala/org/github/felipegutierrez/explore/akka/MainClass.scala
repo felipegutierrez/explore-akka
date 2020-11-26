@@ -18,6 +18,7 @@ import org.github.felipegutierrez.explore.akka.classic.remote._
 import org.github.felipegutierrez.explore.akka.classic.remote.deployment.{LocalDeployment, RemoteDeployment}
 import org.github.felipegutierrez.explore.akka.classic.remote.hello.{LocalActor, RemoteActor}
 import org.github.felipegutierrez.explore.akka.classic.remote.wordcount.{MasterApp, WorkerApp}
+import org.github.felipegutierrez.explore.akka.typed.basics.{CounterActorTyped, CounterActorTypedDemo}
 import org.github.felipegutierrez.explore.akka.typed.patterns.VendingMachineTypedDemo
 
 object MainClass extends App {
@@ -45,6 +46,7 @@ object MainClass extends App {
   println(s"7 - BankAccountActor")
   println(s"8 - ChangingActorBehavior")
   println(s"9 - CounterActor")
+  println(s"9.1 - CounterActorTypedDemo")
   println(s"10 - CounterChangeBehaviorActor")
   println(s"11 - VotingSystemStateful")
   println(s"12 - VotingSystemStateless")
@@ -136,6 +138,7 @@ object MainClass extends App {
     case "7" => BankAccountActor.run()
     case "8" => ChangingActorBehavior.run()
     case "9" => CounterActor.run()
+    case "9.1" => CounterActorTypedDemo.run()
     case "10" => CounterChangeBehaviorActor.run()
     case "11" => VotingSystemStateful.run()
     case "12" => VotingSystemStateless.run()
