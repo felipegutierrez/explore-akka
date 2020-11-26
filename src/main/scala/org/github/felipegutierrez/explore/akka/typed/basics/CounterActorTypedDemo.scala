@@ -16,6 +16,9 @@ object CounterActorTypedDemo {
     (1 to 5).foreach(_ => countActor ! Increment)
     (1 to 3).foreach(_ => countActor ! Decrement)
     countActor ! Print
+
+    Thread.sleep(5000)
+    countActor.terminate
   }
 }
 
@@ -45,14 +48,14 @@ class CounterActorTyped(context: ActorContext[Counter.CounterMsg]) extends Abstr
     case Increment =>
       context.log.info(s"incrementing $count ...")
       count += 1
-      this
+      Behaviors.same
     case Decrement =>
       context.log.info(s"decrementing $count ...")
       count -= 1
-      this
+      Behaviors.same
     case Print =>
       context.log.info(s"current count is: $count")
-      this
+      Behaviors.same
   }
 
   override def onSignal: PartialFunction[Signal, Behavior[CounterMsg]] = {
