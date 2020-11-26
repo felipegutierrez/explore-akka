@@ -2,22 +2,23 @@ package org.github.felipegutierrez.explore.akka
 
 import java.util.Scanner
 
-import org.github.felipegutierrez.explore.akka.actors._
-import org.github.felipegutierrez.explore.akka.clustering.basic.{ClusteringBasics, ClusteringManualRegistration}
-import org.github.felipegutierrez.explore.akka.clustering.chat.ChatApp
-import org.github.felipegutierrez.explore.akka.clustering.wordcount.{ClusteringWordCount, ClusteringWordCountAdditionalWorkers}
-import org.github.felipegutierrez.explore.akka.falttolerance._
-import org.github.felipegutierrez.explore.akka.infra._
-import org.github.felipegutierrez.explore.akka.patterns._
-import org.github.felipegutierrez.explore.akka.persistence.detaching.DetachingModels
-import org.github.felipegutierrez.explore.akka.persistence.event_sourcing._
-import org.github.felipegutierrez.explore.akka.persistence.schema.EventAdapters
-import org.github.felipegutierrez.explore.akka.persistence.stores.{CassandraStores, LocalStores, PostgresStores}
+import org.github.felipegutierrez.explore.akka.classic.basics._
+import org.github.felipegutierrez.explore.akka.classic.clustering.basic.{ClusteringBasics, ClusteringManualRegistration}
+import org.github.felipegutierrez.explore.akka.classic.clustering.chat.ChatApp
+import org.github.felipegutierrez.explore.akka.classic.clustering.wordcount.{ClusteringWordCount, ClusteringWordCountAdditionalWorkers}
+import org.github.felipegutierrez.explore.akka.classic.falttolerance._
+import org.github.felipegutierrez.explore.akka.classic.infra._
+import org.github.felipegutierrez.explore.akka.classic.patterns._
+import org.github.felipegutierrez.explore.akka.classic.persistence.detaching.DetachingModels
+import org.github.felipegutierrez.explore.akka.classic.persistence.event_sourcing._
+import org.github.felipegutierrez.explore.akka.classic.persistence.schema.EventAdapters
+import org.github.felipegutierrez.explore.akka.classic.persistence.stores.{CassandraStores, LocalStores, PostgresStores}
 import org.github.felipegutierrez.explore.akka.recap._
-import org.github.felipegutierrez.explore.akka.remote._
-import org.github.felipegutierrez.explore.akka.remote.deployment.{LocalDeployment, RemoteDeployment}
-import org.github.felipegutierrez.explore.akka.remote.hello.{LocalActor, RemoteActor}
-import org.github.felipegutierrez.explore.akka.remote.wordcount.{MasterApp, WorkerApp}
+import org.github.felipegutierrez.explore.akka.classic.remote._
+import org.github.felipegutierrez.explore.akka.classic.remote.deployment.{LocalDeployment, RemoteDeployment}
+import org.github.felipegutierrez.explore.akka.classic.remote.hello.{LocalActor, RemoteActor}
+import org.github.felipegutierrez.explore.akka.classic.remote.wordcount.{MasterApp, WorkerApp}
+import org.github.felipegutierrez.explore.akka.typed.patterns.VendingMachineTypedDemo
 
 object MainClass extends App {
   println(s"0 - out")
