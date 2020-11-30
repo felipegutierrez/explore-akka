@@ -32,7 +32,7 @@ object BankAccountActorTyped {
   def main(args: Array[String]): Unit = {
     run()
   }
-  
+
   def run(): Unit = {
     import PersonDomain._
 

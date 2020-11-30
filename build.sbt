@@ -43,10 +43,12 @@ libraryDependencies ++= Seq(
   "io.aeron" % "aeron-client" % aeronVersion,
 
   // Akka streams
-  "com.typesafe.akka" %% "akka-discovery" % akkaVersion,
-  // "com.typesafe.akka" %% "akka-stream" % akkaVersion,
-  "com.typesafe.akka" %% "akka-pki" % akkaVersion,
+  "com.typesafe.akka" %% "akka-stream" % akkaVersion,
   "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % Test,
+
+  // Akka locating services
+  "com.typesafe.akka" %% "akka-discovery" % akkaVersion,
+  "com.typesafe.akka" %% "akka-pki" % akkaVersion,
 
   // Akka persistence
   "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
