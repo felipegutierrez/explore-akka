@@ -8,7 +8,7 @@ object OperatorFusionStreams extends App {
   run()
 
   def run() = {
-    implicit val system = ActorSystem("MaterializingStreams")
+    implicit val system = ActorSystem("OperatorFusionStreams")
 
     // replaces the import scala.concurrent.ExecutionContext.Implicits.global
     // import system.dispatcher
