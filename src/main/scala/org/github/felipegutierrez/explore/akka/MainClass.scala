@@ -18,7 +18,7 @@ import org.github.felipegutierrez.explore.akka.classic.remote._
 import org.github.felipegutierrez.explore.akka.classic.remote.deployment.{LocalDeployment, RemoteDeployment}
 import org.github.felipegutierrez.explore.akka.classic.remote.hello.{LocalActor, RemoteActor}
 import org.github.felipegutierrez.explore.akka.classic.remote.wordcount.{MasterApp, WorkerApp}
-import org.github.felipegutierrez.explore.akka.classic.streams.basics.{FirstStreamPrinciples, MaterializingStreams}
+import org.github.felipegutierrez.explore.akka.classic.streams.basics.{FirstStreamPrinciples, MaterializingStreams, OperatorFusionStreams}
 import org.github.felipegutierrez.explore.akka.typed.basics.{BankAccountActorTyped, CounterActorTyped, CounterActorTypedDemo}
 import org.github.felipegutierrez.explore.akka.typed.patterns.VendingMachineTypedDemo
 
@@ -101,7 +101,7 @@ object MainClass extends App {
   println(s"55 - DetachingModels")
   println(s"56 - FirstStreamPrinciples")
   println(s"57 - MaterializingStreams")
-  println(s"58 - ")
+  println(s"58 - OperatorFusionStreams")
   println(s"59 - ")
   println(s"60 - ")
 
@@ -217,7 +217,7 @@ object MainClass extends App {
     case "55" => DetachingModels.run()
     case "56" => FirstStreamPrinciples.run()
     case "57" => MaterializingStreams.run()
-    case "58" =>
+    case "58" => OperatorFusionStreams.run()
     case "59" =>
     case "60" =>
     case _ => println("option unavailable.")
