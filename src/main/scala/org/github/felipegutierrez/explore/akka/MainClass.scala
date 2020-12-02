@@ -220,7 +220,11 @@ object MainClass extends App {
     case "57" => MaterializingStreams.run()
     case "58" => OperatorFusionStreams.run()
     case "59" => BackpressureStreams.run()
-    case "60" => StreamGraphBasics.run()
+    case "60" =>
+      val streamGraph = StreamGraphBasics
+      streamGraph.run()
+      streamGraph.run2()
+      streamGraph.run3()
     case _ => println("option unavailable.")
   }
 }
