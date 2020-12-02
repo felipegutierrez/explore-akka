@@ -1,7 +1,5 @@
 package org.github.felipegutierrez.explore.akka
 
-import java.util.Scanner
-
 import org.github.felipegutierrez.explore.akka.classic.basics._
 import org.github.felipegutierrez.explore.akka.classic.clustering.basic.{ClusteringBasics, ClusteringManualRegistration}
 import org.github.felipegutierrez.explore.akka.classic.clustering.chat.ChatApp
@@ -13,14 +11,17 @@ import org.github.felipegutierrez.explore.akka.classic.persistence.detaching.Det
 import org.github.felipegutierrez.explore.akka.classic.persistence.event_sourcing._
 import org.github.felipegutierrez.explore.akka.classic.persistence.schema.EventAdapters
 import org.github.felipegutierrez.explore.akka.classic.persistence.stores.{CassandraStores, LocalStores, PostgresStores}
-import org.github.felipegutierrez.explore.akka.recap._
 import org.github.felipegutierrez.explore.akka.classic.remote._
 import org.github.felipegutierrez.explore.akka.classic.remote.deployment.{LocalDeployment, RemoteDeployment}
 import org.github.felipegutierrez.explore.akka.classic.remote.hello.{LocalActor, RemoteActor}
 import org.github.felipegutierrez.explore.akka.classic.remote.wordcount.{MasterApp, WorkerApp}
 import org.github.felipegutierrez.explore.akka.classic.streams.basics.{BackpressureStreams, FirstStreamPrinciples, MaterializingStreams, OperatorFusionStreams}
-import org.github.felipegutierrez.explore.akka.typed.basics.{BankAccountActorTyped, CounterActorTyped, CounterActorTypedDemo}
+import org.github.felipegutierrez.explore.akka.classic.streams.graphs.StreamGraphBasics
+import org.github.felipegutierrez.explore.akka.recap._
+import org.github.felipegutierrez.explore.akka.typed.basics.{BankAccountActorTyped, CounterActorTypedDemo}
 import org.github.felipegutierrez.explore.akka.typed.patterns.VendingMachineTypedDemo
+
+import java.util.Scanner
 
 object MainClass extends App {
   println(s"0 - out")
@@ -103,7 +104,7 @@ object MainClass extends App {
   println(s"57 - MaterializingStreams")
   println(s"58 - OperatorFusionStreams")
   println(s"59 - BackpressureStreams")
-  println(s"60 - ")
+  println(s"60 - StreamGraphBasics")
 
   var option: String = ""
   if (args.length == 0) {
@@ -219,7 +220,7 @@ object MainClass extends App {
     case "57" => MaterializingStreams.run()
     case "58" => OperatorFusionStreams.run()
     case "59" => BackpressureStreams.run()
-    case "60" =>
+    case "60" => StreamGraphBasics.run()
     case _ => println("option unavailable.")
   }
 }
