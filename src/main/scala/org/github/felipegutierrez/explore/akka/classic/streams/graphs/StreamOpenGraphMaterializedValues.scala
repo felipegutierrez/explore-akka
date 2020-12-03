@@ -20,8 +20,8 @@ object StreamOpenGraphMaterializedValues extends App {
 
     // Step 1
     val complexWordSink = Sink.fromGraph(
-      GraphDSL.create(counter) { implicit builder =>
-        counterShape =>
+      GraphDSL.create(printer, counter)((printerMatValue, counterMatValue) => counterMatValue) { implicit builder =>
+        (printerShape, counterShape) => {
           import GraphDSL.Implicits._
           // step 2 - shapes
           val broadcast = builder.add(Broadcast[String](2))
@@ -29,11 +29,12 @@ object StreamOpenGraphMaterializedValues extends App {
           val shortStringFilter = builder.add(Flow[String].filter(_.length < 3))
 
           // step 3 - tie components together
-          broadcast ~> lowercaseFlow ~> printer
+          broadcast ~> lowercaseFlow ~> printerShape
           broadcast ~> shortStringFilter ~> counterShape
 
           // Step 4 - the Shape
           SinkShape(broadcast.in)
+        }
       }
     )
 
@@ -43,6 +44,5 @@ object StreamOpenGraphMaterializedValues extends App {
       case Success(value) => println(s"total of words: $value")
       case Failure(exception) => println(s"fail because: $exception")
     }
-
   }
 }
