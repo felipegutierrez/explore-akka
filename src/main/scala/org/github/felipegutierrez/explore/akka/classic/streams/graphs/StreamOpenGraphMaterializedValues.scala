@@ -53,7 +53,7 @@ object StreamOpenGraphMaterializedValues extends App {
       .viaMat(enhanceFlow(simpleFlow))(Keep.right)
       .toMat(simpleSink)(Keep.left)
       .run()
-    
+
     enhancedFlowCountFuture.onComplete {
       case Success(count) => println(s"$count elements went through the enhanced flow")
       case _ => println("Something failed")

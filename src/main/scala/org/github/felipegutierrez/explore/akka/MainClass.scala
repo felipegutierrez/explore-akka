@@ -16,7 +16,7 @@ import org.github.felipegutierrez.explore.akka.classic.remote.deployment.{LocalD
 import org.github.felipegutierrez.explore.akka.classic.remote.hello.{LocalActor, RemoteActor}
 import org.github.felipegutierrez.explore.akka.classic.remote.wordcount.{MasterApp, WorkerApp}
 import org.github.felipegutierrez.explore.akka.classic.streams.basics.{BackpressureStreams, FirstStreamPrinciples, MaterializingStreams, OperatorFusionStreams}
-import org.github.felipegutierrez.explore.akka.classic.streams.graphs.{StreamGraphBasics, StreamOpenGraphMaterializedValues, StreamOpenGraphs, StreamOpenGraphsWithMultipleFlows, StreamOpenGraphsWithNonUniformShapes}
+import org.github.felipegutierrez.explore.akka.classic.streams.graphs._
 import org.github.felipegutierrez.explore.akka.recap._
 import org.github.felipegutierrez.explore.akka.typed.basics.{BankAccountActorTyped, CounterActorTypedDemo}
 import org.github.felipegutierrez.explore.akka.typed.patterns.VendingMachineTypedDemo
@@ -109,7 +109,7 @@ object MainClass extends App {
   println(s"62 - StreamOpenGraphsWithMultipleFlows")
   println(s"63 - StreamOpenGraphsWithNonUniformShapes")
   println(s"64 - StreamOpenGraphMaterializedValues")
-  println(s"65 - ")
+  println(s"65 - StreamOpenGraphsBidirectionalFlow")
   println(s"66 - ")
   println(s"67 - ")
   println(s"68 - ")
@@ -240,7 +240,7 @@ object MainClass extends App {
     case "62" => StreamOpenGraphsWithMultipleFlows.run()
     case "63" => StreamOpenGraphsWithNonUniformShapes.run()
     case "64" => StreamOpenGraphMaterializedValues.run()
-    case "65" => ???
+    case "65" => StreamOpenGraphsBidirectionalFlow.run()
     case "66" => ???
     case "67" => ???
     case "68" => ???

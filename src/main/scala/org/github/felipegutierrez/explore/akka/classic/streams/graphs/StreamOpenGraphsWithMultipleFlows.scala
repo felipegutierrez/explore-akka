@@ -53,7 +53,7 @@ object StreamOpenGraphsWithMultipleFlows extends App {
 
         // Step 3 - tying up the components
         incrementerShape ~> multiplierShape
-
+        // BUT I WOULD LIKE TO DO SOMETHING AS BELOW
         // if (isMultipleOf(value???, 10)) incrementerShape ~> divider
         // else incrementerShape ~> multiplierShape
 
