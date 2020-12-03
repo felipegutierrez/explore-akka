@@ -13,11 +13,6 @@ object StreamOpenGraphsWithMultipleFlows extends App {
   def run() = {
     implicit val system = ActorSystem("StreamOpenGraphsWithMultipleFlows")
 
-    /**
-     * Write an open graph that can decide to chose different Flows at runtime
-     */
-
-    val fastSource = Source(1 to 1000).throttle(50, 1 second)
     val slowSource = Source(1 to 1000).throttle(5, 1 second)
     val INC = 5
     val MULTI = 10
@@ -39,20 +34,19 @@ object StreamOpenGraphsWithMultipleFlows extends App {
       result
     }
 
-    // def isMultipleOf(value: Int, multiple: Int): Int = value % multiple
     def isMultipleOf(value: Int, multiple: Int): Int = if (value % multiple == 0) 0 else 1
 
+    /** Write an open graph that can decide to chose different Flows at runtime */
     // Step 1 - setting up the fundamental for a stream graph
     val complexFlowIncrementer = Flow.fromGraph(
       GraphDSL.create() { implicit builder =>
         import GraphDSL.Implicits._
+
         // Step 2 - add necessary components of this graph
         val incrementerShape = builder.add(incrementer)
         val multiplierShape = builder.add(multiplier)
         val dividerShape = builder.add(divider)
-
-        //add partition and merge if(isMultipleOf(_, 10)) 0 else 1
-        // val partition = builder.add(Partition[Int](2, if(isMultipleOf(_, 10)) 0 else 1))
+        // add partition and merge
         val partition = builder.add(Partition[Int](2, isMultipleOf(_, 10)))
         val merge = builder.add(Merge[Int](2))
 
