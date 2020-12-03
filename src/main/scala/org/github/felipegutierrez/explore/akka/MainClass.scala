@@ -110,9 +110,9 @@ object MainClass extends App {
   println(s"63 - StreamOpenGraphsWithNonUniformShapes")
   println(s"64 - StreamOpenGraphMaterializedValues")
   println(s"65 - StreamOpenGraphsBidirectionalFlow")
-  println(s"66 - ")
-  println(s"67 - ")
-  println(s"68 - ")
+  println(s"66 - StreamOpenGraphsCycles")
+  println(s"67 - StreamOpenGraphsCycles buffers")
+  println(s"68 - StreamOpenGraphsCycles fibonacci")
   println(s"69 - ")
   println(s"70 - ")
   println(s"71 - ")
@@ -241,9 +241,9 @@ object MainClass extends App {
     case "63" => StreamOpenGraphsWithNonUniformShapes.run()
     case "64" => StreamOpenGraphMaterializedValues.run()
     case "65" => StreamOpenGraphsBidirectionalFlow.run()
-    case "66" => ???
-    case "67" => ???
-    case "68" => ???
+    case "66" => StreamOpenGraphsCycles.run()
+    case "67" => StreamOpenGraphsCycles.run1()
+    case "68" => StreamOpenGraphsCycles.run2()
     case "69" => ???
     case "70" => ???
     case _ => println("option unavailable.")

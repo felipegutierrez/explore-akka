@@ -8,7 +8,6 @@ object StreamOpenGraphsBidirectionalFlow extends App {
 
   run()
 
-
   def run() = {
     implicit val system = ActorSystem("StreamOpenGraphsBidirectionalFlow")
 
