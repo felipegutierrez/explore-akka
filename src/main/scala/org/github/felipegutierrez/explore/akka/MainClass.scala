@@ -113,7 +113,7 @@ object MainClass extends App {
   println(s"66 - StreamOpenGraphsCycles")
   println(s"67 - StreamOpenGraphsCycles buffers")
   println(s"68 - StreamOpenGraphsCycles fibonacci")
-  println(s"69 - ")
+  println(s"69 - StreamOpenGraphWithTwoSourcesAndDifferentJoinStrategies")
   println(s"70 - ")
   println(s"71 - ")
 
@@ -244,7 +244,7 @@ object MainClass extends App {
     case "66" => StreamOpenGraphsCycles.run()
     case "67" => StreamOpenGraphsCycles.run1()
     case "68" => StreamOpenGraphsCycles.run2()
-    case "69" => ???
+    case "69" => StreamOpenGraphWithTwoSourcesAndDifferentJoinStrategies.run()
     case "70" => ???
     case _ => println("option unavailable.")
   }
