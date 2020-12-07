@@ -23,7 +23,7 @@ object StreamIntegrationWithActors extends App {
     implicit val timeout = Timeout(2 seconds)
     val actorBasedFlow = Flow[Int].ask[Int](parallelism = 4)(simpleActor)
 
-    // numbersSource.via(actorBasedFlow).to(Sink.foreach[Int](println)).run()
+    numbersSource.via(actorBasedFlow).to(Sink.foreach[Int](println)).run()
 
     /** Actor as a source */
     // val actorPoweredSource = Source.actorRef[Int](bufferSize = 3, overflowStrategy = OverflowStrategy.dropHead)

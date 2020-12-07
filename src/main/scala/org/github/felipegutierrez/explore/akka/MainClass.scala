@@ -17,6 +17,7 @@ import org.github.felipegutierrez.explore.akka.classic.remote.hello.{LocalActor,
 import org.github.felipegutierrez.explore.akka.classic.remote.wordcount.{MasterApp, WorkerApp}
 import org.github.felipegutierrez.explore.akka.classic.streams.basics.{BackpressureStreams, FirstStreamPrinciples, MaterializingStreams, OperatorFusionStreams}
 import org.github.felipegutierrez.explore.akka.classic.streams.graphs._
+import org.github.felipegutierrez.explore.akka.classic.streams.techniques.StreamIntegrationWithActors
 import org.github.felipegutierrez.explore.akka.recap._
 import org.github.felipegutierrez.explore.akka.typed.basics.{BankAccountActorTyped, CounterActorTypedDemo}
 import org.github.felipegutierrez.explore.akka.typed.patterns.VendingMachineTypedDemo
@@ -114,7 +115,7 @@ object MainClass extends App {
   println(s"67 - StreamOpenGraphsCycles buffers")
   println(s"68 - StreamOpenGraphsCycles fibonacci")
   println(s"69 - StreamOpenGraphWithTwoSourcesAndDifferentJoinStrategies")
-  println(s"70 - ")
+  println(s"70 - StreamIntegrationWithActors")
   println(s"71 - ")
 
   var option: String = ""
@@ -245,7 +246,7 @@ object MainClass extends App {
     case "67" => StreamOpenGraphsCycles.run1()
     case "68" => StreamOpenGraphsCycles.run2()
     case "69" => StreamOpenGraphWithTwoSourcesAndDifferentJoinStrategies.run()
-    case "70" => ???
+    case "70" => StreamIntegrationWithActors.run()
     case _ => println("option unavailable.")
   }
 }
