@@ -17,7 +17,7 @@ import org.github.felipegutierrez.explore.akka.classic.remote.hello.{LocalActor,
 import org.github.felipegutierrez.explore.akka.classic.remote.wordcount.{MasterApp, WorkerApp}
 import org.github.felipegutierrez.explore.akka.classic.streams.basics.{BackpressureStreams, FirstStreamPrinciples, MaterializingStreams, OperatorFusionStreams}
 import org.github.felipegutierrez.explore.akka.classic.streams.graphs._
-import org.github.felipegutierrez.explore.akka.classic.streams.techniques.{StreamBackpressure, StreamIntegrationWithActors, StreamIntegrationWithExternalServices}
+import org.github.felipegutierrez.explore.akka.classic.streams.techniques.{StreamBackpressure, StreamFaultTolerance, StreamIntegrationWithActors, StreamIntegrationWithExternalServices}
 import org.github.felipegutierrez.explore.akka.recap._
 import org.github.felipegutierrez.explore.akka.typed.basics.{BankAccountActorTyped, CounterActorTypedDemo}
 import org.github.felipegutierrez.explore.akka.typed.patterns.VendingMachineTypedDemo
@@ -101,24 +101,24 @@ object MainClass extends App {
   println(s"53 - CassandraStores")
   println(s"54 - EventAdapters")
   println(s"55 - DetachingModels")
-  println(s"56 - FirstStreamPrinciples")
-  println(s"57 - MaterializingStreams")
-  println(s"58 - OperatorFusionStreams")
-  println(s"59 - BackpressureStreams")
-  println(s"60 - StreamGraphBasics")
-  println(s"61 - StreamOpenGraphs")
-  println(s"62 - StreamOpenGraphsWithMultipleFlows")
-  println(s"63 - StreamOpenGraphsWithNonUniformShapes")
-  println(s"64 - StreamOpenGraphMaterializedValues")
-  println(s"65 - StreamOpenGraphsBidirectionalFlow")
-  println(s"66 - StreamOpenGraphsCycles")
-  println(s"67 - StreamOpenGraphsCycles buffers")
-  println(s"68 - StreamOpenGraphsCycles fibonacci")
-  println(s"69 - StreamOpenGraphWithTwoSourcesAndDifferentJoinStrategies")
-  println(s"70 - StreamIntegrationWithActors")
-  println(s"71 - StreamIntegrationWithExternalServices")
+  println(s"56 - Streams FirstStreamPrinciples")
+  println(s"57 - Streams MaterializingStreams")
+  println(s"58 - Streams OperatorFusionStreams")
+  println(s"59 - Streams BackpressureStreams")
+  println(s"60 - Stream GraphBasics")
+  println(s"61 - Stream OpenGraphs")
+  println(s"62 - Stream OpenGraphsWithMultipleFlows")
+  println(s"63 - Stream OpenGraphsWithNonUniformShapes")
+  println(s"64 - Stream OpenGraphMaterializedValues")
+  println(s"65 - Stream OpenGraphsBidirectionalFlow")
+  println(s"66 - Stream OpenGraphsCycles")
+  println(s"67 - Stream OpenGraphsCycles buffers")
+  println(s"68 - Stream OpenGraphsCycles fibonacci")
+  println(s"69 - Stream OpenGraphWithTwoSourcesAndDifferentJoinStrategies")
+  println(s"70 - Stream IntegrationWithActors")
+  println(s"71 - Stream IntegrationWithExternalServices")
   println(s"72 - Stream Backpressure")
-  println(s"73 - ")
+  println(s"73 - Stream FaultTolerance")
   println(s"74 - ")
   println(s"75 - ")
   println(s"76 - ")
@@ -257,7 +257,7 @@ object MainClass extends App {
     case "70" => StreamIntegrationWithActors.run()
     case "71" => StreamIntegrationWithExternalServices.run()
     case "72" => StreamBackpressure.run()
-    case "73" => ???
+    case "73" => StreamFaultTolerance.run()
     case "74" => ???
     case "75" => ???
     case "76" => ???
