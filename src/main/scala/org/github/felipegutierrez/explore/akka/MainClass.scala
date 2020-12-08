@@ -17,7 +17,7 @@ import org.github.felipegutierrez.explore.akka.classic.remote.hello.{LocalActor,
 import org.github.felipegutierrez.explore.akka.classic.remote.wordcount.{MasterApp, WorkerApp}
 import org.github.felipegutierrez.explore.akka.classic.streams.basics.{BackpressureStreams, FirstStreamPrinciples, MaterializingStreams, OperatorFusionStreams}
 import org.github.felipegutierrez.explore.akka.classic.streams.graphs._
-import org.github.felipegutierrez.explore.akka.classic.streams.techniques.{StreamIntegrationWithActors, StreamIntegrationWithExternalServices}
+import org.github.felipegutierrez.explore.akka.classic.streams.techniques.{StreamBackpressure, StreamIntegrationWithActors, StreamIntegrationWithExternalServices}
 import org.github.felipegutierrez.explore.akka.recap._
 import org.github.felipegutierrez.explore.akka.typed.basics.{BankAccountActorTyped, CounterActorTypedDemo}
 import org.github.felipegutierrez.explore.akka.typed.patterns.VendingMachineTypedDemo
@@ -117,6 +117,14 @@ object MainClass extends App {
   println(s"69 - StreamOpenGraphWithTwoSourcesAndDifferentJoinStrategies")
   println(s"70 - StreamIntegrationWithActors")
   println(s"71 - StreamIntegrationWithExternalServices")
+  println(s"72 - Stream Backpressure")
+  println(s"73 - ")
+  println(s"74 - ")
+  println(s"75 - ")
+  println(s"76 - ")
+  println(s"77 - ")
+  println(s"78 - ")
+  println(s"79 - ")
 
   var option: String = ""
   if (args.length == 0) {
@@ -248,6 +256,14 @@ object MainClass extends App {
     case "69" => StreamOpenGraphWithTwoSourcesAndDifferentJoinStrategies.run()
     case "70" => StreamIntegrationWithActors.run()
     case "71" => StreamIntegrationWithExternalServices.run()
+    case "72" => StreamBackpressure.run()
+    case "73" => ???
+    case "74" => ???
+    case "75" => ???
+    case "76" => ???
+    case "77" => ???
+    case "78" => ???
+    case "79" => ???
     case _ => println("option unavailable.")
   }
 }
