@@ -27,13 +27,28 @@ object DynamicStreamHandling {
     val counter = Source(Stream.from(1)).throttle(1, 1 second).log("counter")
     val sink = Sink.ignore
 
+//    val killSwitch = counter
+//      .viaMat(killSwitchFlow)(Keep.right)
+//      .map(i => {
+//        system.log.info(s"Start task $i")
+//        Thread.sleep(100)
+//        system.log.info(s"End task $i")
+//        i
+//      })
+//      .to(sink)
+//      .run()
+//    system.scheduler.scheduleOnce(3 seconds) {
+//      killSwitch.shutdown()
+//    }
 
-    val killSwitch = counter
-      .viaMat(killSwitchFlow)(Keep.right)
-      .to(sink)
-      .run()
+    // shared kill switch
+    val anotherCounter = Source(Stream.from(1)).throttle(2, 1 second).log("anotherCounter")
+    val sharedKillSwitch = KillSwitches.shared("oneButtonToRuleThemAll")
+
+    counter.via(sharedKillSwitch.flow).runWith(Sink.ignore)
+    anotherCounter.via(sharedKillSwitch.flow).runWith(Sink.ignore)
     system.scheduler.scheduleOnce(3 seconds) {
-      killSwitch.shutdown()
+      sharedKillSwitch.shutdown()
     }
   }
 }
