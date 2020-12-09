@@ -253,7 +253,7 @@ object MainClass extends App {
     case "66" => StreamOpenGraphsCycles.run()
     case "67" => StreamOpenGraphsCycles.run1()
     case "68" => StreamOpenGraphsCycles.run2()
-    case "69" => StreamOpenGraphWithTwoSourcesAndDifferentJoinStrategies.run()
+    case "69" => StreamOpenGraphWithTwoSourcesAndPartitionStrategies.run()
     case "70" => StreamIntegrationWithActors.run()
     case "71" => StreamIntegrationWithExternalServices.run()
     case "72" => StreamBackpressure.run()
