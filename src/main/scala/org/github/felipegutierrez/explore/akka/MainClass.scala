@@ -15,7 +15,7 @@ import org.github.felipegutierrez.explore.akka.classic.remote._
 import org.github.felipegutierrez.explore.akka.classic.remote.deployment.{LocalDeployment, RemoteDeployment}
 import org.github.felipegutierrez.explore.akka.classic.remote.hello.{LocalActor, RemoteActor}
 import org.github.felipegutierrez.explore.akka.classic.remote.wordcount.{MasterApp, WorkerApp}
-import org.github.felipegutierrez.explore.akka.classic.streams.advanced.StreamOpenGraphWithSubStream
+import org.github.felipegutierrez.explore.akka.classic.streams.advanced.{StreamCustomGraphShapes, StreamOpenGraphWithSubStream}
 import org.github.felipegutierrez.explore.akka.classic.streams.basics.{BackpressureStreams, FirstStreamPrinciples, MaterializingStreams, OperatorFusionStreams}
 import org.github.felipegutierrez.explore.akka.classic.streams.graphs._
 import org.github.felipegutierrez.explore.akka.classic.streams.techniques.{StreamBackpressure, StreamFaultTolerance, StreamIntegrationWithActors, StreamIntegrationWithExternalServices}
@@ -121,7 +121,7 @@ object MainClass extends App {
   println(s"72 - Stream Backpressure")
   println(s"73 - Stream FaultTolerance")
   println(s"74 - Stream StreamOpenGraphWithSubStream")
-  println(s"75 - ")
+  println(s"75 - Stream StreamCustomGraphShapes")
   println(s"76 - ")
   println(s"77 - ")
   println(s"78 - ")
@@ -260,7 +260,7 @@ object MainClass extends App {
     case "72" => StreamBackpressure.run()
     case "73" => StreamFaultTolerance.run()
     case "74" => StreamOpenGraphWithSubStream.run()
-    case "75" => ???
+    case "75" => StreamCustomGraphShapes.run()
     case "76" => ???
     case "77" => ???
     case "78" => ???
