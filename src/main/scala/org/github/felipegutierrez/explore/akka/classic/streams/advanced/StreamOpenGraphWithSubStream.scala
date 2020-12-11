@@ -65,7 +65,9 @@ object StreamOpenGraphWithSubStream {
         "Let's rock the JVM\n" + // even
         "123\n" + // odd
         "1234\n" // even
-    val anotherCharCountFuture = Source(text.toList)
+    val textHamlet = scala.io.Source.fromFile("src/main/resources/txt/hamlet.txt").getLines()
+    val t1 = System.nanoTime
+    val anotherCharCountFuture = Source(textHamlet.toList) // text.toList
       .splitWhen(c => c == '\n')
       .filter(_ != '\n')
       .map { v =>
@@ -76,7 +78,10 @@ object StreamOpenGraphWithSubStream {
       .toMat(Sink.reduce[Int](_ + _))(Keep.right)
       .run()
     anotherCharCountFuture.onComplete {
-      case Success(value) => println(s"Total char count alternative: $value")
+      case Success(value) =>
+        val duration = (System.nanoTime - t1) / 1e9d
+        println(s"Total char count alternative: $value in [$duration]")
+
       case Failure(ex) => println(s"Char computation failed: $ex")
     }
   }
