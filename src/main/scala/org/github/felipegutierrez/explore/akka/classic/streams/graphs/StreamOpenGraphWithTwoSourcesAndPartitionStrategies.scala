@@ -1,8 +1,9 @@
 package org.github.felipegutierrez.explore.akka.classic.streams.graphs
 
+import akka.NotUsed
 import akka.actor.ActorSystem
 import akka.stream.ClosedShape
-import akka.stream.scaladsl.{Flow, GraphDSL, Interleave, Merge, Partition, RunnableGraph, Sink, Source}
+import akka.stream.scaladsl.{Flow, GraphDSL, Merge, Partition, RunnableGraph, Sink, Source}
 
 import scala.concurrent.duration._
 
@@ -14,10 +15,19 @@ object StreamOpenGraphWithTwoSourcesAndPartitionStrategies extends App {
   def run() = {
     implicit val system = ActorSystem("StreamOpenGraphWithTwoSourcesAndDifferentJoinStrategies")
 
-    val incrementSource = Source(1 to 1000).throttle(10, 1 second)
-    val decrementSource = Source(1000 to 1).throttle(10, 1 second)
+    val incrementSource: Source[Int, NotUsed] = Source(1 to 10).throttle(1, 1 second)
+    val decrementSource: Source[Int, NotUsed] = Source(10 to 20).throttle(1, 1 second)
 
-    def strategicJoinDecision(value: (Int, Int)): Int = if (value._1 < value._2) 0 else 1
+    def strategicJoinDecision(value: (Int, Int)): Int = {
+      println(s"value._1: ${value._1} value._2: ${value._2}")
+      if (value._1 < value._2) 0 else 1
+    }
+
+    def tokenizerSource(key: Int) = {
+      Flow[Int].map { value =>
+        (key, value)
+      }
+    }
 
     // Step 1 - setting up the fundamental for a stream graph
     val switchJoinStrategies = RunnableGraph.fromGraph(
@@ -25,14 +35,10 @@ object StreamOpenGraphWithTwoSourcesAndPartitionStrategies extends App {
         import GraphDSL.Implicits._
 
         // Step 2 - add partition and merge strategy
-        // val zipShape = builder.add(Zip[Int, Int])
-        val mapIncermentShape = builder.add(Flow[Int].map { value =>
-          (1, value)
-        })
-        val mapDecrementShape = builder.add(Flow[Int].map { value =>
-          (-1, value)
-        })
-        val mergeSources = builder.add(Interleave[(Int, Int)](2, 1))
+        val tokenizerShape00 = builder.add(tokenizerSource(0))
+        val tokenizerShape01 = builder.add(tokenizerSource(1))
+
+        val mergeTupleShape = builder.add(Merge[(Int, Int)](2))
         val partitionDecisionShape = builder.add(Partition[(Int, Int)](2, strategicJoinDecision(_)))
 
         val strategy01Shape = builder.add(Flow[(Int, Int)].map { pair =>
@@ -45,19 +51,16 @@ object StreamOpenGraphWithTwoSourcesAndPartitionStrategies extends App {
           print(s"strategy 1 [${pair._1} - ${pair._2}] = $result")
           result
         })
-        val mergeStrategyShape = builder.add(Merge[Int](2))
+        val mergeShape = builder.add(Merge[Int](2))
         val sinkShape = builder.add(Sink.foreach[Int](x => println(s" > sink: $x")))
 
         // Step 3 - tying up the components
-        // incrementSource ~> zipShape.in0
-        // decrementSource ~> zipShape.in1
-        // zipShape.out ~> partitionDecisionShape
-        incrementSource ~> mapIncermentShape ~> mergeSources.in(0)
-        decrementSource ~> mapDecrementShape ~> mergeSources.in(1)
-        mergeSources.out ~> partitionDecisionShape
-        partitionDecisionShape.out(0) ~> strategy01Shape ~> mergeStrategyShape.in(0)
-        partitionDecisionShape.out(1) ~> strategy02Shape ~> mergeStrategyShape.in(1)
-        mergeStrategyShape ~> sinkShape
+        incrementSource ~> tokenizerShape00 ~> mergeTupleShape.in(0)
+        decrementSource ~> tokenizerShape01 ~> mergeTupleShape.in(1)
+        mergeTupleShape.out ~> partitionDecisionShape
+        partitionDecisionShape.out(0) ~> strategy01Shape ~> mergeShape.in(0)
+        partitionDecisionShape.out(1) ~> strategy02Shape ~> mergeShape.in(1)
+        mergeShape ~> sinkShape
 
         // Step 4 - return the shape
         ClosedShape
