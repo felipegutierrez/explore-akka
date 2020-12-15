@@ -2,7 +2,7 @@ package org.github.felipegutierrez.explore.akka.classic.streams.advanced
 
 import akka.actor.ActorSystem
 import akka.stream._
-import akka.stream.scaladsl.{Sink, Source}
+import akka.stream.scaladsl.{Flow, Sink, Source}
 import akka.stream.stage.{GraphStage, GraphStageLogic, InHandler, OutHandler}
 import com.typesafe.config.ConfigFactory
 
@@ -26,8 +26,13 @@ object StreamCustomGraphOperators {
 
     val randomGeneratorSource = Source.fromGraph(new RandomNumberGenerator(1000))
     // randomGeneratorSource.runWith(Sink.foreach(println))
-    val batcherSink = Sink.fromGraph(new BatcherSink(10))
-    randomGeneratorSource.to(batcherSink).run()
+    val batchSink = Sink.fromGraph(new BatchSink(10))
+    // randomGeneratorSource.to(batchSink).run()
+    val filterFlow = Flow.fromGraph(new FilterFlow[Int](_ % 2 == 0))
+    randomGeneratorSource
+      .via(filterFlow)
+      .to(batchSink)
+      .run()
   }
 
   // 1 - a custom source which emits random numbers until canceled
@@ -52,8 +57,8 @@ object StreamCustomGraphOperators {
     override def shape: SourceShape[Int] = SourceShape(outPort)
   }
 
-  class BatcherSink(maxBatchSize: Int) extends GraphStage[SinkShape[Int]] {
-    val inPort = Inlet[Int]("batcher")
+  class BatchSink(maxBatchSize: Int) extends GraphStage[SinkShape[Int]] {
+    val inPort = Inlet[Int]("batch")
 
     override def createLogic(inheritedAttributes: Attributes): GraphStageLogic = new GraphStageLogic(shape) {
       // mutable state
@@ -85,6 +90,42 @@ object StreamCustomGraphOperators {
     }
 
     override def shape: SinkShape[Int] = SinkShape[Int](inPort)
+  }
+
+  /**
+   * Exercise: a custom flow - a simple filter flow
+   * - 2 ports: an input port and an output port
+   */
+  class FilterFlow[T](predicate: T => Boolean) extends GraphStage[FlowShape[T, T]] {
+    // step 1: define the ports and the component-specific members
+    val in = Inlet[T]("Filter.in")
+    val out = Outlet[T]("Filter.out")
+
+    // step 3: create the logic
+    override def createLogic(inheritedAttributes: Attributes): GraphStageLogic = new GraphStageLogic(shape) {
+      // override def preStart(): Unit = pull(inPort)
+      // step 4: define mutable state implement my logic here
+      setHandler(in, new InHandler {
+        override def onPush(): Unit = {
+          val elem = grab(in)
+          if (predicate(elem)) {
+            // forward the element to the downstream operator
+            push(out, elem)
+          } else {
+            // send demand upstream signal, asking for another element
+            pull(in)
+          }
+        }
+      })
+      setHandler(out, new OutHandler {
+        override def onPull(): Unit = {
+          pull(in)
+        }
+      })
+    }
+
+    // step 2: construct a new shape
+    override def shape: FlowShape[T, T] = FlowShape[T, T](in, out)
   }
 
 }
