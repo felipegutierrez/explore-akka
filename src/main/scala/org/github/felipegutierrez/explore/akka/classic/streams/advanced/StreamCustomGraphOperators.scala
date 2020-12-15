@@ -107,13 +107,17 @@ object StreamCustomGraphOperators {
       // step 4: define mutable state implement my logic here
       setHandler(in, new InHandler {
         override def onPush(): Unit = {
-          val elem = grab(in)
-          if (predicate(elem)) {
-            // forward the element to the downstream operator
-            push(out, elem)
-          } else {
-            // send demand upstream signal, asking for another element
-            pull(in)
+          try {
+            val elem = grab(in)
+            if (predicate(elem)) {
+              // forward the element to the downstream operator
+              push(out, elem)
+            } else {
+              // send demand upstream signal, asking for another element
+              pull(in)
+            }
+          } catch {
+            case e: Throwable => failStage(e)
           }
         }
       })
