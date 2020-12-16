@@ -15,13 +15,9 @@ class WindowEventFlowSpec extends TestKit(ActorSystem("WindowEventFlowSpec"))
 
   "The WindowEventFlow that aggregates every 5 events" should {
     "sum the values correct" in {
-      // describe our test
-
       val simpleSource = Source[Int](1 to 10)
       val windowEventFlow = Flow.fromGraph(new WindowEventFlow(5))
-      // val simpleSink = Sink.foreach[Int](x => x)
       val testSink = TestSink.probe[Int]
-      // val simpleSink = Sink.fold(0)((a: Int, b: Int) => a + b)
 
       val materializedTestValue = simpleSource
         .via(windowEventFlow)

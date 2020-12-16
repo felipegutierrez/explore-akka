@@ -24,9 +24,9 @@ object StreamOpenGraphWindow {
         import GraphDSL.Implicits._
         // Step 2 - create shapes
         val mergeShape = builder.add(Merge[Int](2))
-        val windowTimeFlow = Flow.fromGraph(new WindowProcessingTimerFlow(5000 millisecond))
-        val windowEventFlow = Flow.fromGraph(new WindowEventFlow(10))
+        // val windowTimeFlow = Flow.fromGraph(new WindowProcessingTimerFlow(5000 millisecond))
         // val windowFlowShape = builder.add(windowTimeFlow)
+        val windowEventFlow = Flow.fromGraph(new WindowEventFlow(10))
         val windowFlowShape = builder.add(windowEventFlow)
         val sinkShape = builder.add(Sink.foreach[Int](x => println(s"\nsink: $x")))
 
