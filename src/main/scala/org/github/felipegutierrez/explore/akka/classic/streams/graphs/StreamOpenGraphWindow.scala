@@ -3,7 +3,6 @@ package org.github.felipegutierrez.explore.akka.classic.streams.graphs
 import akka.actor.ActorSystem
 import akka.stream._
 import akka.stream.scaladsl.{Flow, GraphDSL, Merge, RunnableGraph, Sink, Source}
-import akka.stream.stage._
 
 import scala.concurrent.duration._
 
@@ -43,96 +42,4 @@ object StreamOpenGraphWindow {
     // run the graph and materialize it
     val graph = windowRunnableGraph.run()
   }
-
-  // step 0: define the shape
-  class WindowProcessingTimerFlow(silencePeriod: FiniteDuration) extends GraphStage[FlowShape[Int, Int]] {
-    // step 1: define the ports and the component-specific members
-    val in = Inlet[Int]("WindowProcessingTimerFlow.in")
-    val out = Outlet[Int]("WindowProcessingTimerFlow.out")
-
-    // step 3: create the logic
-    override def createLogic(inheritedAttributes: Attributes): GraphStageLogic = new TimerGraphStageLogic(shape) {
-      // mutable state
-      var sum: Int = 0
-      var open = false
-      var count = 0
-      // step 4: define mutable state implement my logic here
-      setHandler(in, new InHandler {
-        override def onPush(): Unit = {
-          try {
-            val nextElement = grab(in)
-            print(s"time($count)[$sum,$nextElement] | ")
-            sum = sum + nextElement
-            count += 1
-            if (open) {
-              pull(in) // send demand upstream signal, asking for another element
-            } else {
-              push(out, sum)
-              open = true
-              sum = 0
-              count = 0
-              scheduleOnce(None, silencePeriod)
-            }
-          } catch {
-            case e: Throwable => failStage(e)
-          }
-        }
-      })
-      setHandler(out, new OutHandler {
-        override def onPull(): Unit = {
-          pull(in)
-        }
-      })
-
-      override protected def onTimer(timerKey: Any): Unit = {
-        open = false
-      }
-    }
-
-    // step 2: construct a new shape
-    override def shape: FlowShape[Int, Int] = FlowShape[Int, Int](in, out)
-  }
-
-  // step 0: define the shape
-  class WindowEventFlow(maxBatchSize: Int) extends GraphStage[FlowShape[Int, Int]] {
-    // step 1: define the ports and the component-specific members
-    val in = Inlet[Int]("WindowEventFlow.in")
-    val out = Outlet[Int]("WindowEventFlow.out")
-
-    // step 3: create the logic
-    override def createLogic(inheritedAttributes: Attributes): GraphStageLogic = new GraphStageLogic(shape) {
-      // mutable state
-      var sum: Int = 0
-      var count = 0
-      // step 4: define mutable state implement my logic here
-      setHandler(in, new InHandler {
-        override def onPush(): Unit = {
-          try {
-            val nextElement = grab(in)
-            print(s"event($count)[$sum,$nextElement] | ")
-            sum = sum + nextElement
-            count += 1
-            if (count >= maxBatchSize) {
-              push(out, sum)
-              sum = 0
-              count = 0
-            } else {
-              pull(in) // send demand upstream signal, asking for another element
-            }
-          } catch {
-            case e: Throwable => failStage(e)
-          }
-        }
-      })
-      setHandler(out, new OutHandler {
-        override def onPull(): Unit = {
-          pull(in)
-        }
-      })
-    }
-
-    // step 2: construct a new shape
-    override def shape: FlowShape[Int, Int] = FlowShape[Int, Int](in, out)
-  }
-
 }
