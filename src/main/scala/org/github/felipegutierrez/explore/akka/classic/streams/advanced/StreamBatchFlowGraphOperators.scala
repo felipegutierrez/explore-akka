@@ -25,11 +25,11 @@ object StreamBatchFlowGraphOperators {
     val config = ConfigFactory.parseString(configString)
     implicit val system = ActorSystem("StreamBatchFlowGraphOperators", ConfigFactory.load(config))
 
-    val source = Source(Stream.from(1)).throttle(5, 1 second).log("source")
-    val sink = Sink.foreach(println)
+    val source = Source(Stream.from(1)).throttle(5, 1 second)
+    val sink = Sink.foreach { v: Int => println(s"sink: $v") }
     val batchFlow = Flow.fromGraph(new BatchFlow[Int](10))
-    source
-      .via(batchFlow)
+    source.log("source")
+      .via(batchFlow).log("batchFlow")
       .to(sink)
       .run()
   }
@@ -51,16 +51,14 @@ object StreamBatchFlowGraphOperators {
           try {
             val nextElement = grab(in)
             batch.enqueue(nextElement)
-            // Thread.sleep(50) // simulate an expensive computation
+            Thread.sleep(50) // simulate an expensive computation
             if (batch.size >= maxBatchSize) {
               // forward the element to the downstream operator
-              batch.dequeueAll(_ => true).foreach { value =>
-                println(value)
-                // push(out, value)
-              }
+              emitMultiple(out, batch.dequeueAll(_ => true).to[collection.immutable.Iterable])
+            } else {
+              // send demand upstream signal, asking for another element
+              pull(in)
             }
-            // send demand upstream signal, asking for another element
-            pull(in)
           } catch {
             case e: Throwable => failStage(e)
           }
