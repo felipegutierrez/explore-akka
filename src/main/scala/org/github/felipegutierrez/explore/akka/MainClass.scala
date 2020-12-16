@@ -15,7 +15,7 @@ import org.github.felipegutierrez.explore.akka.classic.remote._
 import org.github.felipegutierrez.explore.akka.classic.remote.deployment.{LocalDeployment, RemoteDeployment}
 import org.github.felipegutierrez.explore.akka.classic.remote.hello.{LocalActor, RemoteActor}
 import org.github.felipegutierrez.explore.akka.classic.remote.wordcount.{MasterApp, WorkerApp}
-import org.github.felipegutierrez.explore.akka.classic.streams.advanced.{StreamBatchFlowGraphOperators, StreamCustomGraphOperators, StreamCustomGraphShapes, StreamOpenGraphWithSubStream}
+import org.github.felipegutierrez.explore.akka.classic.streams.advanced.{StreamBatchFlowGraphOperators, StreamBatchTimerFlowGraphOperators, StreamCustomGraphOperators, StreamCustomGraphShapes, StreamOpenGraphWithSubStream}
 import org.github.felipegutierrez.explore.akka.classic.streams.basics.{BackpressureStreams, FirstStreamPrinciples, MaterializingStreams, OperatorFusionStreams}
 import org.github.felipegutierrez.explore.akka.classic.streams.graphs._
 import org.github.felipegutierrez.explore.akka.classic.streams.techniques.{StreamBackpressure, StreamFaultTolerance, StreamIntegrationWithActors, StreamIntegrationWithExternalServices}
@@ -123,8 +123,8 @@ object MainClass extends App {
   println(s"74 - Stream StreamOpenGraphWithSubStream")
   println(s"75 - Stream StreamCustomGraphShapes")
   println(s"76 - Stream StreamCustomGraphOperators")
-  println(s"77 - Stream Flow operator in mini-batches")
-  println(s"78 - ")
+  println(s"77 - Stream Flow operator in mini-batches based on number of elements")
+  println(s"78 - Stream Flow operator in mini-batches based on time")
   println(s"79 - ")
 
   var option: String = ""
@@ -263,7 +263,7 @@ object MainClass extends App {
     case "75" => StreamCustomGraphShapes.run()
     case "76" => StreamCustomGraphOperators.run()
     case "77" => StreamBatchFlowGraphOperators.run()
-    case "78" => ???
+    case "78" => StreamBatchTimerFlowGraphOperators.run()
     case "79" => ???
     case _ => println("option unavailable.")
   }
