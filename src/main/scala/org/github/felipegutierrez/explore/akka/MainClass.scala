@@ -126,6 +126,7 @@ object MainClass extends App {
   println(s"77 - Stream Flow operator in mini-batches based on number of elements")
   println(s"78 - Stream Flow operator in mini-batches based on time")
   println(s"79 - Stream window Flow based on time or events")
+  println(s"80 - Stream window Flow to group events with same ID")
 
   var option: String = ""
   if (args.length == 0) {
@@ -265,6 +266,7 @@ object MainClass extends App {
     case "77" => StreamBatchFlowGraphOperators.run()
     case "78" => StreamBatchTimerFlowGraphOperators.run()
     case "79" => StreamOpenGraphWindow.run()
+    case "80" => WindowGroupEventFlow.run()
     case _ => println("option unavailable.")
   }
 }
