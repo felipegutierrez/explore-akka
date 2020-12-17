@@ -7,6 +7,7 @@ import akka.stream.stage.{GraphStage, GraphStageLogic, InHandler, OutHandler}
 
 import scala.collection.mutable
 import scala.concurrent.duration._
+import scala.util.Random
 
 object WindowGroupEventFlow {
   def main(args: Array[String]): Unit = {
@@ -15,11 +16,10 @@ object WindowGroupEventFlow {
 
   def run() = {
     implicit val system = ActorSystem("WindowGroupEventFlow")
-    import Domain._
-
-    val sourceA = Source(List(A(1), A(2), A(3), A(1), A(2), A(3), A(1), A(2), A(3), A(1))).throttle(3, 1 second)
-    val sourceB = Source(List(B(1), B(2), B(1), B(2), B(1), B(2), B(1), B(2), B(1), B(2))).throttle(2, 1 second)
-    val sourceC = Source(List(C(1), C(2), C(3), C(4))).throttle(1, 1 second)
+    
+    val sourceA = Source.fromGraph(new RandomEventGenerator(20)).throttle(10, 1 second)
+    val sourceB = Source.fromGraph(new RandomEventGenerator(20)).throttle(25, 1 second)
+    val sourceC = Source.fromGraph(new RandomEventGenerator(20)).throttle(50, 1 second)
 
     // Step 1 - setting up the fundamental for a stream graph
     val windowRunnableGraph = RunnableGraph.fromGraph(
@@ -27,7 +27,7 @@ object WindowGroupEventFlow {
         import GraphDSL.Implicits._
         // Step 2 - create shapes
         val mergeShape = builder.add(Merge[Domain.Z](3))
-        val windowEventFlow = Flow.fromGraph(new WindowGroupEventFlow(5))
+        val windowEventFlow = Flow.fromGraph(new WindowGroupEventFlow(50))
         val windowFlowShape = builder.add(windowEventFlow)
         val sinkShape = builder.add(Sink.foreach[Domain.Z](x => println(s"sink: $x")))
 
@@ -115,4 +115,35 @@ class WindowGroupEventFlow(maxBatchSize: Int) extends GraphStage[FlowShape[Domai
 
   // step 2: construct a new shape
   override def shape: FlowShape[Domain.Z, Domain.Z] = FlowShape[Domain.Z, Domain.Z](in, out)
+}
+
+// 1 - a custom source which emits random numbers until canceled
+class RandomEventGenerator(max: Int) extends GraphStage[SourceShape[Domain.Z]] {
+  // step 1: define the ports and the component-specific members
+  val outPort = Outlet[Domain.Z]("randomGenerator")
+  val random = new Random()
+  var count = 0
+
+  // step 3: create the logic
+  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic = new GraphStageLogic(shape) {
+    // step 4: define mutable state implement my logic here
+    setHandler(outPort, new OutHandler {
+      // when there is demand from downstream emit a new element
+      override def onPull(): Unit = {
+        if (count == 0) {
+          push(outPort, Domain.A(random.nextInt(max)))
+          count += 1
+        } else if (count == 1) {
+          push(outPort, Domain.B(random.nextInt(max)))
+          count += 1
+        } else if (count == 2) {
+          push(outPort, Domain.C(random.nextInt(max)));
+          count = 0
+        }
+      }
+    })
+  }
+
+  // step 2: construct a new shape
+  override def shape: SourceShape[Domain.Z] = SourceShape(outPort)
 }
