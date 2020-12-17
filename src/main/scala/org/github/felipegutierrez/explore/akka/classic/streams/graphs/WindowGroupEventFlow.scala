@@ -69,35 +69,25 @@ class WindowGroupEventFlow(maxBatchSize: Int) extends GraphStage[FlowShape[Domai
   // step 3: create the logic
   override def createLogic(inheritedAttributes: Attributes): GraphStageLogic = new GraphStageLogic(shape) {
     // mutable state
-    val batch = new mutable.Queue[Domain.Z]
+    val map = mutable.Map[Int, Domain.Z]()
     var count = 0
-    // var result = ""
     // step 4: define mutable state implement my logic here
     setHandler(in, new InHandler {
       override def onPush(): Unit = {
         try {
           val nextElement = grab(in)
-          batch.enqueue(nextElement)
+          // batch.enqueue(nextElement)
+          add(nextElement)
           count += 1
 
           // If window finished we have to dequeue all elements
           if (count >= maxBatchSize) {
             println("************ window finished - dequeuing elements ************")
-            var result = Map[Int, Domain.Z]()
-            val list = batch.dequeueAll(_ => true).to[collection.immutable.Iterable]
-            list.foreach { tuple =>
-              if (result.contains(tuple.id)) {
-                val abc = result.get(tuple.id)
-                val value = abc.get.value + tuple.value
-                val z: Domain.Z = Domain.ABC(tuple.id, value)
-                result += (tuple.id -> z)
-              } else {
-                val z: Domain.Z = Domain.ABC(tuple.id, tuple.value)
-                result += (tuple.id -> z)
-              }
-            }
-            val finalResult: collection.immutable.Iterable[Domain.Z] = result.map(p => p._2)
-            emitMultiple(out, finalResult)
+            val result: collection.immutable.Iterable[Domain.Z] = map.map { pair =>
+              pair._2
+            }.to[collection.immutable.Iterable]
+            map.clear()
+            emitMultiple(out, result)
             count = 0
           } else {
             pull(in) // send demand upstream signal, asking for another element
@@ -112,6 +102,15 @@ class WindowGroupEventFlow(maxBatchSize: Int) extends GraphStage[FlowShape[Domai
         pull(in)
       }
     })
+
+    def add(element: Domain.Z) = {
+      if (map.contains(element.id)) {
+        val currentElement = map.get(element.id).get
+        map += (element.id -> Domain.ABC(element.id, currentElement.value + element.value))
+      } else {
+        map += (element.id -> Domain.ABC(element.id, element.value))
+      }
+    }
   }
 
   // step 2: construct a new shape
