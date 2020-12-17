@@ -3,7 +3,7 @@ package org.github.felipegutierrez.explore.akka.classic.streams.graphs
 import akka.actor.ActorSystem
 import akka.stream._
 import akka.stream.scaladsl.{Flow, GraphDSL, Merge, RunnableGraph, Sink, Source}
-import akka.stream.stage.{GraphStage, GraphStageLogic, InHandler, OutHandler}
+import akka.stream.stage._
 
 import scala.collection.mutable
 import scala.concurrent.duration._
@@ -16,10 +16,10 @@ object WindowGroupEventFlow {
 
   def run() = {
     implicit val system = ActorSystem("WindowGroupEventFlow")
-    
-    val sourceA = Source.fromGraph(new RandomEventGenerator(20)).throttle(10, 1 second)
-    val sourceB = Source.fromGraph(new RandomEventGenerator(20)).throttle(25, 1 second)
-    val sourceC = Source.fromGraph(new RandomEventGenerator(20)).throttle(50, 1 second)
+
+    val sourceA = Source.fromGraph(new RandomEventGenerator(50)).throttle(10, 1 second)
+    val sourceB = Source.fromGraph(new RandomEventGenerator(50)).throttle(25, 1 second)
+    val sourceC = Source.fromGraph(new RandomEventGenerator(50)).throttle(50, 1 second)
 
     // Step 1 - setting up the fundamental for a stream graph
     val windowRunnableGraph = RunnableGraph.fromGraph(
@@ -27,7 +27,7 @@ object WindowGroupEventFlow {
         import GraphDSL.Implicits._
         // Step 2 - create shapes
         val mergeShape = builder.add(Merge[Domain.Z](3))
-        val windowEventFlow = Flow.fromGraph(new WindowGroupEventFlow(50))
+        val windowEventFlow = Flow.fromGraph(new WindowGroupEventFlow(5 seconds))
         val windowFlowShape = builder.add(windowEventFlow)
         val sinkShape = builder.add(Sink.foreach[Domain.Z](x => println(s"sink: $x")))
 
@@ -61,36 +61,38 @@ object Domain {
 }
 
 // step 0: define the shape
-class WindowGroupEventFlow(maxBatchSize: Int) extends GraphStage[FlowShape[Domain.Z, Domain.Z]] {
+class WindowGroupEventFlow(silencePeriod: FiniteDuration) extends GraphStage[FlowShape[Domain.Z, Domain.Z]] {
   // step 1: define the ports and the component-specific members
-  val in = Inlet[Domain.Z]("WindowGroupEventFlow.in")
-  val out = Outlet[Domain.Z]("WindowGroupEventFlow.out")
+  val in = Inlet[Domain.Z]("WindowGroupProcTimeFlow.in")
+  val out = Outlet[Domain.Z]("WindowGroupProcTimeFlow.out")
 
   // step 3: create the logic
-  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic = new GraphStageLogic(shape) {
+  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic = new TimerGraphStageLogic(shape) {
     // mutable state
     val map = mutable.Map[Int, Domain.Z]()
     var count = 0
+    var open = false
     // step 4: define mutable state implement my logic here
     setHandler(in, new InHandler {
       override def onPush(): Unit = {
         try {
           val nextElement = grab(in)
-          // batch.enqueue(nextElement)
           add(nextElement)
           count += 1
 
-          // If window finished we have to dequeue all elements
-          if (count >= maxBatchSize) {
+          if (open) {
+            pull(in) // send demand upstream signal, asking for another element
+          } else {
+            // If window finished we have to dequeue all elements
             println("************ window finished - dequeuing elements ************")
             val result: collection.immutable.Iterable[Domain.Z] = map.map { pair =>
               pair._2
             }.to[collection.immutable.Iterable]
             map.clear()
             emitMultiple(out, result)
+            open = true
             count = 0
-          } else {
-            pull(in) // send demand upstream signal, asking for another element
+            scheduleOnce(None, silencePeriod)
           }
         } catch {
           case e: Throwable => failStage(e)
@@ -102,6 +104,10 @@ class WindowGroupEventFlow(maxBatchSize: Int) extends GraphStage[FlowShape[Domai
         pull(in)
       }
     })
+
+    override protected def onTimer(timerKey: Any): Unit = {
+      open = false
+    }
 
     def add(element: Domain.Z) = {
       if (map.contains(element.id)) {
