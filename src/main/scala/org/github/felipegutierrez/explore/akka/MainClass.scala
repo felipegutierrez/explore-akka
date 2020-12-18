@@ -15,9 +15,10 @@ import org.github.felipegutierrez.explore.akka.classic.remote._
 import org.github.felipegutierrez.explore.akka.classic.remote.deployment.{LocalDeployment, RemoteDeployment}
 import org.github.felipegutierrez.explore.akka.classic.remote.hello.{LocalActor, RemoteActor}
 import org.github.felipegutierrez.explore.akka.classic.remote.wordcount.{MasterApp, WorkerApp}
-import org.github.felipegutierrez.explore.akka.classic.streams.advanced.{StreamBatchFlowGraphOperators, StreamBatchTimerFlowGraphOperators, StreamCustomGraphOperators, StreamCustomGraphShapes, StreamOpenGraphWithSubStream}
+import org.github.felipegutierrez.explore.akka.classic.streams.advanced._
 import org.github.felipegutierrez.explore.akka.classic.streams.basics.{BackpressureStreams, FirstStreamPrinciples, MaterializingStreams, OperatorFusionStreams}
 import org.github.felipegutierrez.explore.akka.classic.streams.graphs._
+import org.github.felipegutierrez.explore.akka.classic.streams.monitoring.FirstStreamMonitoring
 import org.github.felipegutierrez.explore.akka.classic.streams.techniques.{StreamBackpressure, StreamFaultTolerance, StreamIntegrationWithActors, StreamIntegrationWithExternalServices}
 import org.github.felipegutierrez.explore.akka.recap._
 import org.github.felipegutierrez.explore.akka.typed.basics.{BankAccountActorTyped, CounterActorTypedDemo}
@@ -129,6 +130,7 @@ object MainClass extends App {
   println(s"79 - Stream window Flow based on time or events")
   println(s"80 - Stream window Flow to group events with same ID")
   println(s"81 - Monitoring actors with Kamon and Prometheus")
+  println(s"82 - Monitoring Akka stream with Kamon and Prometheus")
 
   var option: String = ""
   if (args.length == 0) {
@@ -270,6 +272,7 @@ object MainClass extends App {
     case "79" => StreamOpenGraphWindow.run()
     case "80" => WindowGroupEventFlow.run()
     case "81" => AkkaQuickstart.run()
+    case "82" => FirstStreamMonitoring.run()
     case _ => println("option unavailable.")
   }
 }
