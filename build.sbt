@@ -16,6 +16,7 @@ lazy val leveldbjniVersion = "1.8"
 lazy val postgresVersion = "42.2.2"
 lazy val cassandraVersion = "0.91"
 lazy val json4sVersion = "3.2.11"
+lazy val kamonVersion = "2.1.9"
 
 // some libs are available in Bintray's JCenter
 resolvers += Resolver.jcenterRepo
@@ -80,6 +81,12 @@ libraryDependencies ++= Seq(
   // Scala test
   "org.scalatest" %% "scalatest" % scalaTestVersion,
   "junit" % "junit" % "4.13" % Test,
+
+  // Metrics: Kamon + Prometheus
+  "io.kamon" %% "kamon-bundle" % kamonVersion,
+  "io.kamon" %% "kamon-prometheus" % kamonVersion,
+  // "io.kamon" %% "kamon-core" % kamonVersion,
+  // "io.kamon" %% "kamon-akka" % kamonVersion,
 )
 
 mainClass in Compile := Some("org.github.felipegutierrez.explore.akka.MainClass")

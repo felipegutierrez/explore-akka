@@ -21,6 +21,7 @@ import org.github.felipegutierrez.explore.akka.classic.streams.graphs._
 import org.github.felipegutierrez.explore.akka.classic.streams.techniques.{StreamBackpressure, StreamFaultTolerance, StreamIntegrationWithActors, StreamIntegrationWithExternalServices}
 import org.github.felipegutierrez.explore.akka.recap._
 import org.github.felipegutierrez.explore.akka.typed.basics.{BankAccountActorTyped, CounterActorTypedDemo}
+import org.github.felipegutierrez.explore.akka.typed.monitoring.AkkaQuickstart
 import org.github.felipegutierrez.explore.akka.typed.patterns.VendingMachineTypedDemo
 
 import java.util.Scanner
@@ -127,6 +128,7 @@ object MainClass extends App {
   println(s"78 - Stream Flow operator in mini-batches based on time")
   println(s"79 - Stream window Flow based on time or events")
   println(s"80 - Stream window Flow to group events with same ID")
+  println(s"81 - Monitoring actors with Kamon and Prometheus")
 
   var option: String = ""
   if (args.length == 0) {
@@ -267,6 +269,7 @@ object MainClass extends App {
     case "78" => StreamBatchTimerFlowGraphOperators.run()
     case "79" => StreamOpenGraphWindow.run()
     case "80" => WindowGroupEventFlow.run()
+    case "81" => AkkaQuickstart.run()
     case _ => println("option unavailable.")
   }
 }
