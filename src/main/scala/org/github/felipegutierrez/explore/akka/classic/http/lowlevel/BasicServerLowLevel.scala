@@ -4,6 +4,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.Http.IncomingConnection
 import akka.http.scaladsl.model._
+import akka.http.scaladsl.model.headers.Location
 import akka.stream.scaladsl.{Flow, Sink}
 
 import scala.concurrent.Future
@@ -84,6 +85,11 @@ object BasicServerLowLevel {
               | </body>
               |</html>
               |""".stripMargin)
+        ))
+      case HttpRequest(HttpMethods.GET, Uri.Path("/redirect"), headers, entity, protocol) =>
+        Future(HttpResponse(
+          StatusCodes.Found,
+          headers = List(Location("http://www.google.com"))
         ))
       case request: HttpRequest =>
         request.discardEntityBytes()
