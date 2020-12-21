@@ -30,7 +30,7 @@ object Playground {
         """.stripMargin
         ))
       }
-    
+
     val bindingFuture = Http().newServerAt("localhost", 8080).bind(simpleRoute)
     // wait for a new line, then terminate the server
     StdIn.readLine()
