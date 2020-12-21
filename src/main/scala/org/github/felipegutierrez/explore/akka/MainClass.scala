@@ -131,6 +131,13 @@ object MainClass extends App {
   println(s"80 - Stream window Flow to group events with same ID")
   println(s"81 - Monitoring actors with Kamon and Prometheus")
   println(s"82 - Monitoring Akka stream with Kamon and Prometheus")
+  println(s"83 - Akka HTTP hello word")
+  println(s"84 - ")
+  println(s"85 - ")
+  println(s"86 - ")
+  println(s"87 - ")
+  println(s"88 - ")
+  println(s"89 - ")
 
   var option: String = ""
   if (args.length == 0) {
@@ -273,6 +280,13 @@ object MainClass extends App {
     case "80" => WindowGroupEventFlow.run()
     case "81" => AkkaQuickstart.run()
     case "82" => FirstStreamMonitoring.run()
+    case "83" => org.github.felipegutierrez.explore.akka.classic.http.Playground.run()
+    case "84" => ???
+    case "85" => ???
+    case "86" => ???
+    case "87" => ???
+    case "88" => ???
+    case "89" => ???
     case _ => println("option unavailable.")
   }
 }

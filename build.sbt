@@ -7,7 +7,7 @@ val akkaVersion = "2.6.10"
 val scalaBinVersion = "2.12"
 val scalaTestVersion = "3.2.0"
 val logbackVersion = "1.2.3"
-lazy val akkaHttpVersion = "10.2.0"
+lazy val akkaHttpVersion = "10.2.2"
 lazy val akkaGrpcVersion = "1.0.2"
 lazy val protobufVersion = "3.11.4"
 lazy val aeronVersion = "1.30.0"
@@ -70,8 +70,10 @@ libraryDependencies ++= Seq(
   // Google Protocol Buffers
   "com.google.protobuf" % "protobuf-java"  % protobufVersion,
 
-  // The Akka HTTP overwrites are required because Akka-gRPC depends on 10.1.x
+  // Akka HTTP: overwrites are required because Akka-gRPC depends on 10.1.x
   "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
+  "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
+  "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion,
   "com.typesafe.akka" %% "akka-http2-support" % akkaHttpVersion,
 
   // Akka log
@@ -82,11 +84,12 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % scalaTestVersion,
   "junit" % "junit" % "4.13" % Test,
 
+  // JWT
+  "com.pauldijou" %% "jwt-spray-json" % "2.1.0",
+
   // Metrics: Kamon + Prometheus
   "io.kamon" %% "kamon-bundle" % kamonVersion,
   "io.kamon" %% "kamon-prometheus" % kamonVersion,
-  // "io.kamon" %% "kamon-core" % kamonVersion,
-  // "io.kamon" %% "kamon-akka" % kamonVersion,
 )
 
 mainClass in Compile := Some("org.github.felipegutierrez.explore.akka.MainClass")
