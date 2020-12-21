@@ -1,7 +1,14 @@
 package org.github.felipegutierrez.explore.akka.classic.http.lowlevel
 
-import akka.actor.{Actor, ActorLogging, ActorSystem}
+import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
+import akka.http.scaladsl.Http
+import akka.http.scaladsl.model._
+import akka.pattern.ask
+import akka.util.Timeout
 import spray.json._
+
+import scala.concurrent.Future
+import scala.concurrent.duration._
 
 trait GuitarStoreJsonProtocol extends DefaultJsonProtocol {
   implicit val guitarFormat = jsonFormat2(Guitar)
@@ -30,6 +37,35 @@ object GuitarRestApi extends GuitarStoreJsonProtocol {
         |}
         |""".stripMargin
     println(simpleGuitarJsonString.parseJson.convertTo[Guitar])
+
+    import GuitarDB._
+    val guitarDb = system.actorOf(Props[GuitarDB], "LowLevelGuitarDB")
+    val guitarList = List(
+      Guitar("Fender", "Stratocaster"),
+      Guitar("Gibson", "Les Paul"),
+      Guitar("Martin", "LX1")
+    )
+    guitarList.foreach { guitar =>
+      guitarDb ! CreateGuitar(guitar)
+    }
+    implicit val defaultTimeout = Timeout(2 seconds)
+    import system.dispatcher
+    val asyncRequestHandler: HttpRequest => Future[HttpResponse] = {
+      case HttpRequest(HttpMethods.GET, Uri.Path("/api/guitar"), headers, entity, protocol) =>
+        val guitarsFuture: Future[List[Guitar]] = (guitarDb ? FindAllGuitars).mapTo[List[Guitar]]
+        guitarsFuture.map { guitars =>
+          HttpResponse(
+            entity = HttpEntity(
+              ContentTypes.`application/json`,
+              guitars.toJson.prettyPrint
+            )
+          )
+        }
+      case request: HttpRequest =>
+        request.discardEntityBytes()
+        Future(HttpResponse(StatusCodes.NotFound))
+    }
+    Http().newServerAt("localhost", 8080).bind(asyncRequestHandler)
   }
 }
 
