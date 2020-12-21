@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.Http.IncomingConnection
 import akka.http.scaladsl.model._
-import akka.stream.scaladsl.Sink
+import akka.stream.scaladsl.{Flow, Sink}
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
@@ -65,7 +65,7 @@ object BasicServerLowLevel {
       connection.handleWithSyncHandler(requestHandler)
     }
     println(s"call on the console: 'http GET localhost:8080'")
-    // stream version >>>
+    // manual version >>>
     // Http().newServerAt("localhost", 8080).connectionSource().runWith(httpSyncConnectionHandler)
     // short version >>>
     Http().newServerAt("localhost", 8080).bindSync(requestHandler)
@@ -104,9 +104,48 @@ object BasicServerLowLevel {
       connection.handleWithAsyncHandler(asyncRequestHandler)
     }
     println(s"call on the console: 'http GET localhost:8081'")
-    // stream version >>>
+    // manual version >>>
     // Http().newServerAt("localhost", 8081).connectionSource().runWith(httpAsyncConnectionHandler)
     // short version >>>
     Http().newServerAt("localhost", 8081).bind(asyncRequestHandler)
+
+    /** Method 3: async via Akka streams */
+    val streamRequestHandler: Flow[HttpRequest, HttpResponse, _] = Flow[HttpRequest].map {
+      case HttpRequest(HttpMethods.GET, Uri.Path("/home"), headers, entity, protocol) =>
+        HttpResponse(
+          StatusCodes.OK, // HTTP 200
+          entity = HttpEntity(
+            ContentTypes.`text/html(UTF-8)`,
+            """
+              |<html>
+              | <body>
+              |  Async Hello Akka HTTP
+              | </body>
+              |</html>
+              |""".stripMargin)
+        )
+      case request: HttpRequest =>
+        request.discardEntityBytes()
+        HttpResponse(
+          StatusCodes.NotFound, // HTTP 404
+          entity = HttpEntity(
+            ContentTypes.`text/html(UTF-8)`,
+            """
+              |<html>
+              | <body>
+              |  OOPS! async page not found =(<br>try http://localhost:8082/home
+              | </body>
+              |</html>
+              |""".stripMargin)
+        )
+    }
+
+    println(s"call on the console: 'http GET localhost:8082'")
+    // manual version >>>
+    //    Http().newServerAt("localhost", 8082).connectionSource().runForeach { connection =>
+    //      connection.handleWith(streamRequestHandler)
+    //    }
+    // short version >>>
+    Http().newServerAt("localhost", 8082).bindFlow(streamRequestHandler)
   }
 }
