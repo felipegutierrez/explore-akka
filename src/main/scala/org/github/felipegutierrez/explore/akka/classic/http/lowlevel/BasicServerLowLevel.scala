@@ -6,6 +6,7 @@ import akka.http.scaladsl.Http.IncomingConnection
 import akka.http.scaladsl.model._
 import akka.stream.scaladsl.Sink
 
+import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.util.{Failure, Success}
 
@@ -64,8 +65,48 @@ object BasicServerLowLevel {
       connection.handleWithSyncHandler(requestHandler)
     }
     println(s"call on the console: 'http GET localhost:8080'")
+    // stream version >>>
     // Http().newServerAt("localhost", 8080).connectionSource().runWith(httpSyncConnectionHandler)
-    // short version >>> 
+    // short version >>>
     Http().newServerAt("localhost", 8080).bindSync(requestHandler)
+
+    /** Method 2: serve back HTTP response ASYNCHRONOUSLY */
+    val asyncRequestHandler: HttpRequest => Future[HttpResponse] = {
+      case HttpRequest(HttpMethods.GET, Uri.Path("/home"), headers, entity, protocol) =>
+        Future(HttpResponse(
+          StatusCodes.OK, // HTTP 200
+          entity = HttpEntity(
+            ContentTypes.`text/html(UTF-8)`,
+            """
+              |<html>
+              | <body>
+              |  Async Hello Akka HTTP
+              | </body>
+              |</html>
+              |""".stripMargin)
+        ))
+      case request: HttpRequest =>
+        request.discardEntityBytes()
+        Future(HttpResponse(
+          StatusCodes.NotFound, // HTTP 404
+          entity = HttpEntity(
+            ContentTypes.`text/html(UTF-8)`,
+            """
+              |<html>
+              | <body>
+              |  OOPS! async page not found =(<br>try http://localhost:8081/home
+              | </body>
+              |</html>
+              |""".stripMargin)
+        ))
+    }
+    val httpAsyncConnectionHandler = Sink.foreach[IncomingConnection] { connection =>
+      connection.handleWithAsyncHandler(asyncRequestHandler)
+    }
+    println(s"call on the console: 'http GET localhost:8081'")
+    // stream version >>>
+    // Http().newServerAt("localhost", 8081).connectionSource().runWith(httpAsyncConnectionHandler)
+    // short version >>>
+    Http().newServerAt("localhost", 8081).bind(asyncRequestHandler)
   }
 }
