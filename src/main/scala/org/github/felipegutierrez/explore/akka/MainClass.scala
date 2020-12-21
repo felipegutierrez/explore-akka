@@ -5,7 +5,7 @@ import org.github.felipegutierrez.explore.akka.classic.clustering.basic.{Cluster
 import org.github.felipegutierrez.explore.akka.classic.clustering.chat.ChatApp
 import org.github.felipegutierrez.explore.akka.classic.clustering.wordcount.{ClusteringWordCount, ClusteringWordCountAdditionalWorkers}
 import org.github.felipegutierrez.explore.akka.classic.falttolerance._
-import org.github.felipegutierrez.explore.akka.classic.http.lowlevel.BasicServerLowLevel
+import org.github.felipegutierrez.explore.akka.classic.http.lowlevel.{BasicServerLowLevel, GuitarRestApi}
 import org.github.felipegutierrez.explore.akka.classic.infra._
 import org.github.felipegutierrez.explore.akka.classic.patterns._
 import org.github.felipegutierrez.explore.akka.classic.persistence.detaching.DetachingModels
@@ -134,7 +134,7 @@ object MainClass extends App {
   println(s"82 - Monitoring Akka stream with Kamon and Prometheus")
   println(s"83 - Akka HTTP hello word")
   println(s"84 - Basic low level Akka HTTP server to accept connections")
-  println(s"85 - ")
+  println(s"85 - (un)marshalling JSON to Akka HTTP")
   println(s"86 - ")
   println(s"87 - ")
   println(s"88 - ")
@@ -283,7 +283,7 @@ object MainClass extends App {
     case "82" => FirstStreamMonitoring.run()
     case "83" => org.github.felipegutierrez.explore.akka.classic.http.Playground.run()
     case "84" => BasicServerLowLevel.run()
-    case "85" => ???
+    case "85" => GuitarRestApi.run()
     case "86" => ???
     case "87" => ???
     case "88" => ???
