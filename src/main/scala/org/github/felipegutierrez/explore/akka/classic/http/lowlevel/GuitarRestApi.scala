@@ -20,6 +20,8 @@ object GuitarRestApi extends GuitarStoreJsonProtocol {
   }
 
   def run() = {
+    println("http GET localhost:8080/api/guitar")
+    println("http POST localhost:8080/api/guitar < src/main/resources/json/guitar.json")
     implicit val system = ActorSystem("GuitarRestApi")
     /**
      * GET on localhost:8080/api/guitar => all the guitars in the store
@@ -60,6 +62,16 @@ object GuitarRestApi extends GuitarStoreJsonProtocol {
               guitars.toJson.prettyPrint
             )
           )
+        }
+      case HttpRequest(HttpMethods.POST, uri, headers, entity, protocol) =>
+        val strictEntityFuture: Future[HttpEntity.Strict] = entity.toStrict(3 seconds)
+        strictEntityFuture.flatMap { strictEntity =>
+          val guitarJsonString: String = strictEntity.data.utf8String
+          val guitar: Guitar = guitarJsonString.parseJson.convertTo[Guitar]
+          val guitarCreatedFuture: Future[GuitarCreated] = (guitarDb ? CreateGuitar(guitar)).mapTo[GuitarCreated]
+          guitarCreatedFuture.map { msg =>
+            HttpResponse(StatusCodes.OK)
+          }
         }
       case request: HttpRequest =>
         request.discardEntityBytes()
