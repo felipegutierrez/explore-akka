@@ -60,6 +60,18 @@ object BasicServerHighLevel {
                |""".stripMargin
           ))
         }
+      } ~ path("api" / "guitar" / IntNumber / IntNumber) { (itemNumber: Int, qtd: Int) =>
+        get {
+          println(s"I found $qtd guitars with id $itemNumber")
+          complete(HttpEntity(
+            ContentTypes.`text/html(UTF-8)`,
+            s"""
+               |<html>
+               | <body>I found $qtd guitars with id $itemNumber</body>
+               |</html>
+               |""".stripMargin
+          ))
+        }
       } ~ pathEndOrSingleSlash {
         complete(StatusCodes.OK)
       }
@@ -72,6 +84,7 @@ object BasicServerHighLevel {
     println("http GET localhost:8080/api/guitars")
     println("http POST localhost:8080/api/guitars")
     println("http GET localhost:8080/api/guitar/42")
+    println("http GET localhost:8080/api/guitar/42/5")
     Http()
       .newServerAt("localhost", 8080)
       // .enableHttps(HttpsServerContext.httpsConnectionContext)
