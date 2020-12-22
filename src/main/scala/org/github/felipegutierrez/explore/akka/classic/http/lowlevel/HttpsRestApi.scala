@@ -2,11 +2,13 @@ package org.github.felipegutierrez.explore.akka.classic.http.lowlevel
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model._
+import akka.http.scaladsl.model.headers.Location
 import akka.http.scaladsl.{ConnectionContext, Http, HttpsConnectionContext}
 
 import java.io.InputStream
 import java.security.{KeyStore, SecureRandom}
 import javax.net.ssl.{KeyManagerFactory, SSLContext, TrustManagerFactory}
+import scala.concurrent.Future
 
 object HttpsServerContext {
   // Step 1 - key store
@@ -75,5 +77,46 @@ object HttpsRestApi {
       .newServerAt("localhost", 8443)
       .enableHttps(HttpsServerContext.httpsConnectionContext)
       .bindSync(requestHandler)
+
+    import system.dispatcher
+    val asyncRequestHandler: HttpRequest => Future[HttpResponse] = {
+      case HttpRequest(HttpMethods.GET, Uri.Path("/home"), headers, entity, protocol) =>
+        Future(HttpResponse(
+          StatusCodes.OK, // HTTP 200
+          entity = HttpEntity(
+            ContentTypes.`text/html(UTF-8)`,
+            """
+              |<html>
+              | <body>
+              |  Async Hello Akka HTTPS
+              | </body>
+              |</html>
+              |""".stripMargin)
+        ))
+      case HttpRequest(HttpMethods.GET, Uri.Path("/redirect"), headers, entity, protocol) =>
+        Future(HttpResponse(
+          StatusCodes.Found,
+          headers = List(Location("http://www.google.com"))
+        ))
+      case request: HttpRequest =>
+        request.discardEntityBytes()
+        Future(HttpResponse(
+          StatusCodes.NotFound, // HTTP 404
+          entity = HttpEntity(
+            ContentTypes.`text/html(UTF-8)`,
+            """
+              |<html>
+              | <body>
+              |  OOPS! async page not found =(<br>try https://localhost:8553/home
+              | </body>
+              |</html>
+              |""".stripMargin)
+        ))
+    }
+    println("type on the browser: \"https://localhost:8553/home\"")
+    val httpsBindingAsync = Http()
+      .newServerAt("localhost", 8553)
+      .enableHttps(HttpsServerContext.httpsConnectionContext)
+      .bind(asyncRequestHandler)
   }
 }
