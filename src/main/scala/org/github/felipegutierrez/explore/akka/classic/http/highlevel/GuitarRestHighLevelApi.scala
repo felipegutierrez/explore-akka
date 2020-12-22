@@ -2,7 +2,7 @@ package org.github.felipegutierrez.explore.akka.classic.http.highlevel
 
 import akka.actor.{ActorSystem, Props}
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpResponse}
+import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpResponse, StatusCodes}
 import akka.http.scaladsl.server.Directives._
 import akka.pattern.ask
 import akka.util.Timeout
@@ -42,7 +42,24 @@ object GuitarRestHighLevelApi extends GuitarStoreJsonProtocol {
 
     val guitarServerRoutes =
       pathPrefix("api" / "guitar") {
-        get {
+        (path(IntNumber) | parameter('id.as[Int])) { (guitarId: Int) => {
+          get {
+            // println(s"I found the guitar $guitarId")
+            val guitarsFuture: Future[Option[Guitar]] = (guitarDbActor ? FindGuitar(guitarId)).mapTo[Option[Guitar]]
+            val entityFuture = guitarsFuture.map {
+              case None => HttpResponse(StatusCodes.NotFound)
+              case Some(guitar) =>
+                HttpResponse(
+                  entity = HttpEntity(
+                    ContentTypes.`application/json`,
+                    guitar.toJson.prettyPrint
+                  )
+                )
+            }
+            complete(entityFuture)
+          }
+        }
+        } ~ get {
           val guitarsFuture: Future[List[Guitar]] = (guitarDbActor ? FindAllGuitars).mapTo[List[Guitar]]
           val entityFuture = guitarsFuture.map { guitars =>
             HttpResponse(
