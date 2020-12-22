@@ -23,7 +23,7 @@ object BasicServerHighLevel {
         } ~ post {
           complete(StatusCodes.Forbidden)
         }
-      } ~ path("home") {
+      } ~ (path("home") | path("index")) {
         get {
           complete(HttpEntity(
             ContentTypes.`text/html(UTF-8)`,
@@ -49,21 +49,7 @@ object BasicServerHighLevel {
         } ~ post {
           complete(StatusCodes.OK)
         }
-      } ~ path("api" / "guitar") {
-        get {
-          parameter('id.as[Int]) { (itemId: Int) =>
-            println(s"Guitar id $itemId")
-            complete(HttpEntity(
-              ContentTypes.`text/html(UTF-8)`,
-              s"""
-                 |<html>
-                 | <body>I found the guitar $itemId!</body>
-                 |</html>
-                 |""".stripMargin
-            ))
-          }
-        }
-      } ~ path("api" / "guitar" / IntNumber) { (itemNumber: Int) =>
+      } ~ (path("api" / "guitar" / IntNumber) | (path("api" / "guitar") & parameter('id.as[Int]))) { (itemNumber: Int) =>
         get {
           println(s"I found the guitar $itemNumber")
           complete(HttpEntity(
@@ -71,18 +57,6 @@ object BasicServerHighLevel {
             s"""
                |<html>
                | <body>I found the guitar $itemNumber!</body>
-               |</html>
-               |""".stripMargin
-          ))
-        }
-      } ~ path("api" / "guitar" / IntNumber / IntNumber) { (itemNumber: Int, qtd: Int) =>
-        get {
-          println(s"I found $qtd guitars with id $itemNumber")
-          complete(HttpEntity(
-            ContentTypes.`text/html(UTF-8)`,
-            s"""
-               |<html>
-               | <body>I found $qtd guitars with id $itemNumber</body>
                |</html>
                |""".stripMargin
           ))
@@ -123,6 +97,7 @@ object BasicServerHighLevel {
     println("http GET localhost:8080/status")
     println("http POST localhost:8080/status")
     println("http GET localhost:8080/home")
+    println("http GET localhost:8080/index")
     println("http POST localhost:8080/home")
     println("http GET localhost:8080/api/guitars")
     println("http POST localhost:8080/api/guitars")
