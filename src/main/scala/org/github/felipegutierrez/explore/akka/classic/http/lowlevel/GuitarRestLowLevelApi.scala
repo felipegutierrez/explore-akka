@@ -27,7 +27,7 @@ object GuitarRestApi extends GuitarStoreJsonProtocol {
     println("http GET localhost:8080/api/guitar/inventory?inStock=false|true")
     println("http POST localhost:8080/api/guitar < src/main/resources/json/guitar.json")
     println("http POST \"localhost:8080/api/guitar/inventory?id=1&quantity=3\"")
-    implicit val system = ActorSystem("GuitarRestApi")
+    implicit val system = ActorSystem("GuitarRestLowLevelApi")
     import system.dispatcher
     /**
      * GET on localhost:8080/api/guitar => all the guitars in the store
