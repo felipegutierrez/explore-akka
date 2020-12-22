@@ -5,6 +5,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
+import org.github.felipegutierrez.explore.akka.classic.http.lowlevel.HttpsServerContext
 
 object BasicServerHighLevel {
   def main(args: Array[String]): Unit = {
@@ -42,7 +43,10 @@ object BasicServerHighLevel {
     println("http POST localhost:8080/status")
     println("http GET localhost:8080/home")
     println("http POST localhost:8080/home")
-    Http().newServerAt("localhost", 8080).bindFlow(simpleRoute)
+    Http()
+      .newServerAt("localhost", 8080)
+      .enableHttps(HttpsServerContext.httpsConnectionContext)
+      .bindFlow(simpleRoute)
   }
 }
 
