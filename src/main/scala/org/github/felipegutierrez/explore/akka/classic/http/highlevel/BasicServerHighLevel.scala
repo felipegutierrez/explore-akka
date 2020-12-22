@@ -103,6 +103,18 @@ object BasicServerHighLevel {
             )
           }
         }
+      } ~ (path("controlCompact") & extractRequest & extractLog) { (request, log) =>
+        log.info(s"I got the compact http request: $request")
+        complete(StatusCodes.OK,
+          HttpEntity(
+            ContentTypes.`text/html(UTF-8)`,
+            s"""
+               |<html>
+               | <body>I got the compact http request: $request</body>
+               |</html>
+               |""".stripMargin
+          )
+        )
       } ~ pathEndOrSingleSlash {
         complete(StatusCodes.OK)
       }
@@ -118,6 +130,7 @@ object BasicServerHighLevel {
     println("http GET localhost:8080/api/guitar/42")
     println("http GET localhost:8080/api/guitar/42/5")
     println("http GET localhost:8080/control")
+    println("http GET localhost:8080/controlCompact")
     Http()
       .newServerAt("localhost", 8080)
       // .enableHttps(HttpsServerContext.httpsConnectionContext)
