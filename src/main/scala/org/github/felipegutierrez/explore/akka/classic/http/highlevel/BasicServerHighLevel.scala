@@ -50,7 +50,7 @@ object BasicServerHighLevel {
         }
       } ~ path("api" / "guitar") {
         get {
-          parameter("id") { (itemId:String) =>
+          parameter('id.as[Int]) { (itemId: Int) =>
             println(s"Guitar id $itemId")
             complete(HttpEntity(
               ContentTypes.`text/html(UTF-8)`,
