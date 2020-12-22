@@ -17,10 +17,13 @@ object BasicServerHighLevel {
 
     val simpleRoute: Route =
       path("home") { // Directive
-        complete(StatusCodes.OK) // Directive
+        get {
+          complete(StatusCodes.OK) // Directive
+        }
       }
 
     println("http GET localhost:8080/home")
+    println("http POST localhost:8080/home")
     Http().newServerAt("localhost", 8080).bindFlow(simpleRoute)
   }
 }
