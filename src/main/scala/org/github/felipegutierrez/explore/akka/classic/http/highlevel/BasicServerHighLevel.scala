@@ -5,7 +5,6 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import org.github.felipegutierrez.explore.akka.classic.http.lowlevel.HttpsServerContext
 
 object BasicServerHighLevel {
   def main(args: Array[String]): Unit = {
@@ -49,6 +48,8 @@ object BasicServerHighLevel {
         } ~ post {
           complete(StatusCodes.OK)
         }
+      } ~ pathEndOrSingleSlash {
+        complete(StatusCodes.OK)
       }
 
     println("try:")
