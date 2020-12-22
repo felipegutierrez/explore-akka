@@ -35,18 +35,30 @@ object BasicServerHighLevel {
         } ~ post {
           complete(StatusCodes.Forbidden)
         }
-      } ~ path("api" / "guitar") {
+      } ~ path("api" / "guitars") {
         get {
           complete(HttpEntity(
             ContentTypes.`text/html(UTF-8)`,
             """
               |<html>
-              | <body>here is my guitar!</body>
+              | <body>here are my guitars!</body>
               |</html>
               |""".stripMargin
           ))
         } ~ post {
           complete(StatusCodes.OK)
+        }
+      } ~ path("api" / "guitar" / IntNumber) { (itemNumber: Int) =>
+        get {
+          println(s"I found the guitar $itemNumber")
+          complete(HttpEntity(
+            ContentTypes.`text/html(UTF-8)`,
+            s"""
+               |<html>
+               | <body>I found the guitar $itemNumber!</body>
+               |</html>
+               |""".stripMargin
+          ))
         }
       } ~ pathEndOrSingleSlash {
         complete(StatusCodes.OK)
@@ -57,8 +69,9 @@ object BasicServerHighLevel {
     println("http POST localhost:8080/status")
     println("http GET localhost:8080/home")
     println("http POST localhost:8080/home")
-    println("http GET localhost:8080/api/guitar")
-    println("http POST localhost:8080/api/guitar")
+    println("http GET localhost:8080/api/guitars")
+    println("http POST localhost:8080/api/guitars")
+    println("http GET localhost:8080/api/guitar/42")
     Http()
       .newServerAt("localhost", 8080)
       // .enableHttps(HttpsServerContext.httpsConnectionContext)
