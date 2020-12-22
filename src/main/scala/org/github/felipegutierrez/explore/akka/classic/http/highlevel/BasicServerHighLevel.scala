@@ -48,6 +48,20 @@ object BasicServerHighLevel {
         } ~ post {
           complete(StatusCodes.OK)
         }
+      } ~ path("api" / "guitar") {
+        get {
+          parameter("id") { (itemId:String) =>
+            println(s"Guitar id $itemId")
+            complete(HttpEntity(
+              ContentTypes.`text/html(UTF-8)`,
+              s"""
+                 |<html>
+                 | <body>I found the guitar $itemId!</body>
+                 |</html>
+                 |""".stripMargin
+            ))
+          }
+        }
       } ~ path("api" / "guitar" / IntNumber) { (itemNumber: Int) =>
         get {
           println(s"I found the guitar $itemNumber")
@@ -83,6 +97,7 @@ object BasicServerHighLevel {
     println("http POST localhost:8080/home")
     println("http GET localhost:8080/api/guitars")
     println("http POST localhost:8080/api/guitars")
+    println("http GET localhost:8080/api/guitar?id=43")
     println("http GET localhost:8080/api/guitar/42")
     println("http GET localhost:8080/api/guitar/42/5")
     Http()
