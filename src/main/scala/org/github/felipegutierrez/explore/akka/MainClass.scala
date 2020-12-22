@@ -5,7 +5,7 @@ import org.github.felipegutierrez.explore.akka.classic.clustering.basic.{Cluster
 import org.github.felipegutierrez.explore.akka.classic.clustering.chat.ChatApp
 import org.github.felipegutierrez.explore.akka.classic.clustering.wordcount.{ClusteringWordCount, ClusteringWordCountAdditionalWorkers}
 import org.github.felipegutierrez.explore.akka.classic.falttolerance._
-import org.github.felipegutierrez.explore.akka.classic.http.lowlevel.{BasicServerLowLevel, GuitarRestApi}
+import org.github.felipegutierrez.explore.akka.classic.http.lowlevel.{BasicServerLowLevel, GuitarRestApi, HttpsRestApi}
 import org.github.felipegutierrez.explore.akka.classic.infra._
 import org.github.felipegutierrez.explore.akka.classic.patterns._
 import org.github.felipegutierrez.explore.akka.classic.persistence.detaching.DetachingModels
@@ -135,7 +135,7 @@ object MainClass extends App {
   println(s"83 - Akka HTTP hello word")
   println(s"84 - Basic low level Akka HTTP server to accept connections")
   println(s"85 - (un)marshalling JSON to Akka HTTP")
-  println(s"86 - ")
+  println(s"86 - Akka HTTP secure using HTTPS")
   println(s"87 - ")
   println(s"88 - ")
   println(s"89 - ")
@@ -284,7 +284,7 @@ object MainClass extends App {
     case "83" => org.github.felipegutierrez.explore.akka.classic.http.Playground.run()
     case "84" => BasicServerLowLevel.run()
     case "85" => GuitarRestApi.run()
-    case "86" => ???
+    case "86" => HttpsRestApi.run()
     case "87" => ???
     case "88" => ???
     case "89" => ???
