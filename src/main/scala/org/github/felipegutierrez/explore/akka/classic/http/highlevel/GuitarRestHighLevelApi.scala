@@ -1,9 +1,18 @@
 package org.github.felipegutierrez.explore.akka.classic.http.highlevel
 
-import akka.actor.ActorSystem
-import org.github.felipegutierrez.explore.akka.classic.http.lowlevel.GuitarRestApi.run
+import akka.actor.{ActorSystem, Props}
+import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpResponse}
+import akka.http.scaladsl.server.Directives._
+import akka.pattern.ask
+import akka.util.Timeout
+import org.github.felipegutierrez.explore.akka.classic.http.lowlevel.{Guitar, GuitarDB, GuitarStoreJsonProtocol}
+import spray.json._
 
-object GuitarRestHighLevelApi {
+import scala.concurrent.Future
+import scala.concurrent.duration._
+
+object GuitarRestHighLevelApi extends GuitarStoreJsonProtocol {
 
   def main(args: Array[String]): Unit = {
     run()
@@ -17,7 +26,38 @@ object GuitarRestHighLevelApi {
     println("http POST localhost:8080/api/guitar < src/main/resources/json/guitar.json")
     println("http POST \"localhost:8080/api/guitar/inventory?id=1&quantity=3\"")
     implicit val system = ActorSystem("GuitarRestHighLevelApi")
+    import GuitarDB._
     import system.dispatcher
-  }
+    val guitarDbActor = system.actorOf(Props[GuitarDB], "LowLevelGuitarDB")
+    val guitarList = List(
+      Guitar("Fender", "Stratocaster"),
+      Guitar("Gibson", "Les Paul"),
+      Guitar("Martin", "LX1")
+    )
+    guitarList.foreach { guitar =>
+      guitarDbActor ! CreateGuitar(guitar)
+    }
 
+    implicit val defaultTimeout = Timeout(2 seconds)
+
+    val guitarServerRoutes =
+      pathPrefix("api" / "guitar") {
+        get {
+          val guitarsFuture: Future[List[Guitar]] = (guitarDbActor ? FindAllGuitars).mapTo[List[Guitar]]
+          val entityFuture = guitarsFuture.map { guitars =>
+            HttpResponse(
+              entity = HttpEntity(
+                ContentTypes.`application/json`,
+                guitars.toJson.prettyPrint
+              )
+            )
+          }
+          complete(entityFuture)
+        }
+      }
+    Http()
+      .newServerAt("localhost", 8080)
+      // .enableHttps(HttpsServerContext.httpsConnectionContext)
+      .bindFlow(guitarServerRoutes)
+  }
 }
