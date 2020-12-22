@@ -1,6 +1,7 @@
 package org.github.felipegutierrez.explore.akka.classic.http.highlevel
 
 import akka.actor.ActorSystem
+import akka.event.LoggingAdapter
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
@@ -86,6 +87,22 @@ object BasicServerHighLevel {
                |""".stripMargin
           ))
         }
+      } ~ path("control") {
+        extractRequest { (httpRequest: HttpRequest) =>
+          extractLog { (log: LoggingAdapter) =>
+            log.info(s"I got the http request: $httpRequest")
+            complete(StatusCodes.OK,
+              HttpEntity(
+                ContentTypes.`text/html(UTF-8)`,
+                s"""
+                   |<html>
+                   | <body>I got the http request: $httpRequest</body>
+                   |</html>
+                   |""".stripMargin
+              )
+            )
+          }
+        }
       } ~ pathEndOrSingleSlash {
         complete(StatusCodes.OK)
       }
@@ -100,6 +117,7 @@ object BasicServerHighLevel {
     println("http GET localhost:8080/api/guitar?id=43")
     println("http GET localhost:8080/api/guitar/42")
     println("http GET localhost:8080/api/guitar/42/5")
+    println("http GET localhost:8080/control")
     Http()
       .newServerAt("localhost", 8080)
       // .enableHttps(HttpsServerContext.httpsConnectionContext)
