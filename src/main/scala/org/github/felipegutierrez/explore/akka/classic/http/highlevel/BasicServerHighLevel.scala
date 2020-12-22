@@ -49,17 +49,19 @@ object BasicServerHighLevel {
         } ~ post {
           complete(StatusCodes.OK)
         }
-      } ~ (path("api" / "guitar" / IntNumber) | (path("api" / "guitar") & parameter('id.as[Int]))) { (itemNumber: Int) =>
-        get {
-          println(s"I found the guitar $itemNumber")
-          complete(HttpEntity(
-            ContentTypes.`text/html(UTF-8)`,
-            s"""
-               |<html>
-               | <body>I found the guitar $itemNumber!</body>
-               |</html>
-               |""".stripMargin
-          ))
+      } ~ (pathPrefix("api" / "guitar")) {
+        (path(IntNumber) | parameter('id.as[Int])) { (itemNumber: Int) =>
+          get {
+            println(s"I found the guitar $itemNumber")
+            complete(HttpEntity(
+              ContentTypes.`text/html(UTF-8)`,
+              s"""
+                 |<html>
+                 | <body>I found the guitar $itemNumber!</body>
+                 |</html>
+                 |""".stripMargin
+            ))
+          }
         }
       } ~ path("control") {
         extractRequest { (httpRequest: HttpRequest) =>
