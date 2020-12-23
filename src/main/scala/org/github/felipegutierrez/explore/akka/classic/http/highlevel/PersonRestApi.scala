@@ -3,7 +3,7 @@ package org.github.felipegutierrez.explore.akka.classic.http.highlevel
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.event.LoggingAdapter
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpRequest}
+import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpRequest, StatusCodes}
 import akka.http.scaladsl.server.Directives.{parameter, _}
 import akka.pattern.ask
 import akka.util.Timeout
@@ -12,6 +12,7 @@ import spray.json.{DefaultJsonProtocol, _}
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
+import scala.util.{Failure, Success}
 
 /**
  * Exercise:
@@ -102,22 +103,30 @@ object PersonRestApi extends PersonJsonProtocol {
           }
         } ~ (post & extractRequest & extractLog) { (httpRequest: HttpRequest, log: LoggingAdapter) =>
           val strictEntityFuture: Future[HttpEntity.Strict] = httpRequest.entity.toStrict(3 seconds)
-          val entity = strictEntityFuture.flatMap { strictEntity =>
+          val entity: Future[PersonCreated] = strictEntityFuture.flatMap { strictEntity =>
             val personJsonString: String = strictEntity.data.utf8String
             val person: Person = personJsonString.parseJson.convertTo[Person]
             val personCreatedFuture: Future[PersonCreated] = (personActor ? CreatePerson(person)).mapTo[PersonCreated]
-            personCreatedFuture.map { msg: PersonCreated =>
-              println(s"add that person to your database. httpRequest: $httpRequest")
-              toHttpEntity(person.toJson.prettyPrint)
-            }
+            personCreatedFuture
           }
-          complete(entity)
+          entity.onComplete {
+            case Success(value) =>
+              log.info(s"get person $value")
+            case Failure(exception) =>
+              log.warning(s"failed to add a person because: $exception")
+          }
+          complete(entity
+            .map(_ => StatusCodes.OK)
+            .recover {
+              case _ => StatusCodes.InternalServerError
+            })
         }
       }
 
     println("http GET localhost:8080/api/people")
     println("http GET localhost:8080/api/people/1")
     println("http GET localhost:8080/api/people?pin=1")
+    println("http POST localhost:8080/api/people < src/main/resources/json/personError.json")
     println("http POST localhost:8080/api/people < src/main/resources/json/person.json")
     Http()
       .newServerAt("localhost", 8080)
