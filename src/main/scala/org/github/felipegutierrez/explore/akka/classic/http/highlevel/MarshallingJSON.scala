@@ -103,45 +103,51 @@ object MarshallingJSON extends PlayerJsonProtocol with SprayJsonSupport {
       println(s"I have encountered rejections: $rejections")
       Some(complete(StatusCodes.Forbidden))
     }
-    val gameRoutes =
-      handleRejections(badRequestHandler) { // handling rejections from the top level
-        pathPrefix("api" / "player") {
-          get {
-            handleRejections(forbiddenHandler) { // handling rejections inside the GET
-              path("class" / Segment) { charaterClass =>
-                // 1: get all players with characterClass
-                if (!charaterClass.forall(_.isLetterOrDigit)) {
-                  throw new IllegalArgumentException(s"charaterClass must contain letters or digits: [$charaterClass]")
+    // implicit // use implicit if you dont want to add handleExceptions(customExceptionHandler) on the route tree
+    val customExceptionHandler = ExceptionHandler {
+      case e: RuntimeException => complete(StatusCodes.BadRequest, e.getMessage)
+      case e: IllegalArgumentException => complete(StatusCodes.Forbidden, e.getMessage)
+    }
+    val gameRoutes = {
+        (handleExceptions(customExceptionHandler) | handleRejections(badRequestHandler)) { // handling rejections from the top level
+          pathPrefix("api" / "player") {
+            get {
+              handleRejections(forbiddenHandler) { // handling rejections inside the GET
+                path("class" / Segment) { charaterClass =>
+                  // 1: get all players with characterClass
+                  if (!charaterClass.forall(_.isLetterOrDigit)) {
+                    throw new IllegalArgumentException(s"charaterClass must contain letters or digits: [$charaterClass]")
+                  }
+                  val playersByClassFuture: Future[List[Player]] = (gameMap ? GetPlayerByClass(charaterClass)).mapTo[List[Player]]
+                  complete(playersByClassFuture)
+                } ~ (path(Segment) | parameter('nickname)) { nickname =>
+                  // 2: get the player with the nickname
+                  val playersFuture: Future[Option[Player]] = (gameMap ? GetPlayer(nickname)).mapTo[Option[Player]]
+                  complete(playersFuture)
+                } ~ pathEndOrSingleSlash {
+                  // 3: get all the players
+                  val allPlayersFuture: Future[List[Player]] = (gameMap ? GetAllPlayers).mapTo[List[Player]]
+                  complete(allPlayersFuture)
                 }
-                val playersByClassFuture: Future[List[Player]] = (gameMap ? GetPlayerByClass(charaterClass)).mapTo[List[Player]]
-                complete(playersByClassFuture)
-              } ~ (path(Segment) | parameter('nickname)) { nickname =>
-                // 2: get the player with the nickname
-                val playersFuture: Future[Option[Player]] = (gameMap ? GetPlayer(nickname)).mapTo[Option[Player]]
-                complete(playersFuture)
-              } ~ pathEndOrSingleSlash {
-                // 3: get all the players
-                val allPlayersFuture: Future[List[Player]] = (gameMap ? GetAllPlayers).mapTo[List[Player]]
-                complete(allPlayersFuture)
               }
-            }
-          } ~ post {
-            handleRejections(forbiddenHandler) { // handling rejections inside the POST
-              // 4: add a player
-              entity(as[Player]) { player =>
-                complete((gameMap ? AddPlayer(player)).map(_ => StatusCodes.OK))
+            } ~ post {
+              handleRejections(forbiddenHandler) { // handling rejections inside the POST
+                // 4: add a player
+                entity(as[Player]) { player =>
+                  complete((gameMap ? AddPlayer(player)).map(_ => StatusCodes.OK))
+                }
               }
-            }
-          } ~ delete {
-            handleRejections(forbiddenHandler) { // handling rejections inside the DELETE
-              // 5: delete a player
-              entity(as[Player]) { player =>
-                complete((gameMap ? RemovePlayer(player)).map(_ => StatusCodes.OK))
+            } ~ delete {
+              handleRejections(forbiddenHandler) { // handling rejections inside the DELETE
+                // 5: delete a player
+                entity(as[Player]) { player =>
+                  complete((gameMap ? RemovePlayer(player)).map(_ => StatusCodes.OK))
+                }
               }
             }
           }
         }
-      }
+    }
 
     // Alternative: defining an implicit rejection handler
     implicit val customRejectionHandler = RejectionHandler.newBuilder()
@@ -151,10 +157,6 @@ object MarshallingJSON extends PlayerJsonProtocol with SprayJsonSupport {
           complete("Rejected query param")
       }
       .result()
-    implicit val customExceptionHandler = ExceptionHandler {
-      case e: RuntimeException => complete(StatusCodes.BadRequest, e.getMessage)
-      case e: IllegalArgumentException => complete(StatusCodes.Forbidden, e.getMessage)
-    }
 
     println("http GET localhost:8080/api/player")
     println("http GET localhost:8080/api/player/class/Warrior")
