@@ -5,7 +5,7 @@ import org.github.felipegutierrez.explore.akka.classic.clustering.basic.{Cluster
 import org.github.felipegutierrez.explore.akka.classic.clustering.chat.ChatApp
 import org.github.felipegutierrez.explore.akka.classic.clustering.wordcount.{ClusteringWordCount, ClusteringWordCountAdditionalWorkers}
 import org.github.felipegutierrez.explore.akka.classic.falttolerance._
-import org.github.felipegutierrez.explore.akka.classic.http.highlevel.GuitarRestHighLevelApi
+import org.github.felipegutierrez.explore.akka.classic.http.highlevel.{GuitarRestHighLevelApi, PersonRestApi}
 import org.github.felipegutierrez.explore.akka.classic.http.lowlevel.{BasicServerLowLevel, GuitarRestApi, HttpsRestApi}
 import org.github.felipegutierrez.explore.akka.classic.infra._
 import org.github.felipegutierrez.explore.akka.classic.patterns._
@@ -138,7 +138,7 @@ object MainClass extends App {
   println(s"85 - (un)marshalling JSON to Akka HTTP")
   println(s"86 - Akka HTTP secure using HTTPS")
   println(s"87 - GuitarRestHighLevelApi")
-  println(s"88 - ")
+  println(s"88 - PersonRestApi")
   println(s"89 - ")
 
   var option: String = ""
@@ -287,7 +287,7 @@ object MainClass extends App {
     case "85" => GuitarRestApi.run()
     case "86" => HttpsRestApi.run()
     case "87" => GuitarRestHighLevelApi.run()
-    case "88" => ???
+    case "88" => PersonRestApi.run()
     case "89" => ???
     case _ => println("option unavailable.")
   }
