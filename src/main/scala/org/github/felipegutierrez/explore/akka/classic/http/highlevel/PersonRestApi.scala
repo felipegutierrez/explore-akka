@@ -109,17 +109,24 @@ object PersonRestApi extends PersonJsonProtocol {
             val personCreatedFuture: Future[PersonCreated] = (personActor ? CreatePerson(person)).mapTo[PersonCreated]
             personCreatedFuture
           }
-          entity.onComplete {
-            case Success(value) =>
-              log.info(s"get person $value")
+          onComplete(entity) {
+            case Success(person) =>
+              log.info(s"got person $person")
+              complete(StatusCodes.OK)
             case Failure(exception) =>
-              log.warning(s"failed to add a person because: $exception")
+              failWith(exception)
           }
-          complete(entity
-            .map(_ => StatusCodes.OK)
-            .recover {
-              case _ => StatusCodes.InternalServerError
-            })
+          //          entity.onComplete {
+          //            case Success(value) =>
+          //              log.info(s"got person $value")
+          //            case Failure(exception) =>
+          //              log.warning(s"failed to add a person because: $exception")
+          //          }
+          //          complete(entity
+          //            .map(_ => StatusCodes.OK)
+          //            .recover {
+          //              case _ => StatusCodes.InternalServerError
+          //            })
         }
       }
 
