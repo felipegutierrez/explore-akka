@@ -73,7 +73,11 @@ object MarshallingJSON extends PlayerJsonProtocol with SprayJsonSupport {
   import GameAreaMap._
 
   // boot strap some players
-  val players = List(Player("rolandbraveheart", "Elf", 76), Player("felipeoguierrez", "Wizard", 30), Player("daniel", "Warrior", 55))
+  val players = List(
+    Player("rolandbraveheart", "Elf", 76),
+    Player("felipeogutierrez", "Wizard", 30),
+    Player("daniel", "Warrior", 55)
+  )
   players.foreach { player =>
     gameMap ! AddPlayer(player)
   }
@@ -163,7 +167,7 @@ object MarshallingJSON extends PlayerJsonProtocol with SprayJsonSupport {
     println("http GET localhost:8080/api/player/class/Warrior")
     println("http GET localhost:8080/api/player/class/Elf")
     println("http GET localhost:8080/api/player/class/Wizard")
-    println("http GET localhost:8080/api/player/felipeoguierrez")
+    println("http GET localhost:8080/api/player/felipeogutierrez")
     println("http GET localhost:8080/api/player?nickname=rolandbraveheart")
     println("http POST localhost:8080/api/player < src/main/resources/json/player.json")
     println("http GET localhost:8080/api/player")

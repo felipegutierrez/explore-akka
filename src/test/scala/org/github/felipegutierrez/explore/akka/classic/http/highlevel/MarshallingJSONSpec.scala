@@ -16,25 +16,31 @@ class MarshallingJSONSpec
   import MarshallingJSON._
 
   implicit val timeout: RouteTestTimeout = RouteTestTimeout(2 seconds)
-//  "A Game area map backend" should {
-//    "return all the players in the game" in {
-//      // send an HTTP request through an endpoint that you want to test
-//      val request = Get("/api/player")
-//      val requestWithRoutes = request.~>(gameRoutes)(TildeArrow.injectIntoRoute)
-//      requestWithRoutes.~>(check {
-//        status shouldBe StatusCodes.OK
-//        entityAs[List[Player]] shouldBe players
-//      })
-//    }
-//  }
-    "A Game area map backend" should {
-      "return all the players in the game" in {
-        // send an HTTP request through an endpoint that you want to test
-        Get("/api/player") ~> gameRoutes ~> check {
-          // assertions: inspect the response
-          status shouldBe StatusCodes.OK
-          entityAs[List[Player]] shouldBe players
-        }
+  //  "A Game area map backend" should {
+  //    "return all the players in the game" in {
+  //      // send an HTTP request through an endpoint that you want to test
+  //      val request = Get("/api/player")
+  //      val requestWithRoutes = request.~>(gameRoutes)(TildeArrow.injectIntoRoute)
+  //      requestWithRoutes.~>(check {
+  //        status shouldBe StatusCodes.OK
+  //        entityAs[List[Player]] shouldBe players
+  //      })
+  //    }
+  //  }
+  "A Game area map backend" should {
+    "return all the players in the game" in {
+      // send an HTTP request through an endpoint that you want to test
+      Get("/api/player") ~> gameRoutes ~> check {
+        // assertions: inspect the response
+        status shouldBe StatusCodes.OK
+        entityAs[List[Player]] shouldBe players
       }
     }
+    "return a player by its nickname" in {
+      Get("/api/player/felipeogutierrez") ~> gameRoutes ~> check {
+        status shouldBe StatusCodes.OK
+        responseAs[Option[Player]] shouldBe Some(players.filter(_.nickname == "felipeogutierrez")(0))
+      }
+    }
+  }
 }
