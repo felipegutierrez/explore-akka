@@ -42,5 +42,11 @@ class MarshallingJSONSpec
         responseAs[Option[Player]] shouldBe Some(players.filter(_.nickname == "felipeogutierrez")(0))
       }
     }
+    "return a player by its nickname param" in {
+      Get("/api/player?nickname=rolandbraveheart") ~> gameRoutes ~> check {
+        status shouldBe StatusCodes.OK
+        responseAs[Option[Player]] shouldBe Some(players.filter(_.nickname == "rolandbraveheart")(0))
+      }
+    }
   }
 }
