@@ -5,6 +5,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives.{parameter, _}
+import akka.http.scaladsl.server.{Rejection, RejectionHandler}
 import akka.pattern.ask
 import akka.util.Timeout
 import spray.json._
@@ -93,31 +94,48 @@ object MarshallingJSON extends PlayerJsonProtocol with SprayJsonSupport {
 
     import GameAreaMap._
     implicit val defaultTimeout = Timeout(2 seconds)
+
+    val badRequestHandler: RejectionHandler = { rejections: Seq[Rejection] =>
+      println(s"I have encountered rejections: $rejections")
+      Some(complete(StatusCodes.BadRequest))
+    }
+    val forbiddenHandler: RejectionHandler = { rejections: Seq[Rejection] =>
+      println(s"I have encountered rejections: $rejections")
+      Some(complete(StatusCodes.Forbidden))
+    }
     val gameRoutes =
-      pathPrefix("api" / "player") {
-        get {
-          path("class" / Segment) { charaterClass =>
-            // 1: get all players with characterClass
-            val playersByClassFuture: Future[List[Player]] = (gameMap ? GetPlayerByClass(charaterClass)).mapTo[List[Player]]
-            complete(playersByClassFuture)
-          } ~ (path(Segment) | parameter('nickname)) { nickname =>
-            // 2: get the player with the nickname
-            val playersFuture: Future[Option[Player]] = (gameMap ? GetPlayer(nickname)).mapTo[Option[Player]]
-            complete(playersFuture)
-          } ~ pathEndOrSingleSlash {
-            // 3: get all the players
-            val allPlayersFuture: Future[List[Player]] = (gameMap ? GetAllPlayers).mapTo[List[Player]]
-            complete(allPlayersFuture)
-          }
-        } ~ post {
-          // 4: add a player
-          entity(as[Player]) { player =>
-            complete((gameMap ? AddPlayer(player)).map(_ => StatusCodes.OK))
-          }
-        } ~ delete {
-          // 5: delete a player
-          entity(as[Player]) { player =>
-            complete((gameMap ? RemovePlayer(player)).map(_ => StatusCodes.OK))
+      handleRejections(badRequestHandler) { // handling rejections from the top level
+        pathPrefix("api" / "player") {
+          get {
+            handleRejections(forbiddenHandler) { // handling rejections inside the GET
+              path("class" / Segment) { charaterClass =>
+                // 1: get all players with characterClass
+                val playersByClassFuture: Future[List[Player]] = (gameMap ? GetPlayerByClass(charaterClass)).mapTo[List[Player]]
+                complete(playersByClassFuture)
+              } ~ (path(Segment) | parameter('nickname)) { nickname =>
+                // 2: get the player with the nickname
+                val playersFuture: Future[Option[Player]] = (gameMap ? GetPlayer(nickname)).mapTo[Option[Player]]
+                complete(playersFuture)
+              } ~ pathEndOrSingleSlash {
+                // 3: get all the players
+                val allPlayersFuture: Future[List[Player]] = (gameMap ? GetAllPlayers).mapTo[List[Player]]
+                complete(allPlayersFuture)
+              }
+            }
+          } ~ post {
+            handleRejections(forbiddenHandler) { // handling rejections inside the POST
+              // 4: add a player
+              entity(as[Player]) { player =>
+                complete((gameMap ? AddPlayer(player)).map(_ => StatusCodes.OK))
+              }
+            }
+          } ~ delete {
+            handleRejections(forbiddenHandler) { // handling rejections inside the DELETE
+              // 5: delete a player
+              entity(as[Player]) { player =>
+                complete((gameMap ? RemovePlayer(player)).map(_ => StatusCodes.OK))
+              }
+            }
           }
         }
       }
@@ -131,6 +149,10 @@ object MarshallingJSON extends PlayerJsonProtocol with SprayJsonSupport {
     println("http POST localhost:8080/api/player < src/main/resources/json/player.json")
     println("http GET localhost:8080/api/player")
     println("http DELETE localhost:8080/api/player < src/main/resources/json/player.json")
+    println("http GET localhost:8080/api/someotherplayer")
+    println("http GET localhost:8080/api/player/classes")
+    println("http PUT localhost:8080/api/player < src/main/resources/json/player.json")
+    println("http POST localhost:8080/api/player < src/main/resources/json/person.json")
     Http()
       .newServerAt("localhost", 8080)
       .bindFlow(gameRoutes)
