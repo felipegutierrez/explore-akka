@@ -1,6 +1,7 @@
 package org.github.felipegutierrez.explore.akka.classic.http.highlevel
 
 import akka.http.scaladsl.model.StatusCodes
+import akka.http.scaladsl.server.MethodRejection
 import akka.http.scaladsl.testkit.{RouteTestTimeout, ScalatestRouteTest}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -54,6 +55,17 @@ class MarshallingJSONSpec
         status shouldBe StatusCodes.OK
         // assert(players.contains(newPLayer))
         // players should contain(newPLayer)
+      }
+    }
+    "not accept other methods than POST and GET and DELETE" in {
+      Put("/api/player") ~> gameRoutes ~> check {
+        rejections should not be empty // "natural language" style
+        // rejections.should(not).be(empty) // same
+
+        val methodRejections = rejections.collect {
+          case rejection: MethodRejection => rejection
+        }
+        methodRejections.length shouldBe 3
       }
     }
   }
