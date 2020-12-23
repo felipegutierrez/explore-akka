@@ -1,6 +1,8 @@
 package org.github.felipegutierrez.explore.akka.classic.http.highlevel
 
+import akka.http.scaladsl.server.Directives.{parameter, _}
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
+import akka.http.scaladsl.Http
 import org.github.felipegutierrez.explore.akka.classic.http.highlevel.GameAreaMap.AddPlayer
 
 case class Player(nickname: String, characterClass: String, level: Int)
@@ -64,6 +66,30 @@ object MarshallingJSON {
       - POST /api/player with JSON payload, adds the player to the map
       - (Exercise) DELETE /api/player with JSON payload, removes the player from the map
      */
-    // val gameRoutes =
+    val gameRoutes =
+      pathPrefix("api" / "player") {
+        get {
+          path("class" / Segment) {charaterClass =>
+            // TODO 1: get all players with characterClass
+            reject
+          } ~ (path(Segment) | parameter('nickname)) { nickname =>
+            // TODO 2: get the player with the nickname
+            reject
+          } ~ pathEndOrSingleSlash {
+            // TODO 3: get all the players
+            reject
+          }
+        } ~ post {
+          // TODO 4: add a player
+          reject
+        } ~ delete {
+          // TODO 5: delete a player
+          reject
+        }
+      }
+
+    Http()
+      .newServerAt("localhost", 8080)
+      .bindFlow(gameRoutes)
   }
 }
