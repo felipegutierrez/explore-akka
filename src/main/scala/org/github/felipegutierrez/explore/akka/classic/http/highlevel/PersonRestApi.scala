@@ -82,36 +82,38 @@ object PersonRestApi extends PersonJsonProtocol {
     implicit val defaultTimeout = Timeout(2 seconds)
     import PersonDomain._
     val personRoutes =
-      (pathPrefix("api" / "people") & get) {
-        (path(IntNumber) | parameter('pin.as[Int])) { pin: Int =>
-          println(s"retrieve the person with that PIN $pin")
-          val entityFuture: Future[HttpEntity.Strict] = (personActor ? FindPerson(pin))
-            .mapTo[Option[Person]]
-            .map(_.toJson.prettyPrint)
-            .map(toHttpEntity)
-          complete(entityFuture)
-        } ~ pathEndOrSingleSlash {
-          println(s"retrieve all people")
-          val entityFuture: Future[HttpEntity.Strict] = (personActor ? FindAllPeople)
-            .mapTo[List[Person]]
-            .map(_.toJson.prettyPrint)
-            .map(toHttpEntity)
-          complete(entityFuture)
-        }
-      } ~ (pathPrefix("api" / "people") & post) {
-        extractRequest { (httpRequest: HttpRequest) =>
-          val strictEntityFuture: Future[HttpEntity.Strict] = httpRequest.entity.toStrict(3 seconds)
-
-          val entity = strictEntityFuture.flatMap { strictEntity =>
-            val personJsonString: String = strictEntity.data.utf8String
-            val person: Person = personJsonString.parseJson.convertTo[Person]
-            val personCreatedFuture: Future[PersonCreated] = (personActor ? CreatePerson(person)).mapTo[PersonCreated]
-            personCreatedFuture.map { msg: PersonCreated =>
-              println(s"add that person to your database. httpRequest: $httpRequest")
-              toHttpEntity(person.toJson.prettyPrint)
-            }
+      (pathPrefix("api" / "people")) {
+        get {
+          (path(IntNumber) | parameter('pin.as[Int])) { pin: Int =>
+            println(s"retrieve the person with that PIN $pin")
+            val entityFuture: Future[HttpEntity.Strict] = (personActor ? FindPerson(pin))
+              .mapTo[Option[Person]]
+              .map(_.toJson.prettyPrint)
+              .map(toHttpEntity)
+            complete(entityFuture)
+          } ~ pathEndOrSingleSlash {
+            println(s"retrieve all people")
+            val entityFuture: Future[HttpEntity.Strict] = (personActor ? FindAllPeople)
+              .mapTo[List[Person]]
+              .map(_.toJson.prettyPrint)
+              .map(toHttpEntity)
+            complete(entityFuture)
           }
-          complete(entity)
+        } ~ post {
+          extractRequest { (httpRequest: HttpRequest) =>
+            val strictEntityFuture: Future[HttpEntity.Strict] = httpRequest.entity.toStrict(3 seconds)
+
+            val entity = strictEntityFuture.flatMap { strictEntity =>
+              val personJsonString: String = strictEntity.data.utf8String
+              val person: Person = personJsonString.parseJson.convertTo[Person]
+              val personCreatedFuture: Future[PersonCreated] = (personActor ? CreatePerson(person)).mapTo[PersonCreated]
+              personCreatedFuture.map { msg: PersonCreated =>
+                println(s"add that person to your database. httpRequest: $httpRequest")
+                toHttpEntity(person.toJson.prettyPrint)
+              }
+            }
+            complete(entity)
+          }
         }
       }
 
