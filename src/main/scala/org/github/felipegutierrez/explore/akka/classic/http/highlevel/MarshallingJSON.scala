@@ -5,7 +5,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives.{parameter, _}
-import akka.http.scaladsl.server.{MissingQueryParamRejection, Rejection, RejectionHandler}
+import akka.http.scaladsl.server.{ExceptionHandler, MissingQueryParamRejection, Rejection, RejectionHandler}
 import akka.pattern.ask
 import akka.util.Timeout
 import spray.json._
@@ -110,6 +110,9 @@ object MarshallingJSON extends PlayerJsonProtocol with SprayJsonSupport {
             handleRejections(forbiddenHandler) { // handling rejections inside the GET
               path("class" / Segment) { charaterClass =>
                 // 1: get all players with characterClass
+                if (!charaterClass.forall(_.isLetterOrDigit)) {
+                  throw new IllegalArgumentException(s"charaterClass must contain letters or digits: [$charaterClass]")
+                }
                 val playersByClassFuture: Future[List[Player]] = (gameMap ? GetPlayerByClass(charaterClass)).mapTo[List[Player]]
                 complete(playersByClassFuture)
               } ~ (path(Segment) | parameter('nickname)) { nickname =>
@@ -148,6 +151,10 @@ object MarshallingJSON extends PlayerJsonProtocol with SprayJsonSupport {
           complete("Rejected query param")
       }
       .result()
+    implicit val customExceptionHandler = ExceptionHandler {
+      case e: RuntimeException => complete(StatusCodes.BadRequest, e.getMessage)
+      case e: IllegalArgumentException => complete(StatusCodes.Forbidden, e.getMessage)
+    }
 
     println("http GET localhost:8080/api/player")
     println("http GET localhost:8080/api/player/class/Warrior")
