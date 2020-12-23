@@ -1,6 +1,7 @@
 package org.github.felipegutierrez.explore.akka.classic.http.highlevel
 
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
+import akka.event.LoggingAdapter
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpRequest}
 import akka.http.scaladsl.server.Directives.{parameter, _}
@@ -99,21 +100,18 @@ object PersonRestApi extends PersonJsonProtocol {
               .map(toHttpEntity)
             complete(entityFuture)
           }
-        } ~ post {
-          extractRequest { (httpRequest: HttpRequest) =>
-            val strictEntityFuture: Future[HttpEntity.Strict] = httpRequest.entity.toStrict(3 seconds)
-
-            val entity = strictEntityFuture.flatMap { strictEntity =>
-              val personJsonString: String = strictEntity.data.utf8String
-              val person: Person = personJsonString.parseJson.convertTo[Person]
-              val personCreatedFuture: Future[PersonCreated] = (personActor ? CreatePerson(person)).mapTo[PersonCreated]
-              personCreatedFuture.map { msg: PersonCreated =>
-                println(s"add that person to your database. httpRequest: $httpRequest")
-                toHttpEntity(person.toJson.prettyPrint)
-              }
+        } ~ (post & extractRequest & extractLog) { (httpRequest: HttpRequest, log: LoggingAdapter) =>
+          val strictEntityFuture: Future[HttpEntity.Strict] = httpRequest.entity.toStrict(3 seconds)
+          val entity = strictEntityFuture.flatMap { strictEntity =>
+            val personJsonString: String = strictEntity.data.utf8String
+            val person: Person = personJsonString.parseJson.convertTo[Person]
+            val personCreatedFuture: Future[PersonCreated] = (personActor ? CreatePerson(person)).mapTo[PersonCreated]
+            personCreatedFuture.map { msg: PersonCreated =>
+              println(s"add that person to your database. httpRequest: $httpRequest")
+              toHttpEntity(person.toJson.prettyPrint)
             }
-            complete(entity)
           }
+          complete(entity)
         }
       }
 
