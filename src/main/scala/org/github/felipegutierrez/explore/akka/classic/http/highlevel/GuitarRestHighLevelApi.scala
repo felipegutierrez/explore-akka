@@ -3,7 +3,7 @@ package org.github.felipegutierrez.explore.akka.classic.http.highlevel
 import akka.actor.{ActorSystem, Props}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpResponse, StatusCodes}
-import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Directives.{parameter, _}
 import akka.pattern.ask
 import akka.util.Timeout
 import org.github.felipegutierrez.explore.akka.classic.http.lowlevel.{Guitar, GuitarDB, GuitarStoreJsonProtocol}
@@ -38,62 +38,42 @@ object GuitarRestHighLevelApi extends GuitarStoreJsonProtocol {
       guitarDbActor ! CreateGuitar(guitar)
     }
 
+    def toHttpEntity(payload: String) = HttpEntity(ContentTypes.`application/json`, payload)
+
     implicit val defaultTimeout = Timeout(2 seconds)
 
     val guitarServerRoutes =
-      pathPrefix("api" / "guitar") {
+      (pathPrefix("api" / "guitar") & get) {
         (path(IntNumber) | parameter('id.as[Int])) { (guitarId: Int) =>
-          get {
-            // println(s"I found the guitar $guitarId")
-            val guitarsFuture: Future[Option[Guitar]] = (guitarDbActor ? FindGuitar(guitarId)).mapTo[Option[Guitar]]
-            val entityFuture: Future[HttpResponse] = guitarsFuture.map {
-              case None => HttpResponse(StatusCodes.NotFound)
-              case Some(guitar) =>
-                HttpResponse(
-                  entity = HttpEntity(
-                    ContentTypes.`application/json`,
-                    guitar.toJson.prettyPrint
-                  )
-                )
-            }
-            complete(entityFuture)
-          }
+          val entityFuture: Future[HttpEntity.Strict] = (guitarDbActor ? FindGuitar(guitarId))
+            .mapTo[Option[Guitar]]
+            .map(_.toJson.prettyPrint)
+            .map(toHttpEntity)
+          complete(entityFuture)
         } ~ (path("inventory") & parameter('inStock.as[Boolean])) { inStock =>
-          get {
-            val guitarsFuture: Future[List[Guitar]] = (guitarDbActor ? FindGuitarsInStock(inStock)).mapTo[List[Guitar]]
-            val entityFuture: Future[HttpResponse] = guitarsFuture.map { guitars =>
-              HttpResponse(
-                entity = HttpEntity(
-                  ContentTypes.`application/json`,
-                  guitars.toJson.prettyPrint
-                )
-              )
-            }
-            complete(entityFuture)
+          val entityFuture: Future[HttpEntity.Strict] = (guitarDbActor ? FindGuitarsInStock(inStock))
+            .mapTo[List[Guitar]]
+            .map(_.toJson.prettyPrint)
+            .map(toHttpEntity)
+          complete(entityFuture)
+        } ~ pathEndOrSingleSlash {
+          val entityFuture: Future[HttpEntity.Strict] = (guitarDbActor ? FindAllGuitars)
+            .mapTo[List[Guitar]]
+            .map(_.toJson.prettyPrint)
+            .map(toHttpEntity)
+          complete(entityFuture)
+        }
+      } ~ (pathPrefix("api" / "guitar" / "inventory") & post) {
+        (parameter('id.as[Option[Int]]) & parameter('quantity.as[Option[Int]])) { (guitarId, guitarQuantity) =>
+          val validGuitarResponseFuture: Option[Future[HttpResponse]] = for {
+            id <- guitarId
+            quantity <- guitarQuantity
+          } yield {
+            // construct the HTTP response
+            val newGuitarFuture: Future[Option[Guitar]] = (guitarDbActor ? AddQuantity(id, quantity)).mapTo[Option[Guitar]]
+            newGuitarFuture.map(_ => HttpResponse(StatusCodes.OK))
           }
-        } ~ (path("inventory") & parameter('id.as[Option[Int]]) & parameter('quantity.as[Option[Int]])) { (guitarId, guitarQuantity) =>
-          post {
-            val validGuitarResponseFuture: Option[Future[HttpResponse]] = for {
-              id <- guitarId
-              quantity <- guitarQuantity
-            } yield {
-              // construct the HTTP response
-              val newGuitarFuture: Future[Option[Guitar]] = (guitarDbActor ? AddQuantity(id, quantity)).mapTo[Option[Guitar]]
-              newGuitarFuture.map(_ => HttpResponse(StatusCodes.OK))
-            }
-            val entityFuture: Future[HttpResponse] = validGuitarResponseFuture.getOrElse(Future(HttpResponse(StatusCodes.BadRequest)))
-            complete(entityFuture)
-          }
-        } ~ get {
-          val guitarsFuture: Future[List[Guitar]] = (guitarDbActor ? FindAllGuitars).mapTo[List[Guitar]]
-          val entityFuture: Future[HttpResponse] = guitarsFuture.map { guitars =>
-            HttpResponse(
-              entity = HttpEntity(
-                ContentTypes.`application/json`,
-                guitars.toJson.prettyPrint
-              )
-            )
-          }
+          val entityFuture: Future[HttpResponse] = validGuitarResponseFuture.getOrElse(Future(HttpResponse(StatusCodes.BadRequest)))
           complete(entityFuture)
         }
       }
