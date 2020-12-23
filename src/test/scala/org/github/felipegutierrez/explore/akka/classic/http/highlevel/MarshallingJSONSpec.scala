@@ -48,5 +48,13 @@ class MarshallingJSONSpec
         responseAs[Option[Player]] shouldBe Some(players.filter(_.nickname == "rolandbraveheart")(0))
       }
     }
+    "add a new player in the game area" in {
+      val newPLayer = Player("bambam", "wolf", 33)
+      Post("/api/player", newPLayer) ~> gameRoutes ~> check {
+        status shouldBe StatusCodes.OK
+        // assert(players.contains(newPLayer))
+        // players should contain(newPLayer)
+      }
+    }
   }
 }
