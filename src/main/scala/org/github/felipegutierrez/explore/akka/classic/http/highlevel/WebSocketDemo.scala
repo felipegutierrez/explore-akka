@@ -89,7 +89,7 @@ object WebSocketDemo {
         handleWebSocketMessages(socialFlow)
       }
 
-    println("http GET localhost:8080")
+    println("access the browser at: localhost:8080")
     Http()
       .newServerAt("localhost", 8080)
       .bindFlow(webSocketRoute)
