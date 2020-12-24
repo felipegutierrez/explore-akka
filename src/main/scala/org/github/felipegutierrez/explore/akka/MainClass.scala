@@ -5,7 +5,7 @@ import org.github.felipegutierrez.explore.akka.classic.clustering.basic.{Cluster
 import org.github.felipegutierrez.explore.akka.classic.clustering.chat.ChatApp
 import org.github.felipegutierrez.explore.akka.classic.clustering.wordcount.{ClusteringWordCount, ClusteringWordCountAdditionalWorkers}
 import org.github.felipegutierrez.explore.akka.classic.falttolerance._
-import org.github.felipegutierrez.explore.akka.classic.http.highlevel.{GuitarRestHighLevelApi, MarshallingJSON, PersonRestApi}
+import org.github.felipegutierrez.explore.akka.classic.http.highlevel.{GuitarRestHighLevelApi, MarshallingJSON, PersonRestApi, WebSocketDemo}
 import org.github.felipegutierrez.explore.akka.classic.http.lowlevel.{BasicServerLowLevel, GuitarRestApi, HttpsRestApi}
 import org.github.felipegutierrez.explore.akka.classic.infra._
 import org.github.felipegutierrez.explore.akka.classic.patterns._
@@ -140,6 +140,16 @@ object MainClass extends App {
   println(s"87 - GuitarRestHighLevelApi")
   println(s"88 - PersonRestApi")
   println(s"89 - MarshallingJSON")
+  println(s"90 - Akka-HTTP web sockets")
+  println(s"91 - ")
+  println(s"92 - ")
+  println(s"93 - ")
+  println(s"94 - ")
+  println(s"95 - ")
+  println(s"96 - ")
+  println(s"97 - ")
+  println(s"98 - ")
+  println(s"99 - ")
 
   var option: String = ""
   if (args.length == 0) {
@@ -289,6 +299,16 @@ object MainClass extends App {
     case "87" => GuitarRestHighLevelApi.run()
     case "88" => PersonRestApi.run()
     case "89" => MarshallingJSON.run()
+    case "90" => WebSocketDemo.run()
+    case "91" => ???
+    case "92" => ???
+    case "93" => ???
+    case "94" => ???
+    case "95" => ???
+    case "96" => ???
+    case "97" => ???
+    case "98" => ???
+    case "99" => ???
     case _ => println("option unavailable.")
   }
 }
