@@ -85,7 +85,7 @@ libraryDependencies ++= Seq(
   "junit" % "junit" % "4.13" % Test,
 
   // JWT
-  "com.pauldijou" %% "jwt-spray-json" % "2.1.0",
+  "com.pauldijou" %% "jwt-spray-json" % "4.3.0",
 
   // Metrics: Kamon + Prometheus
   "io.kamon" %% "kamon-bundle" % kamonVersion,

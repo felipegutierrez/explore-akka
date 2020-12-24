@@ -5,7 +5,7 @@ import org.github.felipegutierrez.explore.akka.classic.clustering.basic.{Cluster
 import org.github.felipegutierrez.explore.akka.classic.clustering.chat.ChatApp
 import org.github.felipegutierrez.explore.akka.classic.clustering.wordcount.{ClusteringWordCount, ClusteringWordCountAdditionalWorkers}
 import org.github.felipegutierrez.explore.akka.classic.falttolerance._
-import org.github.felipegutierrez.explore.akka.classic.http.highlevel.{GuitarRestHighLevelApi, MarshallingJSON, PersonRestApi, UploadingFiles, WebSocketDemo}
+import org.github.felipegutierrez.explore.akka.classic.http.highlevel.{GuitarRestHighLevelApi, JSONWebTokenDemo, MarshallingJSON, PersonRestApi, UploadingFiles, WebSocketDemo}
 import org.github.felipegutierrez.explore.akka.classic.http.lowlevel.{BasicServerLowLevel, GuitarRestApi, HttpsRestApi}
 import org.github.felipegutierrez.explore.akka.classic.infra._
 import org.github.felipegutierrez.explore.akka.classic.patterns._
@@ -142,7 +142,7 @@ object MainClass extends App {
   println(s"89 - MarshallingJSON")
   println(s"90 - Akka-HTTP web sockets")
   println(s"91 - Akka-HTTP upload files using Akka-stream")
-  println(s"92 - ")
+  println(s"92 - Akka-HTTP with JSON Web Token authentication & authorization")
   println(s"93 - ")
   println(s"94 - ")
   println(s"95 - ")
@@ -301,7 +301,7 @@ object MainClass extends App {
     case "89" => MarshallingJSON.run()
     case "90" => WebSocketDemo.run()
     case "91" => UploadingFiles.run()
-    case "92" => ???
+    case "92" => JSONWebTokenDemo.run()
     case "93" => ???
     case "94" => ???
     case "95" => ???
