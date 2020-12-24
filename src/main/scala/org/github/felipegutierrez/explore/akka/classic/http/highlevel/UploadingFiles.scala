@@ -5,11 +5,13 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity, Multipart}
 import akka.http.scaladsl.server.Directives._
+import akka.stream.ThrottleMode
 import akka.stream.scaladsl.{FileIO, Sink, Source}
 import akka.util.ByteString
 
 import java.io.File
 import scala.concurrent.Future
+import scala.concurrent.duration._
 import scala.util.{Failure, Success}
 
 object UploadingFiles {
@@ -19,7 +21,8 @@ object UploadingFiles {
 
   def run() = {
     implicit val system = ActorSystem("UploadingFiles")
-    
+
+    val NO_OF_MESSAGES = 1
     val filesRoutes = {
       (pathEndOrSingleSlash & get) {
         complete(
@@ -29,7 +32,7 @@ object UploadingFiles {
               |<html>
               |  <body>
               |    <form action="http://localhost:8080/upload" method="post" enctype="multipart/form-data">
-              |      <input type="file" name="myFile">
+              |      <input type="file" name="myFile" multiple>
               |      <button type="submit">Upload</button>
               |    </form>
               |  </body>
@@ -53,8 +56,11 @@ object UploadingFiles {
                 val fileContentsSource: Source[ByteString, _] = bodyPart.entity.dataBytes
                 val fileContentsSink: Sink[ByteString, _] = FileIO.toPath(file.toPath)
 
+                val publishRate = NO_OF_MESSAGES / 1
                 // writing the data to the file using akka-stream graph
-                fileContentsSource.runWith(fileContentsSink)
+                fileContentsSource
+                  .throttle(publishRate, 2 seconds, publishRate, ThrottleMode.shaping)
+                  .runWith(fileContentsSink)
               }
             }
           val writeOperationFuture = partsSource.runWith(filePartsSink)
