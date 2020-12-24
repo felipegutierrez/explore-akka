@@ -53,14 +53,16 @@ class MarshallingJSONSpec
       val newPLayer = Player("bambam", "wolf", 33)
       Post("/api/player", newPLayer) ~> gameRoutes ~> check {
         status shouldBe StatusCodes.OK
-        // assert(players.contains(newPLayer))
-        // players should contain(newPLayer)
+        Get("/api/player") ~> gameRoutes ~> check {
+          status shouldBe StatusCodes.OK
+          entityAs[List[Player]] should contain(newPLayer)
+        }
       }
     }
     "not accept other methods than POST and GET and DELETE" in {
       Put("/api/player") ~> gameRoutes ~> check {
         rejections should not be empty // "natural language" style
-        // rejections.should(not).be(empty) // same
+        rejections.should(not).be(empty) // same
 
         val methodRejections = rejections.collect {
           case rejection: MethodRejection => rejection
