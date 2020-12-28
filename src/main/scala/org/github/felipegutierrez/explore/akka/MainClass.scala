@@ -5,7 +5,7 @@ import org.github.felipegutierrez.explore.akka.classic.clustering.basic.{Cluster
 import org.github.felipegutierrez.explore.akka.classic.clustering.chat.ChatApp
 import org.github.felipegutierrez.explore.akka.classic.clustering.wordcount.{ClusteringWordCount, ClusteringWordCountAdditionalWorkers}
 import org.github.felipegutierrez.explore.akka.classic.falttolerance._
-import org.github.felipegutierrez.explore.akka.classic.http.client.{ConnectionLevel, PaymentSystem}
+import org.github.felipegutierrez.explore.akka.classic.http.client.{ConnectionLevel, HostLevel, PaymentSystem}
 import org.github.felipegutierrez.explore.akka.classic.http.server.highlevel._
 import org.github.felipegutierrez.explore.akka.classic.http.server.lowlevel.{BasicServerLowLevel, GuitarRestApi, HttpsRestApi}
 import org.github.felipegutierrez.explore.akka.classic.infra._
@@ -146,7 +146,7 @@ object MainClass extends App {
   println(s"92 - Akka-HTTP with JSON Web Token authentication & authorization")
   println(s"93 - Akka-HTTP client request -> response")
   println(s"94 - Akka-HTTP client request -> response PaymentSystem")
-  println(s"95 - ")
+  println(s"95 - Akka-HTTP HostLevel")
   println(s"96 - ")
   println(s"97 - ")
   println(s"98 - ")
@@ -307,7 +307,9 @@ object MainClass extends App {
     case "94" =>
       PaymentSystem.run()
       ConnectionLevel.run()
-    case "95" => ???
+    case "95" =>
+      PaymentSystem.run()
+      HostLevel.run()
     case "96" => ???
     case "97" => ???
     case "98" => ???

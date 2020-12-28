@@ -7,7 +7,7 @@ import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
 import akka.pattern.ask
 import akka.util.Timeout
-import org.github.felipegutierrez.explore.akka.classic.http.client.PaymentSystemDomain.{PaymentAccepted, PaymentRequest}
+import org.github.felipegutierrez.explore.akka.classic.http.client.PaymentSystemDomain.{PaymentAccepted, PaymentRejected, PaymentRequest}
 import spray.json._
 
 import scala.concurrent.duration._
@@ -59,7 +59,7 @@ object PaymentSystem extends CreditCardJsonProtocol with SprayJsonSupport {
         post {
           entity(as[PaymentRequest]) { paymentRequest =>
             val validationResponseFuture = (paymentValidator ? paymentRequest).map {
-              case PaymentRequest => StatusCodes.Forbidden
+              case PaymentRejected => StatusCodes.Forbidden
               case PaymentAccepted => StatusCodes.OK
               case _ => StatusCodes.BadRequest
             }
