@@ -55,6 +55,12 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
   "com.typesafe.akka" %% "akka-persistence-query" % akkaVersion,
 
+  // Serialization frameworks
+  "com.github.romix.akka" %% "akka-kryo-serialization" % "0.5.1",
+  "com.sksamuel.avro4s" %% "avro4s-core" % "2.0.4",
+  "com.google.protobuf" % "protobuf-java" % "3.6.1",
+  "io.spray" %%  "spray-json" % "1.3.5",
+
   // local levelDB stores
   "org.iq80.leveldb" % "leveldb" % leveldbVersion,
   "org.fusesource.leveldbjni" % "leveldbjni-all" % leveldbjniVersion,
