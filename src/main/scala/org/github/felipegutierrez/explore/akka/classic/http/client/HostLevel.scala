@@ -10,6 +10,9 @@ import spray.json._
 import java.util.UUID
 import scala.util.{Failure, Success}
 
+/**
+ * High level Akka-Http client request API for low latency and high volume of data but for short lived connections
+ */
 object HostLevel extends CreditCardJsonProtocol with SprayJsonSupport {
   def main(args: Array[String]): Unit = {
     run()
