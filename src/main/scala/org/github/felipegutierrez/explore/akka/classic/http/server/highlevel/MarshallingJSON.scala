@@ -1,4 +1,4 @@
-package org.github.felipegutierrez.explore.akka.classic.http.highlevel
+package org.github.felipegutierrez.explore.akka.classic.http.server.highlevel
 
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.http.scaladsl.Http

@@ -1,4 +1,4 @@
-package org.github.felipegutierrez.explore.akka.classic.http.highlevel
+package org.github.felipegutierrez.explore.akka.classic.http.server.highlevel
 
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.event.LoggingAdapter
@@ -7,7 +7,7 @@ import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpRequest, StatusCo
 import akka.http.scaladsl.server.Directives.{parameter, _}
 import akka.pattern.ask
 import akka.util.Timeout
-import org.github.felipegutierrez.explore.akka.classic.http.highlevel.PersonDomain.CreatePerson
+import org.github.felipegutierrez.explore.akka.classic.http.server.highlevel.PersonDomain.CreatePerson
 import spray.json.{DefaultJsonProtocol, _}
 
 import scala.concurrent.Future

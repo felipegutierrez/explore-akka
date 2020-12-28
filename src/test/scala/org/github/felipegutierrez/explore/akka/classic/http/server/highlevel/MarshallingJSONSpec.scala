@@ -1,4 +1,4 @@
-package org.github.felipegutierrez.explore.akka.classic.http.highlevel
+package org.github.felipegutierrez.explore.akka.classic.http.server.highlevel
 
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.MethodRejection

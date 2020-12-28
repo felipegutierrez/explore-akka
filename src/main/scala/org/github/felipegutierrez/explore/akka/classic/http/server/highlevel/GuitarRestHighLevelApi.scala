@@ -1,4 +1,4 @@
-package org.github.felipegutierrez.explore.akka.classic.http.highlevel
+package org.github.felipegutierrez.explore.akka.classic.http.server.highlevel
 
 import akka.actor.{ActorSystem, Props}
 import akka.http.scaladsl.Http
@@ -6,7 +6,7 @@ import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpResponse, StatusC
 import akka.http.scaladsl.server.Directives.{parameter, _}
 import akka.pattern.ask
 import akka.util.Timeout
-import org.github.felipegutierrez.explore.akka.classic.http.lowlevel.{Guitar, GuitarDB, GuitarStoreJsonProtocol}
+import org.github.felipegutierrez.explore.akka.classic.http.server.lowlevel.{Guitar, GuitarDB, GuitarStoreJsonProtocol}
 import spray.json._
 
 import scala.concurrent.Future

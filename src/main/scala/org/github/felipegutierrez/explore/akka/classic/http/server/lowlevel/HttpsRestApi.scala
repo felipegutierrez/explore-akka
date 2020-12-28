@@ -1,4 +1,4 @@
-package org.github.felipegutierrez.explore.akka.classic.http.lowlevel
+package org.github.felipegutierrez.explore.akka.classic.http.server.lowlevel
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model._
