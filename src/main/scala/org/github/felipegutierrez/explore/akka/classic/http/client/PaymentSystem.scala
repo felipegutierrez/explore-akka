@@ -7,7 +7,6 @@ import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
 import akka.pattern.ask
 import akka.util.Timeout
-import org.github.felipegutierrez.explore.akka.classic.http.client.PaymentSystemDomain.{PaymentAccepted, PaymentRejected, PaymentRequest}
 import spray.json._
 
 import scala.concurrent.duration._
@@ -49,6 +48,7 @@ object PaymentSystem extends CreditCardJsonProtocol with SprayJsonSupport {
   def run() = {
     println("starting microservice for payment ...")
     implicit val system = ActorSystem("PaymentSystem")
+    import PaymentSystemDomain._
     import system.dispatcher
 
     val paymentValidator = system.actorOf(Props[PaymentValidatorActor], "paymentValidator")
