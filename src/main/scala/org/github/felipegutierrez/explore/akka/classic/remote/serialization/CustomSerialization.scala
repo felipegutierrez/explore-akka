@@ -3,7 +3,6 @@ package org.github.felipegutierrez.explore.akka.classic.remote.serialization
 import akka.actor.{ActorSystem, Props}
 import akka.serialization.Serializer
 import com.typesafe.config.ConfigFactory
-
 import spray.json._
 
 case class Person(name: String, age: Int)
@@ -15,7 +14,7 @@ class PersonSerializer extends Serializer {
   override def identifier: Int = 74238
 
   override def toBinary(o: AnyRef): Array[Byte] = o match {
-    case person @ Person(name, age) =>
+    case person@Person(name, age) =>
       // [John||32]
       println(s"Serializing $person")
       s"[$name$SEPARATOR$age]".getBytes()
@@ -63,6 +62,7 @@ object CustomSerialization_Local {
   def main(args: Array[String]): Unit = {
     run()
   }
+
   def run() = {
     val config = ConfigFactory.parseString(
       """
@@ -81,6 +81,7 @@ object CustomSerialization_Remote {
   def main(args: Array[String]): Unit = {
     run()
   }
+
   def run() = {
     val config = ConfigFactory.parseString(
       """
