@@ -3,7 +3,7 @@ package org.github.felipegutierrez.explore.akka.classic.persistence.serializatio
 import akka.actor.ActorSystem
 import com.typesafe.config.ConfigFactory
 import org.github.felipegutierrez.explore.akka.classic.persistence.stores.SimplePersistentActor
-import org.github.felipegutierrez.explore.akka.classic.remote.serialization.Person
+import org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser
 
 object ProtobufSerialization_Persistence {
   def main(args: Array[String]): Unit = {
@@ -19,8 +19,14 @@ object ProtobufSerialization_Persistence {
       .withFallback(ConfigFactory.load("protobufSerializablePerson"))
     val system = ActorSystem("postgresStoreSystem", config)
 
-    val simplePersistentActor = system.actorOf(SimplePersistentActor.props("protobuf-actor"), "personJsonActor")
+    val simplePersistentActor = system.actorOf(SimplePersistentActor.props("protobuf-actor"), "personProtobufActor")
 
-    simplePersistentActor ! Person("Alice", 23)
+    val onlineStoreUser = OnlineStoreUser.newBuilder()
+      .setId(1234)
+      .setUserName("Felipe-rocktheJVM")
+      .setUserEmail("Felipe@rocktheJVM.com")
+      .setUserPhone("1234-7890")
+      .build()
+    simplePersistentActor ! onlineStoreUser
   }
 }

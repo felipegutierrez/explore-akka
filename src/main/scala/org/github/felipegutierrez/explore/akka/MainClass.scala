@@ -13,7 +13,7 @@ import org.github.felipegutierrez.explore.akka.classic.patterns._
 import org.github.felipegutierrez.explore.akka.classic.persistence.detaching.DetachingModels
 import org.github.felipegutierrez.explore.akka.classic.persistence.event_sourcing._
 import org.github.felipegutierrez.explore.akka.classic.persistence.schema.EventAdapters
-import org.github.felipegutierrez.explore.akka.classic.persistence.serialization.{AvroSerialization_Persistence, CustomSerialization_Persistence, KryoSerialization_Persistence}
+import org.github.felipegutierrez.explore.akka.classic.persistence.serialization.{AvroSerialization_Persistence, CustomSerialization_Persistence, KryoSerialization_Persistence, ProtobufSerialization_Persistence}
 import org.github.felipegutierrez.explore.akka.classic.persistence.stores.{CassandraStores, LocalStores, PostgresStores}
 import org.github.felipegutierrez.explore.akka.classic.remote._
 import org.github.felipegutierrez.explore.akka.classic.remote.deployment.{LocalDeployment, RemoteDeployment}
@@ -330,7 +330,7 @@ object MainClass extends App {
     case "97" =>
       ProtobufSerialization_Remote.run()
       ProtobufSerialization_Local.run()
-    case "98" => ???
+    case "98" => ProtobufSerialization_Persistence.run()
     case "99" => ???
     case _ => println("option unavailable.")
   }
