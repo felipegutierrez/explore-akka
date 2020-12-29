@@ -13,10 +13,12 @@ import org.github.felipegutierrez.explore.akka.classic.patterns._
 import org.github.felipegutierrez.explore.akka.classic.persistence.detaching.DetachingModels
 import org.github.felipegutierrez.explore.akka.classic.persistence.event_sourcing._
 import org.github.felipegutierrez.explore.akka.classic.persistence.schema.EventAdapters
+import org.github.felipegutierrez.explore.akka.classic.persistence.serialization.{CustomSerialization_Persistence, KryoSerialization_Persistence}
 import org.github.felipegutierrez.explore.akka.classic.persistence.stores.{CassandraStores, LocalStores, PostgresStores}
 import org.github.felipegutierrez.explore.akka.classic.remote._
 import org.github.felipegutierrez.explore.akka.classic.remote.deployment.{LocalDeployment, RemoteDeployment}
 import org.github.felipegutierrez.explore.akka.classic.remote.hello.{LocalActor, RemoteActor}
+import org.github.felipegutierrez.explore.akka.classic.remote.serialization.{CustomSerialization_Local, CustomSerialization_Remote, KryoSerialization_Local, KryoSerialization_Remote}
 import org.github.felipegutierrez.explore.akka.classic.remote.wordcount.{MasterApp, WorkerApp}
 import org.github.felipegutierrez.explore.akka.classic.streams.advanced._
 import org.github.felipegutierrez.explore.akka.classic.streams.basics.{BackpressureStreams, FirstStreamPrinciples, MaterializingStreams, OperatorFusionStreams}
@@ -94,9 +96,9 @@ object MainClass extends App {
   println(s"42.2 - Bob chat")
   println(s"42.3 - Felipe chat")
   println(s"42.4 - Fabio chat")
-  println(s"43 - ")
-  println(s"44 - ")
-  println(s"45 - ")
+  println(s"43 - Remote custom serialization with Spray JSON")
+  println(s"44 - Remote custom serialization with Kryo")
+  println(s"45 - Remote custom serialization with Avro")
   println(s"46 - PersistentActors")
   println(s"47 - PersistentActorsExercise")
   println(s"48 - Snapshots")
@@ -104,6 +106,9 @@ object MainClass extends App {
   println(s"50 - PersistAsyncDemo")
   println(s"51 - LocalStores")
   println(s"52 - PostgresStores")
+  println(s"52.1 - PostgresStores custom serialization with Spray JSON")
+  println(s"52.2 - PostgresStores custom serialization with Kryo")
+  println(s"52.3 - PostgresStores custom serialization with Avro")
   println(s"53 - CassandraStores")
   println(s"54 - EventAdapters")
   println(s"55 - DetachingModels")
@@ -249,8 +254,12 @@ object MainClass extends App {
     case "42.4" =>
       val fabio = new ChatApp("Fabio", 2554, false)
       fabio.run()
-    case "43" => ???
-    case "44" => ???
+    case "43" =>
+      CustomSerialization_Remote.run()
+      CustomSerialization_Local.run()
+    case "44" =>
+      KryoSerialization_Remote.run()
+      KryoSerialization_Local.run()
     case "45" => ???
     case "46" => PersistentActors.run()
     case "47" => PersistentActorsExercise.run()
@@ -259,6 +268,9 @@ object MainClass extends App {
     case "50" => PersistAsyncDemo.run()
     case "51" => LocalStores.run()
     case "52" => PostgresStores.run()
+    case "52.1" => CustomSerialization_Persistence.run()
+    case "52.2" => KryoSerialization_Persistence.run()
+    case "52.3" => ???
     case "53" => CassandraStores.run()
     case "54" => EventAdapters.run()
     case "55" => DetachingModels.run()
