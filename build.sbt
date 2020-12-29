@@ -56,10 +56,10 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-persistence-query" % akkaVersion,
 
   // Serialization frameworks
-  "com.github.romix.akka" %% "akka-kryo-serialization" % "0.5.1",
+  "com.github.romix.akka" %% "akka-kryo-serialization" % "0.5.2",
   "com.sksamuel.avro4s" %% "avro4s-core" % "2.0.4",
   "com.google.protobuf" % "protobuf-java" % "3.6.1",
-//  "io.spray" %%  "spray-json" % "1.3.6", // already imported in "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
+  //"io.spray" %%  "spray-json" % "1.3.6", // already imported in "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
 
   // local levelDB stores
   "org.iq80.leveldb" % "leveldb" % leveldbVersion,

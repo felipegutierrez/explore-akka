@@ -14,7 +14,7 @@ object KryoSerialization_Local {
     val config = ConfigFactory.parseString(
       """
         |akka.remote.artery.canonical.port = 2551
-    """.stripMargin)
+        |""".stripMargin)
       .withFallback(ConfigFactory.load().getConfig("kryoSerializablePerson"))
 
     val system = ActorSystem("LocalSystem", config)
@@ -33,7 +33,7 @@ object KryoSerialization_Remote {
     val config = ConfigFactory.parseString(
       """
         |akka.remote.artery.canonical.port = 2552
-    """.stripMargin)
+        |""".stripMargin)
       .withFallback(ConfigFactory.load().getConfig("kryoSerializablePerson"))
 
     val system = ActorSystem("RemoteSystem", config)
