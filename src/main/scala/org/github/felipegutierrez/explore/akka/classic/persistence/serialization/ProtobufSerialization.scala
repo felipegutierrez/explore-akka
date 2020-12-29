@@ -22,9 +22,9 @@ object ProtobufSerialization_Persistence {
     val simplePersistentActor = system.actorOf(SimplePersistentActor.props("protobuf-actor"), "personProtobufActor")
 
     val onlineStoreUser = OnlineStoreUser.newBuilder()
-      .setId(1234)
-      .setUserName("Felipe-rocktheJVM")
-      .setUserEmail("Felipe@rocktheJVM.com")
+      .setUserId(56789)
+      .setUserName("fabio-rocktheJVM")
+      .setUserEmail("fabio@rocktheJVM.com")
       .setUserPhone("1234-7890")
       .build()
     simplePersistentActor ! onlineStoreUser

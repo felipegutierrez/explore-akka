@@ -20,7 +20,7 @@ object ProtobufSerialization_Local {
     val actorSelection = system.actorSelection("akka://RemoteSystem@localhost:2552/user/remoteActor")
 
     val onlineStoreUser = OnlineStoreUser.newBuilder()
-      .setId(1234)
+      .setUserId(1234)
       .setUserName("Felipe-rocktheJVM")
       .setUserEmail("Felipe@rocktheJVM.com")
       .setUserPhone("1234-7890")
