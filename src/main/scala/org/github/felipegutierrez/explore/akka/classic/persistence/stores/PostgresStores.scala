@@ -1,6 +1,6 @@
 package org.github.felipegutierrez.explore.akka.classic.persistence.stores
 
-import akka.actor.{ActorSystem, Props}
+import akka.actor.ActorSystem
 import com.typesafe.config.ConfigFactory
 
 /**
@@ -34,7 +34,7 @@ object PostgresStores extends App {
 
   def run() = {
     val postgresStoreSystem = ActorSystem("postgresStoreSystem", ConfigFactory.load().getConfig("postgresStore"))
-    val persistentActor = postgresStoreSystem.actorOf(Props[SimplePersistentActor], "persistentActor")
+    val persistentActor = postgresStoreSystem.actorOf(SimplePersistentActor.props("postgres-actor"), "persistentActor")
 
     for (i <- 1 to 10) {
       persistentActor ! s"i love akka $i"

@@ -1,6 +1,6 @@
 package org.github.felipegutierrez.explore.akka.classic.persistence.serialization
 
-import akka.actor.{ActorSystem, Props}
+import akka.actor.ActorSystem
 import com.typesafe.config.ConfigFactory
 import org.github.felipegutierrez.explore.akka.classic.persistence.stores.SimplePersistentActor
 import org.github.felipegutierrez.explore.akka.classic.remote.serialization.{BankAccount, CompanyRegistry}
@@ -19,7 +19,7 @@ object AvroSerialization_Persistence {
       .withFallback(ConfigFactory.load("avroSerializablePerson"))
     val system = ActorSystem("postgresStoreSystem", config)
 
-    val simplePersistentActor = system.actorOf(Props[SimplePersistentActor], "personAvroActor")
+    val simplePersistentActor = system.actorOf(SimplePersistentActor.props("avro-actor"), "personAvroActor")
 
     val companyRegistryMsg = CompanyRegistry(
       "Google",
@@ -30,6 +30,6 @@ object AvroSerialization_Persistence {
       "ads",
       523895
     )
-    // simplePersistentActor ! companyRegistryMsg
+    simplePersistentActor ! companyRegistryMsg
   }
 }

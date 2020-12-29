@@ -1,6 +1,6 @@
 package org.github.felipegutierrez.explore.akka.classic.persistence.stores
 
-import akka.actor.{ActorSystem, Props}
+import akka.actor.ActorSystem
 import com.typesafe.config.ConfigFactory
 
 /**
@@ -38,7 +38,7 @@ object CassandraStores extends App {
 
   def run() = {
     val cassandraStoreSystem = ActorSystem("cassandraStoreSystem", ConfigFactory.load().getConfig("cassandraStore"))
-    val persistentActor = cassandraStoreSystem.actorOf(Props[SimplePersistentActor], "persistentActor")
+    val persistentActor = cassandraStoreSystem.actorOf(SimplePersistentActor.props("cassandra-actor"), "persistentActor")
 
     for (i <- 1 to 10) {
       persistentActor ! s"i love akka $i"

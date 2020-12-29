@@ -1,12 +1,14 @@
 package org.github.felipegutierrez.explore.akka.classic.persistence.stores
 
-import akka.actor.ActorLogging
+import akka.actor.{ActorLogging, Props}
 import akka.persistence._
 
-class SimplePersistentActor extends PersistentActor with ActorLogging {
-  var nMessages = 0
+object SimplePersistentActor {
+  def props(persistenceId: String) = Props(new SimplePersistentActor(persistenceId))
+}
 
-  override def persistenceId: String = "simple-persistent-actor"
+class SimplePersistentActor(override val persistenceId: String) extends PersistentActor with ActorLogging {
+  var nMessages = 0
 
   override def receiveCommand: Receive = {
     case "print" =>

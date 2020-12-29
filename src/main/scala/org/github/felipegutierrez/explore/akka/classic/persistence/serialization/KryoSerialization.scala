@@ -1,6 +1,6 @@
 package org.github.felipegutierrez.explore.akka.classic.persistence.serialization
 
-import akka.actor.{ActorSystem, Props}
+import akka.actor.ActorSystem
 import com.typesafe.config.ConfigFactory
 import org.github.felipegutierrez.explore.akka.classic.persistence.stores.SimplePersistentActor
 import org.github.felipegutierrez.explore.akka.classic.remote.serialization.Person
@@ -19,7 +19,7 @@ object KryoSerialization_Persistence {
       .withFallback(ConfigFactory.load("kryoSerializablePerson"))
     val system = ActorSystem("postgresStoreSystem", config)
 
-    val simplePersistentActor = system.actorOf(Props[SimplePersistentActor], "personKryoActor")
+    val simplePersistentActor = system.actorOf(SimplePersistentActor.props("kryo-actor"), "personKryoActor")
 
     simplePersistentActor ! Person("Alice in the Kryo world", 85)
   }
