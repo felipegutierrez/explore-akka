@@ -59,7 +59,7 @@ libraryDependencies ++= Seq(
   "com.github.romix.akka" %% "akka-kryo-serialization" % "0.5.1",
   "com.sksamuel.avro4s" %% "avro4s-core" % "2.0.4",
   "com.google.protobuf" % "protobuf-java" % "3.6.1",
-  "io.spray" %%  "spray-json" % "1.3.5",
+//  "io.spray" %%  "spray-json" % "1.3.6", // already imported in "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
 
   // local levelDB stores
   "org.iq80.leveldb" % "leveldb" % leveldbVersion,

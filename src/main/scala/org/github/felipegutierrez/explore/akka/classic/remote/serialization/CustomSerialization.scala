@@ -36,6 +36,29 @@ class PersonSerializer extends Serializer {
   override def includeManifest: Boolean = false
 }
 
+class PersonJsonSerializer extends Serializer with DefaultJsonProtocol {
+  implicit val personFormat = jsonFormat2(Person)
+
+  override def identifier: Int = 42348
+
+  override def toBinary(o: AnyRef): Array[Byte] = o match {
+    case p: Person =>
+      val json: String = p.toJson.prettyPrint
+      println(s"Converting $p to $json")
+      json.getBytes()
+    case _ => throw new IllegalArgumentException("only persons are supported for this serializer")
+  }
+
+  override def fromBinary(bytes: Array[Byte], manifest: Option[Class[_]]): AnyRef = {
+    val string = new String(bytes)
+    val person = string.parseJson.convertTo[Person]
+    println(s"Deserialized $string to $person")
+    person
+  }
+
+  override def includeManifest: Boolean = false
+}
+
 object CustomSerialization_Local {
   def main(args: Array[String]): Unit = {
     run()
