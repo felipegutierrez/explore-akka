@@ -13,12 +13,12 @@ import org.github.felipegutierrez.explore.akka.classic.patterns._
 import org.github.felipegutierrez.explore.akka.classic.persistence.detaching.DetachingModels
 import org.github.felipegutierrez.explore.akka.classic.persistence.event_sourcing._
 import org.github.felipegutierrez.explore.akka.classic.persistence.schema.EventAdapters
-import org.github.felipegutierrez.explore.akka.classic.persistence.serialization.{CustomSerialization_Persistence, KryoSerialization_Persistence}
+import org.github.felipegutierrez.explore.akka.classic.persistence.serialization.{AvroSerialization_Persistence, CustomSerialization_Persistence, KryoSerialization_Persistence}
 import org.github.felipegutierrez.explore.akka.classic.persistence.stores.{CassandraStores, LocalStores, PostgresStores}
 import org.github.felipegutierrez.explore.akka.classic.remote._
 import org.github.felipegutierrez.explore.akka.classic.remote.deployment.{LocalDeployment, RemoteDeployment}
 import org.github.felipegutierrez.explore.akka.classic.remote.hello.{LocalActor, RemoteActor}
-import org.github.felipegutierrez.explore.akka.classic.remote.serialization.{CustomSerialization_Local, CustomSerialization_Remote, KryoSerialization_Local, KryoSerialization_Remote}
+import org.github.felipegutierrez.explore.akka.classic.remote.serialization.{AvroSerialization_Local, AvroSerialization_Remote, CustomSerialization_Local, CustomSerialization_Remote, KryoSerialization_Local, KryoSerialization_Remote}
 import org.github.felipegutierrez.explore.akka.classic.remote.wordcount.{MasterApp, WorkerApp}
 import org.github.felipegutierrez.explore.akka.classic.streams.advanced._
 import org.github.felipegutierrez.explore.akka.classic.streams.basics.{BackpressureStreams, FirstStreamPrinciples, MaterializingStreams, OperatorFusionStreams}
@@ -260,7 +260,9 @@ object MainClass extends App {
     case "44" =>
       KryoSerialization_Remote.run()
       KryoSerialization_Local.run()
-    case "45" => ???
+    case "45" =>
+      AvroSerialization_Remote.run()
+      AvroSerialization_Local.run()
     case "46" => PersistentActors.run()
     case "47" => PersistentActorsExercise.run()
     case "48" => Snapshots.run()
@@ -270,7 +272,7 @@ object MainClass extends App {
     case "52" => PostgresStores.run()
     case "52.1" => CustomSerialization_Persistence.run()
     case "52.2" => KryoSerialization_Persistence.run()
-    case "52.3" => ???
+    case "52.3" => AvroSerialization_Persistence.run()
     case "53" => CassandraStores.run()
     case "54" => EventAdapters.run()
     case "55" => DetachingModels.run()
