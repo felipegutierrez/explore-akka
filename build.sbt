@@ -57,7 +57,8 @@ libraryDependencies ++= Seq(
 
   // Serialization frameworks
   "com.github.romix.akka" %% "akka-kryo-serialization" % "0.5.2",
-  "com.sksamuel.avro4s" %% "avro4s-core" % "2.0.4",
+  "com.sksamuel.avro4s" %% "avro4s-core" % "4.0.4",
+  "org.xerial.snappy" % "snappy-java" % "1.1.8.2",
   "com.google.protobuf" % "protobuf-java" % "3.6.1",
   //"io.spray" %%  "spray-json" % "1.3.6", // already imported in "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
 
