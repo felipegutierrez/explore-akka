@@ -18,7 +18,7 @@ import org.github.felipegutierrez.explore.akka.classic.persistence.stores.{Cassa
 import org.github.felipegutierrez.explore.akka.classic.remote._
 import org.github.felipegutierrez.explore.akka.classic.remote.deployment.{LocalDeployment, RemoteDeployment}
 import org.github.felipegutierrez.explore.akka.classic.remote.hello.{LocalActor, RemoteActor}
-import org.github.felipegutierrez.explore.akka.classic.remote.serialization.{AvroSerialization_Local, AvroSerialization_Remote, CustomSerialization_Local, CustomSerialization_Remote, KryoSerialization_Local, KryoSerialization_Remote, ProtobufSerialization_Local, ProtobufSerialization_Remote}
+import org.github.felipegutierrez.explore.akka.classic.remote.serialization.{AvroSerialization_Local, AvroSerialization_Remote, CustomSerialization_Local, CustomSerialization_Remote, KryoSerialization_Local, KryoSerialization_Remote, ProtobufSerialization_Local, ProtobufSerialization_Remote, VotingCentralizer, VotingStation}
 import org.github.felipegutierrez.explore.akka.classic.remote.wordcount.{MasterApp, WorkerApp}
 import org.github.felipegutierrez.explore.akka.classic.streams.advanced._
 import org.github.felipegutierrez.explore.akka.classic.streams.basics.{BackpressureStreams, FirstStreamPrinciples, MaterializingStreams, OperatorFusionStreams}
@@ -155,7 +155,8 @@ object MainClass extends App {
   println(s"96 - Akka-HTTP RequestLevel")
   println(s"97 - Protobuffer: using Akka remote serialization with protobuf")
   println(s"98 - Protobuffer: using Akka persistence serialization with protobuf")
-  println(s"99 - ")
+  println(s"99.1 - Benchmarking serialization with Avro, Kryo, and Protobuffer using Akka-remote")
+  println(s"99.2 - Benchmarking serialization with Avro, Kryo, and Protobuffer using Akka-persistence")
 
   var option: String = ""
   if (args.length == 0) {
@@ -331,7 +332,10 @@ object MainClass extends App {
       ProtobufSerialization_Remote.run()
       ProtobufSerialization_Local.run()
     case "98" => ProtobufSerialization_Persistence.run()
-    case "99" => ???
+    case "99.1" =>
+      VotingCentralizer.run()
+      VotingStation.run()
+    case "99.2" => ???
     case _ => println("option unavailable.")
   }
 }
