@@ -13,7 +13,7 @@ import org.github.felipegutierrez.explore.akka.classic.patterns._
 import org.github.felipegutierrez.explore.akka.classic.persistence.detaching.DetachingModels
 import org.github.felipegutierrez.explore.akka.classic.persistence.event_sourcing._
 import org.github.felipegutierrez.explore.akka.classic.persistence.schema.EventAdapters
-import org.github.felipegutierrez.explore.akka.classic.persistence.serialization.{AvroSerialization_Persistence, CustomSerialization_Persistence, KryoSerialization_Persistence, ProtobufSerialization_Persistence}
+import org.github.felipegutierrez.explore.akka.classic.persistence.serialization.{AvroSerialization_Persistence, BenchmarkSerialization, CustomSerialization_Persistence, KryoSerialization_Persistence, ProtobufSerialization_Persistence}
 import org.github.felipegutierrez.explore.akka.classic.persistence.stores.{CassandraStores, LocalStores, PostgresStores}
 import org.github.felipegutierrez.explore.akka.classic.remote._
 import org.github.felipegutierrez.explore.akka.classic.remote.deployment.{LocalDeployment, RemoteDeployment}
@@ -155,8 +155,8 @@ object MainClass extends App {
   println(s"96 - Akka-HTTP RequestLevel")
   println(s"97 - Protobuffer: using Akka remote serialization with protobuf")
   println(s"98 - Protobuffer: using Akka persistence serialization with protobuf")
-  println(s"99.1 - Benchmarking serialization with Avro, Kryo, and Protobuffer using Akka-remote")
-  println(s"99.2 - Benchmarking serialization with Avro, Kryo, and Protobuffer using Akka-persistence")
+  println(s"99.1 - Benchmarking serialization with Java, Avro, Kryo, and Protobuffer using Akka-remote")
+  println(s"99.2 - Benchmarking serialization with Java, Avro, Kryo, and Protobuffer using Akka-persistence")
 
   var option: String = ""
   if (args.length == 0) {
@@ -335,7 +335,7 @@ object MainClass extends App {
     case "99.1" =>
       VotingCentralizer.run()
       VotingStation.run()
-    case "99.2" => ???
+    case "99.2" => BenchmarkSerialization.run()
     case _ => println("option unavailable.")
   }
 }

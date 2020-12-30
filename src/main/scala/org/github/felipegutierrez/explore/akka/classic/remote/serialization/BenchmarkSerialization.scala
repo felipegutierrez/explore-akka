@@ -10,6 +10,19 @@ import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 import java.util.UUID
 import scala.util.Random
 
+/**
+ * at the application.conf under the scope of "serializersBenchmark" change:
+ * serialization-bindings
+ * "org.github.felipegutierrez.explore.akka.classic.remote.serialization.Vote" = java // set up [java,avro,kryo]
+ * - JAVA: Received 1000000 votes in 32.550 seconds
+ * - AVRO: Received 1000000 votes in 111.420 seconds
+ * - KRYO: Received 1000000 votes in 38.697 seconds
+ * - PROTOBUFFER: Received 1000000 votes in 15.583 seconds
+ *
+ *
+ *
+ */
+
 case class Vote(ssn: String, candidate: String)
 
 case object VoteEnd
@@ -96,7 +109,8 @@ object VotingStation {
     val system = ActorSystem("VotingStation", config)
     val actorSelection = system.actorSelection("akka://VotingCentralizer@localhost:2552/user/voteAggregator")
 
-    val votes = VoteGenerator.generateProtobufVotes(1000)
+    // val votes = VoteGenerator.generateProtobufVotes(1000000) // using protobuffers
+    val votes = VoteGenerator.generateVotes(1000000) // using java, avro, kryo
     votes.foreach(actorSelection ! _)
     actorSelection ! VoteEnd
   }
