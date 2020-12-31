@@ -9,9 +9,9 @@ import akka.http.scaladsl.server.Route
 import scala.io.StdIn
 
 object Playground {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("AkkaHttpPlayground")

@@ -2,9 +2,11 @@ package org.github.felipegutierrez.explore.akka.classic.basics
 
 import akka.actor.{Actor, ActorSystem, Props}
 
-object ChildActorsNaiveBank extends App {
+object ChildActorsNaiveBank {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     import CreditCard._

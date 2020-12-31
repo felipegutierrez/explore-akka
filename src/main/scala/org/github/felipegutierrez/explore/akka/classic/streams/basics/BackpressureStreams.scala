@@ -4,9 +4,11 @@ import akka.actor.ActorSystem
 import akka.stream.OverflowStrategy
 import akka.stream.scaladsl.{Flow, Sink, Source}
 
-object BackpressureStreams extends App {
+object BackpressureStreams {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("BackpressureStreams")

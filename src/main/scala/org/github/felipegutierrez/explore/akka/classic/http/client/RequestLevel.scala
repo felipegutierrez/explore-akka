@@ -13,9 +13,9 @@ import scala.util.{Failure, Success}
  * High level Akka-Http client request API for low latency, low volume of data, and for short lived connections
  */
 object RequestLevel extends CreditCardJsonProtocol with SprayJsonSupport {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("RequestLevel")

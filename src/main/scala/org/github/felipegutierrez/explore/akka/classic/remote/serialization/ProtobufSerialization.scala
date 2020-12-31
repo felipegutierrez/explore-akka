@@ -5,9 +5,9 @@ import com.typesafe.config.ConfigFactory
 import org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser
 
 object ProtobufSerialization_Local {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val config = ConfigFactory.parseString(
@@ -30,14 +30,15 @@ object ProtobufSerialization_Local {
 }
 
 object ProtobufSerialization_Remote {
-  def main(args: Array[String]): Unit = {
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
+
+  def run() = {
     println("sudo apt install protobuf-compiler")
     println("cd src")
     println("protoc --java_out=main/java main/protobuf/datamodel.proto")
-    run()
-  }
 
-  def run() = {
     val config = ConfigFactory.parseString(
       """
         |akka.remote.artery.canonical.port = 2552

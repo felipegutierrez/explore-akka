@@ -65,9 +65,9 @@ class PersonActor extends Actor with ActorLogging {
 }
 
 object PersonRestApi extends PersonJsonProtocol {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("PersonRestApi")

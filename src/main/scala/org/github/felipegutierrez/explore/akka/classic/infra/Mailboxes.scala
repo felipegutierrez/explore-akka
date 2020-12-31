@@ -4,9 +4,11 @@ import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.dispatch.{ControlMessage, PriorityGenerator, UnboundedPriorityMailbox}
 import com.typesafe.config.{Config, ConfigFactory}
 
-object Mailboxes extends App {
+object Mailboxes {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
 

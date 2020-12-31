@@ -3,9 +3,11 @@ package org.github.felipegutierrez.explore.akka.recap
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-object AdvancedTypeClassMagnetPattern extends App {
+object AdvancedTypeClassMagnetPattern {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   class P2PRequest
 

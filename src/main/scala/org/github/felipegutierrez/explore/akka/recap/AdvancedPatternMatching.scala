@@ -1,8 +1,10 @@
 package org.github.felipegutierrez.explore.akka.recap
 
-object AdvancedPatternMatching extends App {
+object AdvancedPatternMatching {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     println(aListWith(List(1)))

@@ -4,9 +4,19 @@ import scala.concurrent.duration.DurationInt
 import scala.concurrent.{Await, Future}
 import scala.util.{Failure, Success}
 
-object AdvancedRecap extends App {
+object AdvancedRecap {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
+
+  val pf = (x: Int) => x match {
+    case 1 => 11
+    case 2 => 22
+    case 3 => 33
+    case 5 => 55
+    case _ => 0
+  }
 
   def run(): Unit = {
     type ReceiveFunction = PartialFunction[Any, Unit]
@@ -114,14 +124,14 @@ object AdvancedRecap extends App {
     println(s"aMutableContainer.member ${aMutableContainer.member}")
   }
 
-  trait Action {
-    def act(x: Int): Int
-  }
-
   println("implicit classes ....................")
 
   implicit class Dog(name: String) {
     def bark = println("bark!!")
+  }
+
+  trait Action {
+    def act(x: Int): Int
   }
 
   // syntax sugar for setters and getter in mutable containers
@@ -138,13 +148,5 @@ object AdvancedRecap extends App {
 
   object Person {
     implicit val personOrdering: Ordering[Person] = Ordering.fromLessThan((a, b) => a.name.compareTo(b.name) < 0)
-  }
-
-  val pf = (x: Int) => x match {
-    case 1 => 11
-    case 2 => 22
-    case 3 => 33
-    case 5 => 55
-    case _ => 0
   }
 }

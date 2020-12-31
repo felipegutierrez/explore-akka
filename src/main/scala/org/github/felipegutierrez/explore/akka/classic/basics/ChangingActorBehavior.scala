@@ -2,9 +2,11 @@ package org.github.felipegutierrez.explore.akka.classic.basics
 
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 
-object ChangingActorBehavior extends App {
+object ChangingActorBehavior {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     import Mon._

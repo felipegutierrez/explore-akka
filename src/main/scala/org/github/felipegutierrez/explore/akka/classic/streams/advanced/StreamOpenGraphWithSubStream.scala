@@ -7,9 +7,9 @@ import com.typesafe.config.ConfigFactory
 import scala.util.{Failure, Success}
 
 object StreamOpenGraphWithSubStream {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val configString =

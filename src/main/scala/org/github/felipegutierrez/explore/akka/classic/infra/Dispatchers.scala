@@ -6,9 +6,11 @@ import akka.routing.RoundRobinPool
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Random
 
-object Dispatchers extends App {
+object Dispatchers {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val system = ActorSystem("dispatchersDemo") // ConfigFactory.load().getConfig("dispatchersDemo")

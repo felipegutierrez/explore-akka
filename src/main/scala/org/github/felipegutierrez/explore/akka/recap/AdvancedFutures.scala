@@ -5,9 +5,11 @@ import scala.concurrent.duration._
 import scala.concurrent.{Await, Future, Promise}
 import scala.util.{Failure, Random, Success, Try}
 
-object AdvancedFutures extends App {
+object AdvancedFutures {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
 

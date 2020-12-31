@@ -8,9 +8,11 @@ import java.util.{Date, UUID}
 import scala.concurrent.duration._
 import scala.util.Random
 
-object StreamOpenGraphsWithNonUniformShapes extends App {
+object StreamOpenGraphsWithNonUniformShapes {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     /*

@@ -6,9 +6,11 @@ import akka.routing.FromConfig
 import com.typesafe.config.ConfigFactory
 import org.github.felipegutierrez.explore.akka.classic.remote.hello.SimpleActor
 
-object LocalDeployment extends App {
+object LocalDeployment {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val system = ActorSystem("LocalActorSystem", ConfigFactory.load("remote/deployingActorsRemotely.conf").getConfig("localApp"))

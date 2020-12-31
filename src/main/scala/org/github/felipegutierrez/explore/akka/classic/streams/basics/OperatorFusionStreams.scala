@@ -3,9 +3,11 @@ package org.github.felipegutierrez.explore.akka.classic.streams.basics
 import akka.actor.{Actor, ActorSystem, Props}
 import akka.stream.scaladsl.{Flow, Sink, Source}
 
-object OperatorFusionStreams extends App {
+object OperatorFusionStreams {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("OperatorFusionStreams")

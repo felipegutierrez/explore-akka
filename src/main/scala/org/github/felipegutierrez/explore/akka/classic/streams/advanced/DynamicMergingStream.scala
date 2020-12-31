@@ -7,9 +7,9 @@ import com.typesafe.config.ConfigFactory
 import scala.concurrent.duration._
 
 object DynamicMergingStream {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val configString =

@@ -331,11 +331,11 @@ object MainClass extends App {
     case "97" =>
       ProtobufSerialization_Remote.run()
       ProtobufSerialization_Local.run()
-    case "98" => ProtobufSerialization_Persistence.run()
-    case "99.1" =>
-      VotingCentralizer.run()
-      VotingStation.run()
-    case "99.2" => BenchmarkSerialization.run()
+//    case "98" => ProtobufSerialization_Persistence.run()
+//    case "99.1" =>
+//      VotingCentralizer.run()
+//      VotingStation.run()
+//    case "99.2" => BenchmarkSerialization.run()
     case _ => println("option unavailable.")
   }
 }

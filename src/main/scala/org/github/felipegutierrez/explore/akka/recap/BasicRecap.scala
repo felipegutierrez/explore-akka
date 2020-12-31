@@ -3,9 +3,11 @@ package org.github.felipegutierrez.explore.akka.recap
 import scala.annotation.tailrec
 import scala.util.Try
 
-object BasicRecap extends App {
+object BasicRecap {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run(): Unit = {
     val aCondition: Boolean = false

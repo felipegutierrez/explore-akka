@@ -5,9 +5,11 @@ import java.util.Date
 import akka.actor.{ActorLogging, ActorSystem, Props}
 import akka.persistence.PersistentActor
 
-object PersistentActors extends App {
+object PersistentActors {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
 

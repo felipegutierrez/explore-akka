@@ -4,9 +4,11 @@ import akka.actor.ActorSystem
 import akka.stream.scaladsl.{Broadcast, Concat, Flow, GraphDSL, Sink, Source}
 import akka.stream.{FlowShape, SinkShape, SourceShape}
 
-object StreamOpenGraphs extends App {
+object StreamOpenGraphs {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("StreamOpenGraphs")

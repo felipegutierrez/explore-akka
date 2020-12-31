@@ -2,9 +2,11 @@ package org.github.felipegutierrez.explore.akka.classic.falttolerance
 
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 
-object DefaultSupervisionStrategy extends App {
+object DefaultSupervisionStrategy {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     import Parent._

@@ -9,9 +9,9 @@ import scala.concurrent.duration._
 import scala.util.Random
 
 object StreamFaultTolerance {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val configString =

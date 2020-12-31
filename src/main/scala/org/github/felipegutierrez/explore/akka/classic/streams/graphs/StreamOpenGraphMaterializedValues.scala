@@ -7,9 +7,11 @@ import akka.stream.{FlowShape, SinkShape}
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
-object StreamOpenGraphMaterializedValues extends App {
+object StreamOpenGraphMaterializedValues {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("StreamOpenGraphMaterializedValues")

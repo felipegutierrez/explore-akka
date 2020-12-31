@@ -4,7 +4,11 @@ import akka.actor.{Actor, Props}
 
 import scala.util.Random
 
-object TimeAssertions extends App {
+object TimeAssertions {
+
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   object WorkerActor {
 

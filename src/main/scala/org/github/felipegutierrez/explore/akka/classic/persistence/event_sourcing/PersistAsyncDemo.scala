@@ -3,9 +3,11 @@ package org.github.felipegutierrez.explore.akka.classic.persistence.event_sourci
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 import akka.persistence.PersistentActor
 
-object PersistAsyncDemo extends App {
+object PersistAsyncDemo {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val system = ActorSystem("PersistAsyncDemo")

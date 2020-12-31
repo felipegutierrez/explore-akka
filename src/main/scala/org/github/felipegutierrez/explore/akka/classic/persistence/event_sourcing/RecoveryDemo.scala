@@ -3,9 +3,11 @@ package org.github.felipegutierrez.explore.akka.classic.persistence.event_sourci
 import akka.actor.{ActorLogging, ActorSystem, Props}
 import akka.persistence.{PersistentActor, RecoveryCompleted}
 
-object RecoveryDemo extends App {
+object RecoveryDemo {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val system = ActorSystem("RecoveryDemo")

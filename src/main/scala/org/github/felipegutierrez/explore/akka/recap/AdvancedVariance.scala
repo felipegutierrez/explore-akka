@@ -1,8 +1,10 @@
 package org.github.felipegutierrez.explore.akka.recap
 
-object AdvancedVariance extends App {
+object AdvancedVariance {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   /** Invariance example */
   class IParking[T](things: List[T]) {

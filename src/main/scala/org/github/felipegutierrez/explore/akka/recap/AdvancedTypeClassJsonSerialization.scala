@@ -2,10 +2,11 @@ package org.github.felipegutierrez.explore.akka.recap
 
 import java.util.Date
 
-object AdvancedTypeClassJsonSerialization extends App {
+object AdvancedTypeClassJsonSerialization {
 
-  run()
-
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   case class User(name: String, age: Int, email: String)
 

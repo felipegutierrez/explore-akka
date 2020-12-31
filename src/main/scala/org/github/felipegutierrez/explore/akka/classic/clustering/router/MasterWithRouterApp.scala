@@ -3,9 +3,11 @@ package org.github.felipegutierrez.explore.akka.classic.clustering.router
 import akka.actor.{ActorSystem, Props}
 import com.typesafe.config.ConfigFactory
 
-object MasterWithRouterApp extends App {
+object MasterWithRouterApp {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val config = ConfigFactory

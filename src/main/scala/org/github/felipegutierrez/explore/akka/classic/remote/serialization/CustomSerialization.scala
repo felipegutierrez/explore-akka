@@ -59,9 +59,9 @@ class PersonJsonSerializer extends Serializer with DefaultJsonProtocol {
 }
 
 object CustomSerialization_Local {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val config = ConfigFactory.parseString(
@@ -78,9 +78,9 @@ object CustomSerialization_Local {
 }
 
 object CustomSerialization_Remote {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val config = ConfigFactory.parseString(

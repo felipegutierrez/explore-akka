@@ -14,9 +14,9 @@ import scala.concurrent.duration._
 
 object GuitarRestHighLevelApi extends GuitarStoreJsonProtocol {
 
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     println("http GET localhost:8080/api/guitar")

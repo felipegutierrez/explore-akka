@@ -2,18 +2,18 @@ package org.github.felipegutierrez.explore.akka.classic.streams.advanced
 
 import akka.actor.ActorSystem
 import akka.stream._
-import akka.stream.scaladsl.{Flow, Keep, Sink, Source}
+import akka.stream.scaladsl.{Flow, Sink, Source}
 import akka.stream.stage._
 import com.typesafe.config.ConfigFactory
 
 import scala.collection.mutable
 import scala.concurrent.{Future, Promise}
-import scala.util.{Failure, Random, Success}
+import scala.util.Random
 
 object StreamCustomGraphOperators {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val configString =
@@ -34,20 +34,20 @@ object StreamCustomGraphOperators {
     randomGeneratorSource
       .via(filterFlow)
       .to(batchSink)
-     .run()
+      .run()
 
     val counterFlow = Flow.fromGraph(new CounterFlow[Int])
-//    val countFuture = Source(1 to 10)
-//      // .map(x => if (x == 7) throw new RuntimeException("gotcha!") else x)
-//      .viaMat(counterFlow)(Keep.right)
-//      // .to(Sink.foreach(x => if (x == 7) throw new RuntimeException("gotcha, sink!") else println(x)))
-//      .to(Sink.foreach[Int](println))
-//      .run()
-//    import system.dispatcher
-//    countFuture.onComplete {
-//      case Success(count) => println(s"The number of elements passed: $count")
-//      case Failure(ex) => println(s"Counting the elements failed: $ex")
-//    }
+    //    val countFuture = Source(1 to 10)
+    //      // .map(x => if (x == 7) throw new RuntimeException("gotcha!") else x)
+    //      .viaMat(counterFlow)(Keep.right)
+    //      // .to(Sink.foreach(x => if (x == 7) throw new RuntimeException("gotcha, sink!") else println(x)))
+    //      .to(Sink.foreach[Int](println))
+    //      .run()
+    //    import system.dispatcher
+    //    countFuture.onComplete {
+    //      case Success(count) => println(s"The number of elements passed: $count")
+    //      case Failure(ex) => println(s"Counting the elements failed: $ex")
+    //    }
   }
 
   // 1 - a custom source which emits random numbers until canceled

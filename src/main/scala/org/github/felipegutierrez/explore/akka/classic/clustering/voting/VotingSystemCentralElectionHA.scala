@@ -7,7 +7,11 @@ import com.typesafe.config.ConfigFactory
 /**
  * a voting system central election with High Availability using Akka cluster singleton
  */
-object VotingSystemCentralElectionHA extends App {
+object VotingSystemCentralElectionHA {
+
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def startNode(port: Int) = {
     val config = ConfigFactory.parseString(

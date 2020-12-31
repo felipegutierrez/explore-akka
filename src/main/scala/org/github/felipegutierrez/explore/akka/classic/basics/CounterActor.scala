@@ -2,8 +2,10 @@ package org.github.felipegutierrez.explore.akka.classic.basics
 
 import akka.actor.{Actor, ActorSystem, Props}
 
-object CounterActor extends App {
-  run()
+object CounterActor {
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     import Counter._

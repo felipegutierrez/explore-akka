@@ -7,11 +7,13 @@ import akka.stream.scaladsl.{Balance, Broadcast, Flow, GraphDSL, Merge, Runnable
 
 import scala.concurrent.duration._
 
-object StreamGraphBasics extends App {
+object StreamGraphBasics {
 
-  run()
-  run2()
-  run3()
+//  def main(args: Array[String]): Unit = {
+//    run()
+//    run2()
+//    run3()
+//  }
 
   def run() = {
     implicit val system = ActorSystem("StreamGraphBasics")

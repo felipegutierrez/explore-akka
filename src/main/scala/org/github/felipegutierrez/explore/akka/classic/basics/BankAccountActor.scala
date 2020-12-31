@@ -4,9 +4,11 @@ import akka.actor.Status.Failure
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import org.github.felipegutierrez.explore.akka.classic.basics.BankAccountActor.Person.LiveTheLife
 
-object BankAccountActor extends App {
+object BankAccountActor {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val actorSystem = ActorSystem("BankAccountSystem")

@@ -3,9 +3,11 @@ package org.github.felipegutierrez.explore.akka.typed.patterns
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.{ActorRef, ActorSystem, Behavior}
 
-object VendingMachineTypedDemo extends App {
+object VendingMachineTypedDemo {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
 

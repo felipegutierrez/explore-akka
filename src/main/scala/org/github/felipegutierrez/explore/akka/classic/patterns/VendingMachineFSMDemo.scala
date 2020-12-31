@@ -4,9 +4,11 @@ import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, FSM, Props}
 
 import scala.concurrent.duration._
 
-object VendingMachineFSMDemo extends App {
+object VendingMachineFSMDemo {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
 

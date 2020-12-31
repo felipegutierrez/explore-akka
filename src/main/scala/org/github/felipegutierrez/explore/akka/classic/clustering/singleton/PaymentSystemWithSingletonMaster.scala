@@ -4,21 +4,26 @@ import akka.actor.{ActorSystem, PoisonPill, Props}
 import akka.cluster.singleton.{ClusterSingletonManager, ClusterSingletonManagerSettings}
 import com.typesafe.config.ConfigFactory
 
-class PaymentSystemWithSingletonMaster(port: Int, shouldStartSingleton: Boolean = true) extends App {
+class PaymentSystemWithSingletonMaster(port: Int, shouldStartSingleton: Boolean = true) {
 
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
-  val config = ConfigFactory.parseString(
-    s"""
-       |akka.remote.artery.canonical.port = $port
-       |""".stripMargin)
-    .withFallback(ConfigFactory.load("clustering/clusteringSingleton.conf"))
-  val system = ActorSystem("RTJVMCluster", config)
+  def run() = {
+    val config = ConfigFactory.parseString(
+      s"""
+         |akka.remote.artery.canonical.port = $port
+         |""".stripMargin)
+      .withFallback(ConfigFactory.load("clustering/clusteringSingleton.conf"))
+    val system = ActorSystem("RTJVMCluster", config)
 
-  if (shouldStartSingleton) {
-    val paymentMasterActor = system.actorOf(ClusterSingletonManager.props(
-      singletonProps = Props[PaymentSystemActor],
-      terminationMessage = PoisonPill,
-      ClusterSingletonManagerSettings(system)), "paymentMasterActor")
+    if (shouldStartSingleton) {
+      val paymentMasterActor = system.actorOf(ClusterSingletonManager.props(
+        singletonProps = Props[PaymentSystemActor],
+        terminationMessage = PoisonPill,
+        ClusterSingletonManagerSettings(system)), "paymentMasterActor")
+    }
   }
 }
 

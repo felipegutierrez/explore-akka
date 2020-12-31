@@ -4,9 +4,11 @@ import akka.actor.{Actor, ActorLogging, ActorSystem, Cancellable, Props}
 
 import scala.concurrent.duration._
 
-object TimersSchedulers extends App {
+object TimersSchedulers {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val system = ActorSystem("SchedulersTimersDemo")

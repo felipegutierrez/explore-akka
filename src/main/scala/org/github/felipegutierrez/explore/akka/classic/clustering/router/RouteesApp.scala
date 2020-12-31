@@ -3,8 +3,10 @@ package org.github.felipegutierrez.explore.akka.classic.clustering.router
 import akka.actor.{ActorSystem, Props}
 import com.typesafe.config.ConfigFactory
 
-object RouteesApp extends App {
-  run()
+object RouteesApp {
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     startRouteeNode(2551)

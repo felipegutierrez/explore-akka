@@ -8,7 +8,7 @@ import com.typesafe.config.ConfigFactory
 
 import scala.util.Random
 
-class TubeStationApp(port: Int, numberOfTurnstiles: Int) extends App {
+class TubeStationApp(port: Int, numberOfTurnstiles: Int) {
   val config = ConfigFactory.parseString(
     s"""
        |akka.remote.artery.canonical.port = $port

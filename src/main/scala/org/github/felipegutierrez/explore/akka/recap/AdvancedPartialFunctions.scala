@@ -1,6 +1,6 @@
 package org.github.felipegutierrez.explore.akka.recap
 
-object AdvancedPartialFunctions extends App {
+object AdvancedPartialFunctions {
 
   val myPartialFunction: PartialFunction[Int, Int] = {
     case 1 => 11
@@ -8,7 +8,9 @@ object AdvancedPartialFunctions extends App {
     case 5 => 55
   }
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def executeMyPartialFunction(value: Int): Int = {
     val res = myPartialFunction(value)

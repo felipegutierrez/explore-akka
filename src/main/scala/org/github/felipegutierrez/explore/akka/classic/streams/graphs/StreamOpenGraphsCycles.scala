@@ -6,11 +6,13 @@ import akka.stream.{ClosedShape, OverflowStrategy, UniformFanInShape}
 
 import scala.concurrent.duration._
 
-object StreamOpenGraphsCycles extends App {
+object StreamOpenGraphsCycles {
 
-  run()
-  run1()
-  run2()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //    run1()
+  //    run2()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("StreamOpenGraphsCycles")

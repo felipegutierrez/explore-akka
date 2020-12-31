@@ -1,6 +1,8 @@
 package org.github.felipegutierrez.explore.akka.recap
 
-object AdvancedPathDependetTypes extends App {
+object AdvancedPathDependetTypes {
+
+  def get[ItemType <: ItemLike](key: ItemType#Key): ItemType = ???
 
   trait ItemLike {
     type Key
@@ -13,8 +15,6 @@ object AdvancedPathDependetTypes extends App {
   trait IntItem extends Item[Int]
 
   trait StringItem extends Item[String]
-
-  def get[ItemType <: ItemLike](key: ItemType#Key): ItemType = ???
 
   get[IntItem](42)
   get[StringItem]("this is a string")

@@ -3,8 +3,10 @@ package org.github.felipegutierrez.explore.akka.classic.persistence.detaching
 import akka.actor.{ActorSystem, Props}
 import com.typesafe.config.ConfigFactory
 
-object DetachingModels extends App {
-  run()
+object DetachingModels {
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     import DomainModel._

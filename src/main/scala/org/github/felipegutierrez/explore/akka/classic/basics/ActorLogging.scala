@@ -3,9 +3,11 @@ package org.github.felipegutierrez.explore.akka.classic.basics
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.event.Logging
 
-object ActorLogging extends App {
+object ActorLogging {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val system = ActorSystem("ActorLogging")

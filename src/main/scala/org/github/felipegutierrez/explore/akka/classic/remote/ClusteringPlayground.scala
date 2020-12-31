@@ -11,9 +11,15 @@ import com.typesafe.config.ConfigFactory
  * Rock the JVM!
  * Daniel
  */
-object ClusteringPlayground extends App {
+object ClusteringPlayground {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
+
+  def run() = {
+    (2551 to 2553).foreach(startNode)
+  }
 
   def startNode(port: Int) = {
     val config = ConfigFactory.parseString(
@@ -39,9 +45,5 @@ object ClusteringPlayground extends App {
        """.stripMargin)
 
     ActorSystem("RTJVMCluster", config)
-  }
-
-  def run() = {
-    (2551 to 2553).foreach(startNode)
   }
 }

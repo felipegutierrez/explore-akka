@@ -8,9 +8,9 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 
 object BasicServerHighLevel {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("BasicServerHighLevel")

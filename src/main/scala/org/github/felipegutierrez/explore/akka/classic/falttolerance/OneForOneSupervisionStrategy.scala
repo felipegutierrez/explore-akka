@@ -3,9 +3,11 @@ package org.github.felipegutierrez.explore.akka.classic.falttolerance
 import akka.actor.SupervisorStrategy.{Escalate, Restart, Resume, Stop}
 import akka.actor.{Actor, ActorSystem, OneForOneStrategy, Props, SupervisorStrategy}
 
-object OneForOneSupervisionStrategy extends App {
+object OneForOneSupervisionStrategy {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     import Supervisor._

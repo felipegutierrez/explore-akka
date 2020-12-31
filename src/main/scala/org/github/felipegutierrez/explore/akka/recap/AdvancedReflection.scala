@@ -3,9 +3,11 @@ package org.github.felipegutierrez.explore.akka.recap
 import scala.reflect.runtime.{universe => ru}
 import ru._
 
-object AdvancedReflection extends App {
+object AdvancedReflection {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   case class Person(name: String) {
     def sayMyName(): Unit = println(s"hi, my name is $name")

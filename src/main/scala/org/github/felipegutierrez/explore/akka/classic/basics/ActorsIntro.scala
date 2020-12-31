@@ -2,9 +2,11 @@ package org.github.felipegutierrez.explore.akka.classic.basics
 
 import akka.actor.{Actor, ActorSystem, Props}
 
-object ActorsIntro extends App {
+object ActorsIntro {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val actorSystem = ActorSystem("ActorsIntro")

@@ -10,9 +10,9 @@ import akka.stream.scaladsl.{Flow, Sink, Source}
 import scala.concurrent.duration._
 
 object WebSocketDemo {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("WebSocketDemo")

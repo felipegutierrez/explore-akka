@@ -8,9 +8,9 @@ import com.typesafe.config.ConfigFactory
 import scala.concurrent.duration._
 
 object DynamicStoppingStream {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val configString =

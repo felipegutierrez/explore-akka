@@ -9,9 +9,11 @@ import akka.pattern.{BackoffOpts, BackoffSupervisor}
 import scala.concurrent.duration._
 import scala.io.Source
 
-object BackoffSupervisorPattern extends App {
+object BackoffSupervisorPattern {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     import FileBasedPersistentActor._

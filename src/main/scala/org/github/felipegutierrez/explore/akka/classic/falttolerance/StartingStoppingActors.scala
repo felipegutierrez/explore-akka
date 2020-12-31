@@ -2,9 +2,11 @@ package org.github.felipegutierrez.explore.akka.classic.falttolerance
 
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Kill, PoisonPill, Props, Terminated}
 
-object StartingStoppingActors extends App {
+object StartingStoppingActors {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     import Parent._

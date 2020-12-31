@@ -1,8 +1,10 @@
 package org.github.felipegutierrez.explore.akka.recap
 
-object AdvancedMonads extends App {
+object AdvancedMonads {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     /*
@@ -51,15 +53,6 @@ object AdvancedMonads extends App {
     def flatMap[B](f: A => Attempt[B]): Attempt[B]
   }
 
-  object Attempt {
-    def apply[A](a: => A): Attempt[A] =
-      try {
-        Success(a)
-      } catch {
-        case e: Throwable => Fail(e)
-      }
-  }
-
   case class Success[+A](value: A) extends Attempt[A] {
     def flatMap[B](f: A => Attempt[B]): Attempt[B] =
       try {
@@ -71,6 +64,16 @@ object AdvancedMonads extends App {
 
   case class Fail(e: Throwable) extends Attempt[Nothing] {
     def flatMap[B](f: Nothing => Attempt[B]): Attempt[B] = this
+  }
+
+  // 1 - Lazy monad
+  class Lazy[+A](value: => A) {
+    // call by need
+    private lazy val internalValue = value
+
+    def use: A = internalValue
+
+    def flatMap[B](f: (=> A) => Lazy[B]): Lazy[B] = f(internalValue)
   }
 
   /*
@@ -87,14 +90,13 @@ object AdvancedMonads extends App {
         (have List in mind)
    */
 
-  // 1 - Lazy monad
-  class Lazy[+A](value: => A) {
-    // call by need
-    private lazy val internalValue = value
-
-    def use: A = internalValue
-
-    def flatMap[B](f: (=> A) => Lazy[B]): Lazy[B] = f(internalValue)
+  object Attempt {
+    def apply[A](a: => A): Attempt[A] =
+      try {
+        Success(a)
+      } catch {
+        case e: Throwable => Fail(e)
+      }
   }
 
   object Lazy {

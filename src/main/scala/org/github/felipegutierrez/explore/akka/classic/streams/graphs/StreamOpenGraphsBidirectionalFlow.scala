@@ -4,9 +4,11 @@ import akka.actor.ActorSystem
 import akka.stream.scaladsl.{Flow, GraphDSL, RunnableGraph, Sink, Source}
 import akka.stream.{BidiShape, ClosedShape}
 
-object StreamOpenGraphsBidirectionalFlow extends App {
+object StreamOpenGraphsBidirectionalFlow {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("StreamOpenGraphsBidirectionalFlow")

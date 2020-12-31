@@ -6,9 +6,11 @@ import com.typesafe.config.ConfigFactory
 /**
  * cqlsh> select * from akka.messages;
  */
-object EventAdapters extends App {
+object EventAdapters {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val system = ActorSystem("eventAdapters", ConfigFactory.load().getConfig("eventAdapters"))

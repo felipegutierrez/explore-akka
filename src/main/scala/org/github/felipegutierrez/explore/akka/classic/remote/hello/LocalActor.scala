@@ -8,9 +8,11 @@ import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.util.{Failure, Success}
 
-object LocalActor extends App {
+object LocalActor {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val localSystem = ActorSystem("LocalSystem", ConfigFactory.load("remote/remoteActors.conf"))

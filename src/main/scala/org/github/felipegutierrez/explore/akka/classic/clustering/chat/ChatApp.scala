@@ -3,9 +3,11 @@ package org.github.felipegutierrez.explore.akka.classic.clustering.chat
 import akka.actor.ActorSystem
 import com.typesafe.config.ConfigFactory
 
-class ChatApp(nickname: String, port: Int, authorized: Boolean) extends App {
+class ChatApp(nickname: String, port: Int, authorized: Boolean) {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val config = ConfigFactory.parseString(

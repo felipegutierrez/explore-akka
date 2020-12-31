@@ -2,9 +2,11 @@ package org.github.felipegutierrez.explore.akka.classic.falttolerance
 
 import akka.actor.{Actor, ActorLogging, ActorSystem, PoisonPill, Props, Terminated}
 
-object WatchingActors extends App {
+object WatchingActors {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     import ParentWatcher._

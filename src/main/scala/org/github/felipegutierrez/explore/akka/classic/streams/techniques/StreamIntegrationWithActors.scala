@@ -9,9 +9,11 @@ import akka.util.Timeout
 
 import scala.concurrent.duration._
 
-object StreamIntegrationWithActors extends App {
+object StreamIntegrationWithActors {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("StreamIntegrationWithActors")

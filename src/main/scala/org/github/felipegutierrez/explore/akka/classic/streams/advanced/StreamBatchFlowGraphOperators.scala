@@ -10,9 +10,9 @@ import scala.collection.mutable
 import scala.concurrent.duration._
 
 object StreamBatchFlowGraphOperators {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val configString =

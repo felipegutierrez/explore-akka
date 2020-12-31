@@ -6,9 +6,11 @@ import java.util.concurrent.{Executors, TimeUnit}
 import scala.collection.mutable
 import scala.util.Random
 
-object AdvancedThreads extends App {
+object AdvancedThreads {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val myThread = new AdvancedThreads()

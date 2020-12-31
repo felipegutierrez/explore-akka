@@ -5,9 +5,9 @@ import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors}
 import com.typesafe.config.ConfigFactory
 
 object CounterActorTypedDemo {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run(): Unit = {
 

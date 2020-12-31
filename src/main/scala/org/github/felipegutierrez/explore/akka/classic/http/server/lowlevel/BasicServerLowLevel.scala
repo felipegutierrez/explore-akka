@@ -12,9 +12,9 @@ import scala.concurrent.duration._
 import scala.util.{Failure, Success}
 
 object BasicServerLowLevel {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("BasicServerLowLevel")

@@ -3,9 +3,11 @@ package org.github.felipegutierrez.explore.akka.classic.basics
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import com.typesafe.config.ConfigFactory
 
-object IntroAkkaConfig extends App {
+object IntroAkkaConfig {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     // inline configuration, try with INFO, DEBUG, ERROR, WARNING

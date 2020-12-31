@@ -6,9 +6,11 @@ import akka.actor.{ActorLogging, ActorSystem, Props}
 import akka.persistence.PersistentActor
 import com.typesafe.config.ConfigFactory
 
-object PersistentActorsExercise extends App {
+object PersistentActorsExercise {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
 

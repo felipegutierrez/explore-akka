@@ -3,9 +3,11 @@ package org.github.felipegutierrez.explore.akka.classic.clustering.basic
 import akka.actor.{ActorSystem, Props}
 import com.typesafe.config.ConfigFactory
 
-object ClusteringBasics extends App {
+object ClusteringBasics {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     startCluster(List(2551, 2552, 0))

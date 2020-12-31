@@ -4,9 +4,11 @@ import akka.actor.{Actor, ActorLogging, ActorSystem, Cancellable, Props}
 
 import scala.concurrent.duration._
 
-object SelfClosingScheduler extends App {
+object SelfClosingScheduler {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
 

@@ -7,9 +7,9 @@ import scala.concurrent.duration._
 import scala.util.Random
 
 object FirstStreamMonitoring {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("FirstStreamMonitoring")

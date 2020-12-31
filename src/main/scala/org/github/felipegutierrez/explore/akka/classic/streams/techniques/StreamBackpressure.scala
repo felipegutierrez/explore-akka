@@ -7,9 +7,9 @@ import akka.stream.scaladsl.{Flow, Sink, Source}
 import java.util.Date
 
 object StreamBackpressure {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("StreamBackpressure")

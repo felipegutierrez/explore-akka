@@ -5,9 +5,11 @@ import akka.persistence.{PersistentActor, SaveSnapshotFailure, SaveSnapshotSucce
 
 import scala.collection.mutable
 
-object Snapshots extends App {
+object Snapshots {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val system = ActorSystem("SnapshotsDemo")

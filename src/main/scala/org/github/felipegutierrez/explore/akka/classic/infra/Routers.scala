@@ -4,9 +4,11 @@ import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props, Terminated
 import akka.routing._
 import com.typesafe.config.ConfigFactory
 
-object Routers extends App {
+object Routers {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val system = ActorSystem("routersDemo", ConfigFactory.load().getConfig("routersDemo"))

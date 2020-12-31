@@ -6,9 +6,9 @@ import com.typesafe.config.ConfigFactory
 // case class Book(name: String, year: Int)
 
 object KryoSerialization_Local {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val config = ConfigFactory.parseString(
@@ -25,9 +25,9 @@ object KryoSerialization_Local {
 }
 
 object KryoSerialization_Remote {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val config = ConfigFactory.parseString(

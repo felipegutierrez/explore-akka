@@ -1,6 +1,10 @@
 package org.github.felipegutierrez.explore.akka.recap
 
-object MultiThreadRecap extends App {
+object MultiThreadRecap {
+
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run(): Unit = {
     println("creating threads on JVM ...........")

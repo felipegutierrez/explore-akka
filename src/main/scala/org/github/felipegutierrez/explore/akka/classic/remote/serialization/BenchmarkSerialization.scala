@@ -33,14 +33,14 @@ object VoteGenerator {
 
   def generateVotes(count: Int) = (1 to count).map(_ => Vote(UUID.randomUUID().toString, getRandomCandidate))
 
-  def getRandomCandidate = candidates(random.nextInt(candidates.length))
-
   def generateProtobufVotes(count: Int) = (1 to count).map { _ =>
     ProtobufVote.newBuilder()
       .setSsn(UUID.randomUUID().toString)
       .setCandidate(getRandomCandidate)
       .build()
   }
+
+  def getRandomCandidate = candidates(random.nextInt(candidates.length))
 }
 
 class VoteAggregator extends Actor with ActorLogging {
@@ -95,9 +95,9 @@ class VoteAvroSerializer extends Serializer {
 }
 
 object VotingStation {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val config = ConfigFactory.parseString(
@@ -117,14 +117,15 @@ object VotingStation {
 }
 
 object VotingCentralizer {
-  def main(args: Array[String]): Unit = {
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
+
+  def run() = {
     println("sudo apt install protobuf-compiler")
     println("cd src")
     println("protoc --java_out=main/java main/protobuf/datamodel.proto")
-    run()
-  }
 
-  def run() = {
     val config = ConfigFactory.parseString(
       """
         |akka.remote.artery.canonical.port = 2552

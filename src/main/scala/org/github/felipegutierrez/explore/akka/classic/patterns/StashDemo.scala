@@ -24,9 +24,11 @@ import akka.actor.{Actor, ActorLogging, ActorSystem, Props, Stash}
  *         Mailbox: [Read, Write]
  *       - read and write are handled
  */
-object StashDemo extends App {
+object StashDemo {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val system = ActorSystem("StashDemo")

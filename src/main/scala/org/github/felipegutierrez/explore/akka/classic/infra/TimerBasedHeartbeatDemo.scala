@@ -4,9 +4,11 @@ import akka.actor.{Actor, ActorLogging, ActorSystem, Props, Timers}
 
 import scala.concurrent.duration._
 
-object TimerBasedHeartbeatDemo extends App {
+object TimerBasedHeartbeatDemo {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val system = ActorSystem("TimerBasedHeartbeatDemo")

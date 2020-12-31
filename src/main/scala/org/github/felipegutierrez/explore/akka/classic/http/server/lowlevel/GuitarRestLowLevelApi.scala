@@ -16,9 +16,9 @@ trait GuitarStoreJsonProtocol extends DefaultJsonProtocol {
 }
 
 object GuitarRestApi extends GuitarStoreJsonProtocol {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     println("http GET localhost:8080/api/guitar")

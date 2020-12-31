@@ -2,9 +2,11 @@ package org.github.felipegutierrez.explore.akka.recap
 
 import java.util.Date
 
-object AdvancedTypeClasses extends App {
+object AdvancedTypeClasses {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
 

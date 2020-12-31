@@ -20,9 +20,9 @@ object SecurityDomain extends DefaultJsonProtocol {
 }
 
 object JSONWebTokenDemo extends SprayJsonSupport {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("JSONWebTokenDemo")

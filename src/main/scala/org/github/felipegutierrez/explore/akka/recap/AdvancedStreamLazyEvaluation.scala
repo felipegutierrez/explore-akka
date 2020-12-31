@@ -2,9 +2,11 @@ package org.github.felipegutierrez.explore.akka.recap
 
 import scala.annotation.tailrec
 
-object AdvancedStreamLazyEvaluation extends App {
+object AdvancedStreamLazyEvaluation {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val naturals = MyStream.from(1)(_ + 1)

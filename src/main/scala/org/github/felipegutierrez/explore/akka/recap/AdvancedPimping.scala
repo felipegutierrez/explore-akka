@@ -1,8 +1,10 @@
 package org.github.felipegutierrez.explore.akka.recap
 
-object AdvancedPimping extends App {
+object AdvancedPimping {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
 

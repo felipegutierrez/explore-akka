@@ -2,8 +2,10 @@ package org.github.felipegutierrez.explore.akka.classic.basics
 
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 
-object WordCountUsingChildActors extends App {
-  run()
+object WordCountUsingChildActors {
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     println("Distributed word counting using 1 master actor and 3 child actors")

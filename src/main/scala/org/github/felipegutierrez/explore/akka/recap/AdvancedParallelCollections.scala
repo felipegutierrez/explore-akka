@@ -2,9 +2,11 @@ package org.github.felipegutierrez.explore.akka.recap
 
 import scala.collection.parallel.immutable.ParVector
 
-object AdvancedParallelCollections extends App {
+object AdvancedParallelCollections {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     // 1 - parallel collections

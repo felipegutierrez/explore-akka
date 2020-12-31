@@ -6,9 +6,11 @@ import akka.stream.scaladsl.{Flow, GraphDSL, Merge, Partition, Sink, Source}
 
 import scala.concurrent.duration._
 
-object StreamOpenGraphsWithMultipleFlows extends App {
+object StreamOpenGraphsWithMultipleFlows {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("StreamOpenGraphsWithMultipleFlows")

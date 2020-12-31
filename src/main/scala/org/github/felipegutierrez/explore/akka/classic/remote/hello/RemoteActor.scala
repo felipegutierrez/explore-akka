@@ -3,9 +3,11 @@ package org.github.felipegutierrez.explore.akka.classic.remote.hello
 import akka.actor.{ActorSystem, Props}
 import com.typesafe.config.ConfigFactory
 
-object RemoteActor extends App {
+object RemoteActor {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val remoteSystem = ActorSystem("RemoteSystem", ConfigFactory.load("remote/remoteActors.conf").getConfig("remoteSystem"))

@@ -4,9 +4,11 @@ import akka.actor.{ActorSystem, Address, Props}
 import akka.cluster.Cluster
 import com.typesafe.config.ConfigFactory
 
-object ClusteringManualRegistration extends App {
+object ClusteringManualRegistration {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val system = ActorSystem("RTJVMCluster",

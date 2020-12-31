@@ -5,9 +5,11 @@ import java.util.Date
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 import akka.persistence.PersistentActor
 
-object MultiplePersists extends App {
+object MultiplePersists {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val system = ActorSystem("MulitplePersistsDemo")

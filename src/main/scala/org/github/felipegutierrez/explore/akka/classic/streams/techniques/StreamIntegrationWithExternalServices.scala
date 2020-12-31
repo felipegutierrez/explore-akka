@@ -9,9 +9,9 @@ import scala.concurrent.Future
 
 object StreamIntegrationWithExternalServices {
 
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("StreamIntegrationWithExternalServices")

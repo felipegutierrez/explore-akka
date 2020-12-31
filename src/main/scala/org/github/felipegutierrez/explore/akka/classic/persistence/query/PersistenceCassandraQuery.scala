@@ -11,9 +11,11 @@ import com.typesafe.config.ConfigFactory
 import scala.util.Random
 import scala.concurrent.duration._
 
-object PersistenceCassandraQuery extends App {
+object PersistenceCassandraQuery {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val system = ActorSystem("PersistenceCassandraQuery", ConfigFactory.load().getConfig("persistenceCassandraQuery"))

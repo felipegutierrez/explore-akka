@@ -5,9 +5,11 @@ import akka.stream.scaladsl.{Flow, Sink, Source}
 
 import scala.concurrent.Future
 
-object FirstStreamPrinciples extends App {
+object FirstStreamPrinciples {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
 

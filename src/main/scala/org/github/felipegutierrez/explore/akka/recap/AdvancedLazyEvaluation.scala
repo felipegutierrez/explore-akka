@@ -1,8 +1,10 @@
 package org.github.felipegutierrez.explore.akka.recap
 
-object AdvancedLazyEvaluation extends App {
+object AdvancedLazyEvaluation {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     // filtering with lazy vals

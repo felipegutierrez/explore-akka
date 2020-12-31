@@ -9,9 +9,9 @@ import scala.collection.immutable
 import scala.concurrent.duration._
 
 object StreamCustomGraphShapes {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val configString =

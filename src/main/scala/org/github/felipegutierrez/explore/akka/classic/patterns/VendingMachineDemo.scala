@@ -5,9 +5,11 @@ import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Cancellable, Prop
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
 
-object VendingMachineDemo extends App {
+object VendingMachineDemo {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     import VendingMachine._

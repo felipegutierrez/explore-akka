@@ -2,9 +2,11 @@ package org.github.felipegutierrez.explore.akka.classic.basics
 
 import akka.actor.{Actor, ActorLogging, Props}
 
-object InterceptingLogs extends App {
+object InterceptingLogs {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
 

@@ -41,9 +41,9 @@ class PaymentValidatorActor extends Actor with ActorLogging {
 }
 
 object PaymentSystem extends CreditCardJsonProtocol with SprayJsonSupport {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     println("starting microservice for payment ...")

@@ -12,10 +12,10 @@ case class BankAccount(iban: String, bankCode: String, amount: Double, currency:
 case class CompanyRegistry(name: String, accounts: Seq[BankAccount], activityCode: String, marketCap: Double)
 
 object AvroSchemaTest {
-  def main(args: Array[String]): Unit = {
-    println(s"BankAccount avro schema: ${AvroSchema[BankAccount]}")
-    println(s"CompanyRegistry avro schema: ${AvroSchema[CompanyRegistry]}")
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    println(s"BankAccount avro schema: ${AvroSchema[BankAccount]}")
+  //    println(s"CompanyRegistry avro schema: ${AvroSchema[CompanyRegistry]}")
+  //  }
 }
 
 class MyFirstAvroSerializer extends Serializer {
@@ -46,9 +46,9 @@ class MyFirstAvroSerializer extends Serializer {
 }
 
 object AvroSerialization_Local {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val config = ConfigFactory.parseString(
@@ -73,9 +73,9 @@ object AvroSerialization_Local {
 }
 
 object AvroSerialization_Remote {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val config = ConfigFactory.parseString(

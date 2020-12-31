@@ -2,9 +2,11 @@ package org.github.felipegutierrez.explore.akka.recap
 
 import scala.annotation.tailrec
 
-object AdvancedFunctionalCollections extends App {
+object AdvancedFunctionalCollections {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val mySet = MySet(1, 2, 3)

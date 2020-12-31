@@ -1,8 +1,10 @@
 package org.github.felipegutierrez.explore.akka.recap
 
-object AdvancedImplicits extends App {
+object AdvancedImplicits {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
 
@@ -27,7 +29,7 @@ object AdvancedImplicits extends App {
 
     println(persons.sorted)
   }
-  
+
   case class Person(name: String, age: Int)
 
   case class Person1(name: String) {

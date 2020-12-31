@@ -8,9 +8,11 @@ import akka.stream.scaladsl.{Flow, GraphDSL, Merge, Partition, RunnableGraph, Si
 import scala.concurrent.duration._
 
 /** Write a graph that consumes 2 sources and can decide to chose different strategies to join at runtime */
-object StreamOpenGraphWithTwoSourcesAndPartitionStrategies extends App {
+object StreamOpenGraphWithTwoSourcesAndPartitionStrategies {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("StreamOpenGraphWithTwoSourcesAndDifferentJoinStrategies")

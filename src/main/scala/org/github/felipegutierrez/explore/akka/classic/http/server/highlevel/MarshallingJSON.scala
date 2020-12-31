@@ -158,9 +158,9 @@ object MarshallingJSON extends PlayerJsonProtocol with SprayJsonSupport {
     }
     .result()
 
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     println("http GET localhost:8080/api/player")

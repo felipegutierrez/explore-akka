@@ -2,8 +2,10 @@ package org.github.felipegutierrez.explore.akka.classic.basics
 
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 
-object VotingSystemStateless extends App {
-  run()
+object VotingSystemStateless {
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val actorSystem = ActorSystem("System")

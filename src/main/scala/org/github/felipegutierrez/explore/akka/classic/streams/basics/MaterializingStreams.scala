@@ -5,9 +5,11 @@ import akka.stream.scaladsl.{Flow, Keep, Sink, Source}
 
 import scala.util.{Failure, Success}
 
-object MaterializingStreams extends App {
+object MaterializingStreams {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     implicit val system = ActorSystem("MaterializingStreams")

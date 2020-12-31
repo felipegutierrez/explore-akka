@@ -1,7 +1,9 @@
 package org.github.felipegutierrez.explore.akka.recap
 
-object AdvancedCurriesPAF extends App {
-  run()
+object AdvancedCurriesPAF {
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
 
@@ -46,11 +48,10 @@ object AdvancedCurriesPAF extends App {
     val preciseFormat = curriedFormatter("%14.12f") _
 
     val superAdder: Int => Int => Int = x => y => x + y
+    val simpleAddFunction = (x: Int, y: Int) => x + y
 
     // method
     def curriedAdded(x: Int)(y: Int): Int = x + y
-
-    val simpleAddFunction = (x: Int, y: Int) => x + y
 
     def simpleAddMethod(x: Int, y: Int): Int = x + y
 
