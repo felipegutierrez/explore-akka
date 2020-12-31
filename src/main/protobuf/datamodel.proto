@@ -1,17 +1,17 @@
-syntax = "proto2";
+syntax = "proto3";
 
 package org.github.felipegutierrez.explore.akka.classic.remote.serialization;
 
 option java_package = "org.github.felipegutierrez.explore.akka.classic.remote.serialization";
 
 message OnlineStoreUser {
-  required int32 userId = 1;
-  required string userName = 2;
-  optional string userEmail = 4;
-  optional string userPhone = 5;
+  int32 userId = 1;
+  string userName = 2;
+  string userEmail = 4;
+  string userPhone = 5;
 }
 
 message ProtobufVote {
-  required string ssn = 1;
-  required string candidate = 2;
+  string ssn = 1;
+  string candidate = 2;
 }

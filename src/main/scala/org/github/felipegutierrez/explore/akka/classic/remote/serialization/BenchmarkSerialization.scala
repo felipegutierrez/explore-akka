@@ -118,6 +118,9 @@ object VotingStation {
 
 object VotingCentralizer {
   def main(args: Array[String]): Unit = {
+    println("sudo apt install protobuf-compiler")
+    println("cd src")
+    println("protoc --java_out=main/java main/protobuf/datamodel.proto")
     run()
   }
 

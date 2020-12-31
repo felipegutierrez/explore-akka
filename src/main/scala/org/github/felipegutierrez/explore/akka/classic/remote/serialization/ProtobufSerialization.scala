@@ -13,7 +13,7 @@ object ProtobufSerialization_Local {
     val config = ConfigFactory.parseString(
       """
         |akka.remote.artery.canonical.port = 2551
-    """.stripMargin)
+        |""".stripMargin)
       .withFallback(ConfigFactory.load().getConfig("protobufSerializablePerson"))
 
     val system = ActorSystem("LocalSystem", config)
@@ -31,12 +31,9 @@ object ProtobufSerialization_Local {
 
 object ProtobufSerialization_Remote {
   def main(args: Array[String]): Unit = {
-    // println("sudo apt install protobuf-compiler")
-    // println("cd src")
-    // println("protoc --java_out=main/java main/protobuf/datamodel.proto")
-    println("")
-    println("")
-    println("")
+    println("sudo apt install protobuf-compiler")
+    println("cd src")
+    println("protoc --java_out=main/java main/protobuf/datamodel.proto")
     run()
   }
 
@@ -44,7 +41,7 @@ object ProtobufSerialization_Remote {
     val config = ConfigFactory.parseString(
       """
         |akka.remote.artery.canonical.port = 2552
-    """.stripMargin)
+        |""".stripMargin)
       .withFallback(ConfigFactory.load().getConfig("protobufSerializablePerson"))
 
     val system = ActorSystem("RemoteSystem", config)

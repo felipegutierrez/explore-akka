@@ -8,8 +8,6 @@ val scalaBinVersion = "2.12"
 val scalaTestVersion = "3.2.0"
 val logbackVersion = "1.2.3"
 lazy val akkaHttpVersion = "10.2.2"
-lazy val akkaGrpcVersion = "1.0.2"
-lazy val protobufVersion = "3.11.4"
 lazy val aeronVersion = "1.30.0"
 lazy val leveldbVersion = "0.7"
 lazy val leveldbjniVersion = "1.8"
@@ -21,9 +19,7 @@ lazy val kamonVersion = "2.1.9"
 // some libs are available in Bintray's JCenter
 resolvers += Resolver.jcenterRepo
 
-enablePlugins(JavaAppPackaging, JavaServerAppPackaging, AkkaGrpcPlugin, DockerPlugin)
-
-akkaGrpcGeneratedLanguages := Seq(AkkaGrpc.Java)
+enablePlugins(JavaAppPackaging, JavaServerAppPackaging, DockerPlugin)
 
 libraryDependencies ++= Seq(
   // Akka basics
@@ -55,12 +51,22 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
   "com.typesafe.akka" %% "akka-persistence-query" % akkaVersion,
 
+  // Akka HTTP: overwrites are required because Akka-gRPC depends on 10.1.x
+  "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
+  "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
+  "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion,
+  "com.typesafe.akka" %% "akka-http2-support" % akkaHttpVersion,
+
+  // Akka log
+  "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
+  "ch.qos.logback" % "logback-classic" % logbackVersion,
+
   // Serialization frameworks
   "com.github.romix.akka" %% "akka-kryo-serialization" % "0.5.2",
   "com.sksamuel.avro4s" %% "avro4s-core" % "4.0.4",
   "org.xerial.snappy" % "snappy-java" % "1.1.8.2",
-  "com.google.protobuf" % "protobuf-java" % "3.6.1",
-  //"io.spray" %%  "spray-json" % "1.3.6", // already imported in "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
+  "com.google.protobuf" % "protobuf-java"  % "3.14.0",
+  // "io.spray" %%  "spray-json" % "1.3.6", // already imported in "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
 
   // local levelDB stores
   "org.iq80.leveldb" % "leveldb" % leveldbVersion,
@@ -73,19 +79,6 @@ libraryDependencies ++= Seq(
   // Cassandra
   "com.typesafe.akka" %% "akka-persistence-cassandra" % cassandraVersion,
   "com.typesafe.akka" %% "akka-persistence-cassandra-launcher" % cassandraVersion % Test,
-
-  // Google Protocol Buffers
-  "com.google.protobuf" % "protobuf-java"  % protobufVersion,
-
-  // Akka HTTP: overwrites are required because Akka-gRPC depends on 10.1.x
-  "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
-  "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
-  "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion,
-  "com.typesafe.akka" %% "akka-http2-support" % akkaHttpVersion,
-
-  // Akka log
-  "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
-  "ch.qos.logback" % "logback-classic" % logbackVersion,
 
   // Scala test
   "org.scalatest" %% "scalatest" % scalaTestVersion,
