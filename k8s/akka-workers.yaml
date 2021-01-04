@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
         - name: akka-worker
-          image: felipeogutierrez/explore-akka
+          image: felipeogutierrez/explore-akka:1.1
+          imagePullPolicy: Always # Always/IfNotPresent
           env:
             - name: SEED_NODES
               value: akka-seed-0.akka-seed,akka-seed-1.akka-seed
@@ -31,3 +32,4 @@ spec:
           ports:
             - containerPort: 2551
               protocol: TCP
+

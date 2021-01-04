@@ -30,7 +30,8 @@ spec:
     spec:
       containers:
         - name: akka-seed
-          image: felipeogutierrez/explore-akka
+          image: felipeogutierrez/explore-akka:1.1
+          imagePullPolicy: Always # Always/IfNotPresent
           env:
             - name: POD_NAME
               valueFrom:
@@ -50,3 +51,4 @@ spec:
           ports:
             - containerPort: 2551
               protocol: TCP
+
