@@ -60,11 +60,11 @@ class VoteAggregator extends Actor with ActorLogging {
   }
 }
 
-object TestVoteAvroSerializer {
-  def main(args: Array[String]): Unit = {
-    println(AvroSchema[Vote])
-  }
-}
+//object TestVoteAvroSerializer {
+//  def main(args: Array[String]): Unit = {
+//    println(AvroSchema[Vote])
+//  }
+//}
 
 class VoteAvroSerializer extends Serializer {
 
