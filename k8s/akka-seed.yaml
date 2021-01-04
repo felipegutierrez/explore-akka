@@ -44,11 +44,12 @@ spec:
             #              fieldPath: status.podIP
             - name: SEED_NODES
               value: akka-seed-0.akka-seed,akka-seed-1.akka-seed
-          command: ["/bin/sh", "-c", "HOST_NAME=${POD_NAME}.akka-seed java -jar /explore-akka.jar 39.1"]
+          command: ["/bin/sh", "-c", "HOST_NAME=${POD_NAME}.akka-seed felipeogutierrez/explore-akka:1.1 39.1"]
+          # command: [ "java" ]
+          # args: [ "-cp", "explore-akka.jar", "org.github.felipegutierrez.explore.akka.MainClass", "39.1" ]
           livenessProbe:
             tcpSocket:
               port: 2551
           ports:
             - containerPort: 2551
               protocol: TCP
-
