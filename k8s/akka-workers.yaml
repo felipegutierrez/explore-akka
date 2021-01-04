@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: akka-worker
+  name: akka-worker
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      run: akka-worker
+  template:
+    metadata:
+      labels:
+        run: akka-worker
+    spec:
+      containers:
+        - name: akka-worker
+          image: felipeogutierrez/explore-akka
+          env:
+            - name: SEED_NODES
+              value: akka-seed-0.akka-seed,akka-seed-1.akka-seed
+            - name: HOST_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+          livenessProbe:
+            tcpSocket:
+              port: 2551
+          ports:
+            - containerPort: 2551
+              protocol: TCP

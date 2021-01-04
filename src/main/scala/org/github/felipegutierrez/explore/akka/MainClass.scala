@@ -3,6 +3,7 @@ package org.github.felipegutierrez.explore.akka
 import org.github.felipegutierrez.explore.akka.classic.basics._
 import org.github.felipegutierrez.explore.akka.classic.clustering.basic.{ClusteringBasics, ClusteringManualRegistration}
 import org.github.felipegutierrez.explore.akka.classic.clustering.chat.ChatApp
+import org.github.felipegutierrez.explore.akka.classic.clustering.k8s.SimpleClusterK8sMain
 import org.github.felipegutierrez.explore.akka.classic.clustering.wordcount.{ClusteringWordCount, ClusteringWordCountAdditionalWorkers}
 import org.github.felipegutierrez.explore.akka.classic.falttolerance._
 import org.github.felipegutierrez.explore.akka.classic.http.client.{ConnectionLevel, HostLevel, PaymentSystem, RequestLevel}
@@ -13,12 +14,12 @@ import org.github.felipegutierrez.explore.akka.classic.patterns._
 import org.github.felipegutierrez.explore.akka.classic.persistence.detaching.DetachingModels
 import org.github.felipegutierrez.explore.akka.classic.persistence.event_sourcing._
 import org.github.felipegutierrez.explore.akka.classic.persistence.schema.EventAdapters
-import org.github.felipegutierrez.explore.akka.classic.persistence.serialization.{AvroSerialization_Persistence, BenchmarkSerialization, CustomSerialization_Persistence, KryoSerialization_Persistence, ProtobufSerialization_Persistence}
+import org.github.felipegutierrez.explore.akka.classic.persistence.serialization.{AvroSerialization_Persistence, CustomSerialization_Persistence, KryoSerialization_Persistence}
 import org.github.felipegutierrez.explore.akka.classic.persistence.stores.{CassandraStores, LocalStores, PostgresStores}
 import org.github.felipegutierrez.explore.akka.classic.remote._
 import org.github.felipegutierrez.explore.akka.classic.remote.deployment.{LocalDeployment, RemoteDeployment}
 import org.github.felipegutierrez.explore.akka.classic.remote.hello.{LocalActor, RemoteActor}
-import org.github.felipegutierrez.explore.akka.classic.remote.serialization.{AvroSerialization_Local, AvroSerialization_Remote, CustomSerialization_Local, CustomSerialization_Remote, KryoSerialization_Local, KryoSerialization_Remote, ProtobufSerialization_Local, ProtobufSerialization_Remote, VotingCentralizer, VotingStation}
+import org.github.felipegutierrez.explore.akka.classic.remote.serialization._
 import org.github.felipegutierrez.explore.akka.classic.remote.wordcount.{MasterApp, WorkerApp}
 import org.github.felipegutierrez.explore.akka.classic.streams.advanced._
 import org.github.felipegutierrez.explore.akka.classic.streams.basics.{BackpressureStreams, FirstStreamPrinciples, MaterializingStreams, OperatorFusionStreams}
@@ -89,6 +90,7 @@ object MainClass extends App {
   println(s"37 - RemoteActorWordCount master and 5 workers")
   println(s"38 - RemoteDeployment and LocalDeployment of Actors")
   println(s"39 - ClusteringBasics")
+  println(s"39.1 - Simple Cluster on to K8s")
   println(s"40 - ClusteringManualRegistration")
   println(s"41 - ClusteringWordCount")
   println(s"42 - Cluster chat")
@@ -167,7 +169,7 @@ object MainClass extends App {
     option = args(0)
   }
 
-  println(s"you chose the option $option")
+  println(s"you choose the application $option")
   option match {
     case "0" => println(s"Bye, see you next time.")
     case "1" => BasicRecap.run()
@@ -234,6 +236,7 @@ object MainClass extends App {
       Thread.sleep(2000)
       LocalDeployment.run()
     case "39" => ClusteringBasics.run()
+    case "39.1" => SimpleClusterK8sMain.run()
     case "40" =>
       ClusteringBasics.run()
       Thread.sleep(3000)
@@ -331,11 +334,11 @@ object MainClass extends App {
     case "97" =>
       ProtobufSerialization_Remote.run()
       ProtobufSerialization_Local.run()
-//    case "98" => ProtobufSerialization_Persistence.run()
-//    case "99.1" =>
-//      VotingCentralizer.run()
-//      VotingStation.run()
-//    case "99.2" => BenchmarkSerialization.run()
+    //    case "98" => ProtobufSerialization_Persistence.run()
+    //    case "99.1" =>
+    //      VotingCentralizer.run()
+    //      VotingStation.run()
+    //    case "99.2" => BenchmarkSerialization.run()
     case _ => println("option unavailable.")
   }
 }
