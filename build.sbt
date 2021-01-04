@@ -19,7 +19,7 @@ lazy val kamonVersion = "2.1.9"
 // some libs are available in Bintray's JCenter
 resolvers += Resolver.jcenterRepo
 
-enablePlugins(JavaAppPackaging, JavaServerAppPackaging, DockerPlugin)
+enablePlugins(JavaAppPackaging, JavaServerAppPackaging, DockerPlugin, AshScriptPlugin)
 
 libraryDependencies ++= Seq(
   // Akka basics
@@ -94,4 +94,5 @@ libraryDependencies ++= Seq(
 
 mainClass in Compile := Some("org.github.felipegutierrez.explore.akka.MainClass")
 
+dockerBaseImage := "openjdk:jre-alpine"
 dockerUsername := Some("felipeogutierrez")
