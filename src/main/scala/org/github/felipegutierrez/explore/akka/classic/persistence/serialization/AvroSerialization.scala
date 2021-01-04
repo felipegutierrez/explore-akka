@@ -6,9 +6,9 @@ import org.github.felipegutierrez.explore.akka.classic.persistence.stores.Simple
 import org.github.felipegutierrez.explore.akka.classic.remote.serialization.{BankAccount, CompanyRegistry}
 
 object AvroSerialization_Persistence {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     println("run: cd scripts/akka-persistence")

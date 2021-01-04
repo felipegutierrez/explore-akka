@@ -4,8 +4,10 @@ import akka.actor.{ActorLogging, ActorSystem, Props}
 import akka.persistence.PersistentActor
 import com.typesafe.config.ConfigFactory
 
-object CassandraCustomSerializationStore extends App {
-  run()
+object CassandraCustomSerializationStore {
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val cassandraCustomSerializationStoreSystem = ActorSystem("cassandraCustomSerializationStoreSystem", ConfigFactory.load().getConfig("cassandraSerializableStore"))
