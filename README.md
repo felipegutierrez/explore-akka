@@ -29,7 +29,12 @@ kubectl apply -f k8s/akka-cluster-seed.yaml
 ```
 Deploy the worker nodes:
 ```
-kubectll apply -f k8s/akka-cluster-workers.yaml
+kubectl apply -f k8s/akka-cluster-workers.yaml
+```
+Scale:
+```
+kubectl scale statefulset akka-seed --replicas=3
+
 ```
 Check the logs:
 ```

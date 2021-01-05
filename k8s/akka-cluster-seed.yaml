@@ -37,17 +37,9 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-            #        - name: BIND_HOST_NAME
-            #          valueFrom:
-            #            fieldRef:
-            #              apiVersion: v1
-            #              fieldPath: status.podIP
             - name: SEED_NODES
               value: akka-seed-0.akka-seed,akka-seed-1.akka-seed
           args: [ "39.1", "${POD_NAME}" ]
-          # command: ["/bin/sh", "-c", "HOST_NAME=${POD_NAME}.akka-seed felipeogutierrez/explore-akka:1.1 39.1"]
-          # command: [ "java" ]
-          # args: [ "-cp", "explore-akka.jar", "org.github.felipegutierrez.explore.akka.MainClass", "39.1" ]
           livenessProbe:
             tcpSocket:
               port: 2551
