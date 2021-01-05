@@ -5,15 +5,12 @@ import akka.cluster.Cluster
 import com.typesafe.config.ConfigFactory
 
 object SimpleClusterK8sMain {
-  def run() = {
-    //    ports.foreach { port =>
-    //      val config = ConfigFactory.parseString(
-    //        s"""
-    //           |akka.remote.artery.canonical.port = $port
-    //           """.stripMargin)
-    //        .withFallback(ConfigFactory.load("clustering/k8sClusteringBasics.conf"))
-    //    }
-    val config = ConfigFactory.load("clustering/k8sClusteringBasics.conf")
+  def run(hostname: String = "localhost") = {
+    val config = ConfigFactory.parseString(
+      s"""
+         |akka.remote.artery.canonical.hostname = ${hostname}.akka-seed
+       """.stripMargin)
+      .withFallback(ConfigFactory.load("clustering/k8sClusteringBasics.conf"))
     // all Actor Systems in a cluster must have the same name
     val system = ActorSystem("K8sClusterSystem", config)
     val cluster = Cluster(system)

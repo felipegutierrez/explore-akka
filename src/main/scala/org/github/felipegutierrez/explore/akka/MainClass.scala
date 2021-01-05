@@ -163,17 +163,20 @@ object MainClass {
     println(s"99.1 - Benchmarking serialization with Java, Avro, Kryo, and Protobuffer using Akka-remote")
     println(s"99.2 - Benchmarking serialization with Java, Avro, Kryo, and Protobuffer using Akka-persistence")
 
-    var option: String = ""
+    var option01: String = ""
+    var option02: String = ""
     if (args.length == 0) {
       println("choose an application: ")
       val scanner = new Scanner(System.in)
-      option = scanner.nextLine()
+      option01 = scanner.nextLine()
     } else {
-      option = args(0)
+      option01 = args(0)
+      if (args.length >= 2) option02 = args(1)
     }
 
-    println(s"you choose the application $option")
-    option match {
+    println(s"option01 (app): $option01")
+    println(s"option02      : $option02")
+    option01 match {
       case "0" => println(s"Bye, see you next time.")
       case "1" => BasicRecap.run()
       case "2" => AdvancedRecap.run()
@@ -239,7 +242,7 @@ object MainClass {
         Thread.sleep(2000)
         LocalDeployment.run()
       case "39" => ClusteringBasics.run()
-      case "39.1" => SimpleClusterK8sMain.run()
+      case "39.1" => SimpleClusterK8sMain.run(option02)
       case "40" =>
         ClusteringBasics.run()
         Thread.sleep(3000)

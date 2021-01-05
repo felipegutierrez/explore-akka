@@ -26,7 +26,7 @@ import NativePackagerHelper._
 
 packageName in Docker := packageName.value
 version in Docker := version.value
-dockerExposedPorts := List(8001)
+dockerExposedPorts := List(8001, 2551)
 dockerLabels := Map("felipeogutierrez" -> "felipe.o.gutierrez@gmail.com")
 dockerBaseImage := "openjdk:jre-alpine"
 dockerRepository := Some("felipeogutierrez")
