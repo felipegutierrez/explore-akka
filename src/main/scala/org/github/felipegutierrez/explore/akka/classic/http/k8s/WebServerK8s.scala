@@ -2,51 +2,42 @@ package org.github.felipegutierrez.explore.akka.classic.http.k8s
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.Http.ServerBinding
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
-import com.typesafe.config.ConfigFactory
-
-import scala.concurrent.Future
-import scala.util.{Failure, Success}
 
 object WebServerK8s {
   //  def main(args: Array[String]): Unit = {
   //    run()
   //  }
   def run() = {
-    val configString =
-      """
-        | akka {
-        |   loglevel = "INFO"
-        | }
-      """.stripMargin
-    // val system = ActorSystem("ConfigDemo", ConfigFactory.load(config))
     implicit val system = ActorSystem("systemK8S")
-    import system.dispatcher
 
-    // val config = ConfigFactory.load()
-    val config = ConfigFactory.load(ConfigFactory.parseString(configString))
-    val host = config.getString("http.host")
-    val port = config.getInt("http.port")
-    val message = config.getString("http.message")
-
-    val route = path("") {
-      get {
-        println("Received request")
-        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, message))
+    val route = (path("app" / "k8s") & extractRequest & extractLog) {
+      (request, log) => {
+        get {
+          log.info(s"I got the compact http request: $request")
+          complete(StatusCodes.OK,
+            HttpEntity(
+              ContentTypes.`text/html(UTF-8)`,
+              s"""
+                 |<html>
+                 | <body>I got the compact http request: $request on to k8s (minikube) =)</body>
+                 |</html>
+                 |""".stripMargin
+            )
+          )
+        } ~ pathEndOrSingleSlash {
+          complete(StatusCodes.BadRequest)
+        }
       }
+    } ~ pathEndOrSingleSlash {
+      complete(StatusCodes.Forbidden)
     }
 
-    val bindingFuture: Future[ServerBinding] = Http().bindAndHandle(route, host, port)
-
-    bindingFuture.map { serverBinding =>
-      println(s"Web server bound to ${serverBinding.localAddress}.")
-    }.onComplete {
-      case Failure(t) =>
-        println(s"Failed to bind to $host:$port!", t)
-        system.terminate()
-      case Success(_) =>
-    }
+    println("try:")
+    println("http GET http://localhost:8001/app/k8s")
+    Http()
+      .newServerAt("localhost", 8001)
+      .bindFlow(route)
   }
 }

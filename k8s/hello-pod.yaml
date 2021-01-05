@@ -6,9 +6,8 @@ spec:
   containers:
     - image: felipeogutierrez/explore-akka:1.1
       name: hello
-      imagePullPolicy: IfNotPresent # Always/IfNotPresent
-#      command: [ "java" ]
-#      args: [ "-cp", "explore-akka.jar", "org.github.felipegutierrez.explore.akka.MainClass", "83.1" ]
+      imagePullPolicy: Always # Always/IfNotPresent
+      args: [ "83.1" ]
       ports:
         - containerPort: 8001
           name: http

@@ -12,7 +12,12 @@ Exploring [Akka 2.6.10](https://akka.io/) with Scala 2.12.7 and Java 8. The dock
 ```
 minikube start --cpus 4 --memory 8192
 kubectl create namespace akka
-kubectl apply -f k8s/.yml -n akka
+
+// This application is an Akka-http hello world
+kubectl apply -f k8s/hello-pod.yaml -n akka
+kubectl port-forward hello 8001
+
+
 ```
 
 ## Troubleshooting
