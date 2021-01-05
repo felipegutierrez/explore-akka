@@ -32,7 +32,8 @@ public class MasterAppJ {
         }
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    // public static void main(String[] args) throws IOException, InterruptedException {
+    public static void run(String[] args) throws IOException, InterruptedException {
         new MasterAppJ();
     }
 

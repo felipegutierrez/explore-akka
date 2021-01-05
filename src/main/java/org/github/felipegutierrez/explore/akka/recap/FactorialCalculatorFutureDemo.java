@@ -15,7 +15,8 @@ public class FactorialCalculatorFutureDemo {
         this.delayMilliSeconds = delayMilliSeconds;
     }
 
-    public static void main(String[] args) {
+    // public static void main(String[] args) {
+    public static void run(String[] args) {
         FactorialCalculatorFutureDemo factorialDemo = new FactorialCalculatorFutureDemo(20, 500);
         boolean res = factorialDemo.compute();
         System.out.println(res);

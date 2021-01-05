@@ -50,9 +50,9 @@ public class AdComOperator {
         }
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        new AdComOperator(3);
-    }
+//    public static void main(String[] args) throws InterruptedException {
+//        new AdComOperator(3);
+//    }
 
     private Object collectSignals() {
         int outPollAvg = ThreadLocalRandom.current().nextInt(MIN_POLL, MAX_POLL + 1);

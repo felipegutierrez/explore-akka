@@ -9,7 +9,8 @@ import com.typesafe.config.ConfigFactory;
 import java.time.Duration;
 
 public class JobManagerApp {
-    public static void main(String[] args) {
+    // public static void main(String[] args) {
+    public static void run(String[] args) {
         // Configure the Actor System
         Config config = ConfigFactory.load("clustering/controller.conf")
                 .getConfig("jobManagerPIController");

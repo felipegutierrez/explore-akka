@@ -40,7 +40,8 @@ public class TaskManagerApp {
         }
     }
 
-    public static void main(String[] args) {
+    // public static void main(String[] args) {
+    public static void run(String[] args) {
         new TaskManagerApp(new int[]{2552, 2553});
     }
 

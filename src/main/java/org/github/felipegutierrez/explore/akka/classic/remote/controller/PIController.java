@@ -10,7 +10,8 @@ public class PIController {
                 ConfigFactory.load("remote/controller.conf").getConfig("controllerApp"));
     }
 
-    public static void main(String[] args) {
+    // public static void main(String[] args) {
+    public static void run(String[] args) {
         new PIController();
     }
 }

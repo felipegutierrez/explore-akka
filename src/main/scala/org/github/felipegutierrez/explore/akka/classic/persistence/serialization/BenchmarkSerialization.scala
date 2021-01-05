@@ -6,9 +6,9 @@ import org.github.felipegutierrez.explore.akka.classic.persistence.stores.Simple
 import org.github.felipegutierrez.explore.akka.classic.remote.serialization.VoteGenerator
 
 object BenchmarkSerialization {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val config = ConfigFactory.load().getConfig("postgresStore")

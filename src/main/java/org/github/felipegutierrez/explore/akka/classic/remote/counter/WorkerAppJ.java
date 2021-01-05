@@ -4,6 +4,8 @@ import akka.actor.ActorSystem;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
+import java.io.IOException;
+
 public class WorkerAppJ {
     public WorkerAppJ(int nWorkers) {
         Config config = ConfigFactory.parseString("akka.remote.artery.canonical.port = 2552")
@@ -16,7 +18,8 @@ public class WorkerAppJ {
         // }
     }
 
-    public static void main(String[] args) {
+    // public static void main(String[] args) {
+    public static void run(String[] args) {
         new WorkerAppJ(5);
     }
 }

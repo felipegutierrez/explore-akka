@@ -30,7 +30,8 @@ public class LocalActorJ {
         ActorRef remoteActorResolver = localSystem.actorOf(ActorResolverJ.props(), "remoteActorResolver");
     }
 
-    public static void main(String[] args) {
+    // public static void main(String[] args) {
+    public static void run(String[] args) {
         new LocalActorJ();
     }
 

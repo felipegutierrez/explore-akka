@@ -11,7 +11,8 @@ public class RemoteActorJ {
         remoteSimpleActor.tell(new SimpleMessage("Hello from REMOTE SimpleActorJ"), remoteSimpleActor);
     }
 
-    public static void main(String[] args) {
+    // public static void main(String[] args) {
+    public static void run(String[] args) {
         new RemoteActorJ();
     }
 }

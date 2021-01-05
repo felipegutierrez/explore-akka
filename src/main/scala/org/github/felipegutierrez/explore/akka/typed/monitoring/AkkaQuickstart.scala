@@ -59,10 +59,9 @@ object GreeterMain {
 }
 
 object AkkaQuickstart {
-
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     Kamon.init()

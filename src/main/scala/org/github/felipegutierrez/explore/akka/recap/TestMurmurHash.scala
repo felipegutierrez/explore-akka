@@ -3,11 +3,13 @@ package org.github.felipegutierrez.explore.akka.recap
 import scala.util.hashing.MurmurHash3
 
 object TestMurmurHash {
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
-  def main(args: Array[String]): Unit = {
+  def run() = {
     val email = MyObject("my_email@google.com")
     println(s"This is my email hash: $email and this is my hash: ${email.hashCode()}")
-
   }
 
   case class MyObject(val email: String) {
