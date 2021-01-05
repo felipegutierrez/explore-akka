@@ -21,6 +21,23 @@ resolvers += Resolver.jcenterRepo
 
 enablePlugins(JavaAppPackaging, JavaServerAppPackaging, DockerPlugin, AshScriptPlugin)
 
+// ####### Dockerfile settings #######
+import NativePackagerHelper._
+
+packageName in Docker := packageName.value
+version in Docker := version.value
+dockerExposedPorts := List(8001)
+dockerLabels := Map("felipeogutierrez" -> "felipe.o.gutierrez@gmail.com")
+dockerBaseImage := "openjdk:jre-alpine"
+dockerRepository := Some("felipeogutierrez")
+// dockerUsername := Some("felipeogutierrez") // not necessary otherwise it created nested location on the Docker image
+defaultLinuxInstallLocation in Docker := "/usr/local"
+daemonUser in Docker := "daemon"
+mappings in Universal ++= directory( baseDirectory.value / "src" / "main" / "resources" )
+// ####### Dockerfile settings #######
+
+// mainClass in Compile := Some("org.github.felipegutierrez.explore.akka.MainClass")
+
 libraryDependencies ++= Seq(
   // Akka basics
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
@@ -91,8 +108,3 @@ libraryDependencies ++= Seq(
   "io.kamon" %% "kamon-bundle" % kamonVersion,
   "io.kamon" %% "kamon-prometheus" % kamonVersion,
 )
-
-mainClass in Compile := Some("org.github.felipegutierrez.explore.akka.MainClass")
-
-dockerBaseImage := "openjdk:jre-alpine"
-dockerUsername := Some("felipeogutierrez")

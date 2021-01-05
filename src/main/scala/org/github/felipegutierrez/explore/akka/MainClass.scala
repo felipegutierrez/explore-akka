@@ -7,6 +7,7 @@ import org.github.felipegutierrez.explore.akka.classic.clustering.k8s.SimpleClus
 import org.github.felipegutierrez.explore.akka.classic.clustering.wordcount.{ClusteringWordCount, ClusteringWordCountAdditionalWorkers}
 import org.github.felipegutierrez.explore.akka.classic.falttolerance._
 import org.github.felipegutierrez.explore.akka.classic.http.client.{ConnectionLevel, HostLevel, PaymentSystem, RequestLevel}
+import org.github.felipegutierrez.explore.akka.classic.http.k8s.WebServerK8s
 import org.github.felipegutierrez.explore.akka.classic.http.server.highlevel._
 import org.github.felipegutierrez.explore.akka.classic.http.server.lowlevel.{BasicServerLowLevel, GuitarRestApi, HttpsRestApi}
 import org.github.felipegutierrez.explore.akka.classic.infra._
@@ -143,6 +144,7 @@ object MainClass {
     println(s"81 - Monitoring actors with Kamon and Prometheus")
     println(s"82 - Monitoring Akka stream with Kamon and Prometheus")
     println(s"83 - Akka HTTP hello word")
+    println(s"83.1 - Akka HTTP hello word using K8S")
     println(s"84 - Basic low level Akka HTTP server to accept connections")
     println(s"85 - (un)marshalling JSON to Akka HTTP")
     println(s"86 - Akka HTTP secure using HTTPS")
@@ -313,6 +315,7 @@ object MainClass {
       case "81" => AkkaQuickstart.run()
       case "82" => FirstStreamMonitoring.run()
       case "83" => org.github.felipegutierrez.explore.akka.classic.http.Playground.run()
+      case "83.1" => WebServerK8s.run()
       case "84" => BasicServerLowLevel.run()
       case "85" => GuitarRestApi.run()
       case "86" => HttpsRestApi.run()

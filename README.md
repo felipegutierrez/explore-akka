@@ -25,6 +25,8 @@ sbt test
 sbt package
 sbt run
 sbt clean assembly
+sbt docker:stage
+tree target/docker/stage
 sbt docker:publishLocal
 docker images
 docker image rm <IMAGE_ID>

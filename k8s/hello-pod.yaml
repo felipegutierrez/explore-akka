@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello
+spec:
+  containers:
+    - image: felipeogutierrez/explore-akka:1.1
+      name: hello
+      imagePullPolicy: IfNotPresent # Always/IfNotPresent
+#      command: [ "java" ]
+#      args: [ "-cp", "explore-akka.jar", "org.github.felipegutierrez.explore.akka.MainClass", "83.1" ]
+      ports:
+        - containerPort: 8001
+          name: http
+#      volumeMounts:
+#        - name: hello-conf-volume
+#          mountPath: /usr/local/etc
+#  volumes:
+#    - name: hello-conf-volume
+#      configMap:
+#        name: hello-conf
