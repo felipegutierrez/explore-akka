@@ -21,7 +21,7 @@ object WebServerK8s {
               ContentTypes.`text/html(UTF-8)`,
               s"""
                  |<html>
-                 | <body>I got the compact http request: $request on to k8s (minikube) =)</body>
+                 | <body>I got the compact http request: <br><br>$request <br><br>on to k8s (minikube) =)</body>
                  |</html>
                  |""".stripMargin
             )
