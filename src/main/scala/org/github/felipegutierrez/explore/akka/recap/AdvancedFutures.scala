@@ -173,12 +173,12 @@ object AdvancedFutures {
         case Success(value) => try {
           promise.success(value)
         } catch {
-          case _ =>
+          case scala.util.control.NonFatal(e) => println(s"Error: $e")
         }
         case Failure(exception) => try {
           promise.failure(exception)
         } catch {
-          case _ =>
+          case scala.util.control.NonFatal(e) => println(s"Error: $e")
         }
       }
 
