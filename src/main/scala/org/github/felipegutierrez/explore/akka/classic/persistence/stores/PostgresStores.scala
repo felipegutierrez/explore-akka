@@ -28,9 +28,10 @@ import com.typesafe.config.ConfigFactory
  * -------------------------+-----------------+---------------+----------------------------
  * (0 row)
  */
-object PostgresStores extends App {
-
-  run()
+object PostgresStores {
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val postgresStoreSystem = ActorSystem("postgresStoreSystem", ConfigFactory.load().getConfig("postgresStore"))

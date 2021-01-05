@@ -106,9 +106,10 @@ class WordCountMaster extends Actor with ActorLogging {
   }
 }
 
-object MasterApp extends App {
-
-  run()
+object MasterApp {
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     import WordCountDomain._
@@ -128,9 +129,10 @@ object MasterApp extends App {
   }
 }
 
-object WorkerApp extends App {
-
-  run()
+object WorkerApp {
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val config = ConfigFactory.parseString(

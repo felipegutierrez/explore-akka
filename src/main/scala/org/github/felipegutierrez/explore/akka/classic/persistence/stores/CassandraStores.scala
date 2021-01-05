@@ -32,9 +32,10 @@ import com.typesafe.config.ConfigFactory
  * -------------------------+-------------+------+-------------+-------------------+--------+--------------+----------+---------------+---------------
  * simple-persistent-actor |          30 | null |        null |              null |     19 |              |     null |    0x1e000000 | 1606302085064
  */
-object CassandraStores extends App {
-
-  run()
+object CassandraStores {
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val cassandraStoreSystem = ActorSystem("cassandraStoreSystem", ConfigFactory.load().getConfig("cassandraStore"))

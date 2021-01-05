@@ -2,9 +2,11 @@ package org.github.felipegutierrez.explore.akka.classic.clustering.wordcount
 
 import akka.actor.Props
 
-object ClusteringWordCountAdditionalWorkers extends App {
+object ClusteringWordCountAdditionalWorkers {
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     /** create 2 additional workers to join after the computation already started */

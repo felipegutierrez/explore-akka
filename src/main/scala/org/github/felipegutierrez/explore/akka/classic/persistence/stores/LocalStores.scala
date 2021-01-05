@@ -3,9 +3,10 @@ package org.github.felipegutierrez.explore.akka.classic.persistence.stores
 import akka.actor.ActorSystem
 import com.typesafe.config.ConfigFactory
 
-object LocalStores extends App {
-
-  run()
+object LocalStores {
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val localStoreSystem = ActorSystem("localStoreSystem", ConfigFactory.load().getConfig("localStores"))

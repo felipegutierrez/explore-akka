@@ -2,7 +2,7 @@ package org.github.felipegutierrez.explore.akka.classic.clustering.wordcount
 
 import akka.actor.{ActorRef, Props}
 
-object ClusteringWordCount extends App {
+object ClusteringWordCount {
 
   object ClusteringExampleDomain {
 
@@ -14,7 +14,9 @@ object ClusteringWordCount extends App {
 
   }
 
-  run()
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val master = SeedNodes.createNode(2551, "master", Props[WordCountMaster], "master")
