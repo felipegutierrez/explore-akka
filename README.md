@@ -20,16 +20,16 @@ minikube start --cpus 4 --memory 8192
 kubectl create namespace akka
 
 // This application is an Akka-http hello world
-kubectl apply -f k8s/hello-pod.yaml -n akka
+kubectl apply -f k8s/basics/hello-pod.yaml -n akka
 kubectl port-forward hello 8001
 ```
 This application is an Akka-cluster. 1 - Deploy the seed nodes:
 ```
-kubectl apply -f k8s/akka-cluster-seed.yaml
+kubectl apply -f k8s/cluster/akka-cluster-seed.yaml
 ```
 Deploy the worker nodes:
 ```
-kubectl apply -f k8s/akka-cluster-workers.yaml
+kubectl apply -f k8s/cluster/akka-cluster-workers.yaml
 ```
 Scale:
 ```
