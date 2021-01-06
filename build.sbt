@@ -8,6 +8,7 @@ val scalaBinVersion = "2.12"
 val scalaTestVersion = "3.2.0"
 val logbackVersion = "1.2.3"
 lazy val akkaHttpVersion = "10.2.2"
+lazy val akkaManagementVersion = "1.0.9"
 lazy val aeronVersion = "1.30.0"
 lazy val leveldbVersion = "0.7"
 lazy val leveldbjniVersion = "1.8"
@@ -77,6 +78,10 @@ libraryDependencies ++= Seq(
   // Akka log
   "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
   "ch.qos.logback" % "logback-classic" % logbackVersion,
+
+  // Akka management
+  "com.lightbend.akka.management" %% "akka-management" % akkaManagementVersion,
+  "com.lightbend.akka.management" %% "akka-management-cluster-http" % akkaManagementVersion,
 
   // Serialization frameworks
   "com.github.romix.akka" %% "akka-kryo-serialization" % "0.5.2",

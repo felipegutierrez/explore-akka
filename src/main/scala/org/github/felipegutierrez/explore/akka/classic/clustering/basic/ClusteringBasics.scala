@@ -4,7 +4,6 @@ import akka.actor.{ActorSystem, Props}
 import com.typesafe.config.ConfigFactory
 
 object ClusteringBasics {
-
   //  def main(args: Array[String]): Unit = {
   //    run()
   //  }
