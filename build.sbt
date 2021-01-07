@@ -20,7 +20,7 @@ lazy val kamonVersion = "2.1.9"
 // some libs are available in Bintray's JCenter
 resolvers += Resolver.jcenterRepo
 
-enablePlugins(JavaAppPackaging, JavaServerAppPackaging, DockerPlugin, AshScriptPlugin)
+enablePlugins(JavaAppPackaging, JavaServerAppPackaging, DockerPlugin, AshScriptPlugin, ProtobufPlugin)
 
 // ####### Dockerfile settings #######
 import NativePackagerHelper._
@@ -38,6 +38,11 @@ mappings in Universal ++= directory( baseDirectory.value / "src" / "main" / "res
 // ####### Dockerfile settings #######
 
 // mainClass in Compile := Some("org.github.felipegutierrez.explore.akka.MainClass")
+
+// ####### generating protobuf files #######
+sourceDirectories in ProtobufConfig += (protobufExternalIncludePath in ProtobufConfig).value
+unmanagedResourceDirectories in Compile += (sourceDirectory in ProtobufConfig).value
+javaSource in ProtobufConfig := ((sourceDirectory in Compile).value / "generated")
 
 libraryDependencies ++= Seq(
   // Akka basics
@@ -88,6 +93,7 @@ libraryDependencies ++= Seq(
   "com.sksamuel.avro4s" %% "avro4s-core" % "4.0.4",
   "org.xerial.snappy" % "snappy-java" % "1.1.8.2",
   "com.google.protobuf" % "protobuf-java"  % "3.14.0",
+  "com.google.protobuf" % "protoc" % "3.14.0" pomOnly(),
   // "io.spray" %%  "spray-json" % "1.3.6", // already imported in "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
 
   // local levelDB stores

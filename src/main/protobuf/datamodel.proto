@@ -1,8 +1,9 @@
 syntax = "proto3";
 
 package org.github.felipegutierrez.explore.akka.classic.remote.serialization;
-
-option java_package = "org.github.felipegutierrez.explore.akka.classic.remote.serialization";
+option java_outer_classname = "Datamodel";
+// commented this line because we are using "sbt-protobuf" plugin to generate java file on the specific location
+// option java_package = "org.github.felipegutierrez.explore.akka.classic.remote.serialization";
 
 message OnlineStoreUser {
   int32 userId = 1;

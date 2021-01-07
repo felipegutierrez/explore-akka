@@ -35,9 +35,10 @@ object ProtobufSerialization_Remote {
   //  }
 
   def run() = {
-    println("sudo apt install protobuf-compiler")
-    println("cd src")
-    println("protoc --java_out=main/java main/protobuf/datamodel.proto")
+    // println("sudo apt install protobuf-compiler")
+    // println("cd src")
+    // println("protoc --java_out=main/java main/protobuf/datamodel.proto")
+    println("sbt protobuf:protobufGenerate")
 
     val config = ConfigFactory.parseString(
       """
