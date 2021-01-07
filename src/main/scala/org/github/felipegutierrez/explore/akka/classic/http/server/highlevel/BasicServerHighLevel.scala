@@ -17,7 +17,24 @@ object BasicServerHighLevel {
     // import system.dispatcher
 
     val simpleRoute: Route =
-      path("status") { // Directive
+      pathPrefix("timeout") {
+        (path(IntNumber) | parameter('timeout.as[Int])) { (timeout: Int) =>
+          get {
+            println(s"timeout: $timeout milliseconds")
+            Thread.sleep(timeout)
+            complete(HttpEntity(
+              ContentTypes.`text/html(UTF-8)`,
+              s"""
+                 |<html>
+                 | <body>timeout: $timeout milliseconds</body>
+                 |</html>
+                 |""".stripMargin
+            ))
+          } ~ post {
+            complete(StatusCodes.Forbidden)
+          }
+        }
+      } ~ path("status") { // Directive
         get {
           complete(StatusCodes.OK) // Directive
         } ~ post {
@@ -96,6 +113,8 @@ object BasicServerHighLevel {
       }
 
     println("try:")
+    println("http GET localhost:8080/timeout/1000")
+    println("http GET localhost:8080/timeout?timeout=1000")
     println("http GET localhost:8080/status")
     println("http POST localhost:8080/status")
     println("http GET localhost:8080/home")

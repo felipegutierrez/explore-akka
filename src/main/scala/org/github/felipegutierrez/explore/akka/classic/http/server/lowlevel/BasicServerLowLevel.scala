@@ -69,23 +69,35 @@ object BasicServerLowLevel {
     // manual version >>>
     // Http().newServerAt("localhost", 8080).connectionSource().runWith(httpSyncConnectionHandler)
     // short version >>>
-    Http().newServerAt("localhost", 8080).bindSync(requestHandler)
+    // Http().newServerAt("localhost", 8080).bindSync(requestHandler)
+
+    def getHtmlFuture(value: Int) = {
+      Thread.sleep(value)
+      Future(HttpResponse(
+        StatusCodes.OK, // HTTP 200
+        entity = HttpEntity(
+          ContentTypes.`text/html(UTF-8)`,
+          s"""
+             |<html>
+             | <body>
+             |  Async Hello Akka HTTP timeout: $value milliseconds
+             | </body>
+             |</html>
+             |""".stripMargin)
+      ))
+    }
 
     /** Method 2: serve back HTTP response ASYNCHRONOUSLY */
     val asyncRequestHandler: HttpRequest => Future[HttpResponse] = {
-      case HttpRequest(HttpMethods.GET, Uri.Path("/home"), headers, entity, protocol) =>
-        Future(HttpResponse(
-          StatusCodes.OK, // HTTP 200
-          entity = HttpEntity(
-            ContentTypes.`text/html(UTF-8)`,
-            """
-              |<html>
-              | <body>
-              |  Async Hello Akka HTTP
-              | </body>
-              |</html>
-              |""".stripMargin)
-        ))
+      case HttpRequest(HttpMethods.GET | HttpMethods.POST, uri@Uri.Path("/home"), headers, entity, protocol) =>
+        val timeout = uri.query().get("timeout").map(_.toInt)
+        println(s"timeout: $timeout milliseconds")
+        timeout match {
+          case None =>
+            getHtmlFuture(0)
+          case Some(value: Int) =>
+            getHtmlFuture(value)
+        }
       case HttpRequest(HttpMethods.GET, Uri.Path("/redirect"), headers, entity, protocol) =>
         Future(HttpResponse(
           StatusCodes.Found,
@@ -152,6 +164,6 @@ object BasicServerLowLevel {
     //      connection.handleWith(streamRequestHandler)
     //    }
     // short version >>>
-    Http().newServerAt("localhost", 8082).bindFlow(streamRequestHandler)
+    // Http().newServerAt("localhost", 8082).bindFlow(streamRequestHandler)
   }
 }
