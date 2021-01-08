@@ -7,11 +7,12 @@ branches:
   only:
     - master
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION compile
+# - sbt ++$TRAVIS_SCALA_VERSION compile
   - sbt ++$TRAVIS_SCALA_VERSION test
-  - sbt ++$TRAVIS_SCALA_VERSION package
+# - sbt ++$TRAVIS_SCALA_VERSION package
 
 after_success:
+  - sbt docker:stage
   - sbt docker:publishLocal
   # Log in to the docker CLI. Log in to docker in a single command line
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
