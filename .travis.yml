@@ -7,10 +7,8 @@ jdk:
 branches:
   only:
     - master
-addons:
-  apt:
-    packages:
-    - protobuf-compiler
+before_install:
+  - ./install-protobuf.sh
 script:
 # - sbt ++$TRAVIS_SCALA_VERSION compile
   - sbt ++$TRAVIS_SCALA_VERSION test
