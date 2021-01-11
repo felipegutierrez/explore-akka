@@ -6,6 +6,6 @@ curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.14.0/$
 sudo unzip -o $PROTOC_ZIP -d /usr/local bin/protoc
 sudo unzip -o $PROTOC_ZIP -d /usr/local 'include/*'
 rm -f $PROTOC_ZIP
-sudo chmod +x /usr/bin/protoc
+sudo whereis protoc
 sudo chmod +x /usr/local/bin/protoc
 
