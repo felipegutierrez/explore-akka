@@ -19,36 +19,36 @@ public final class Datamodel {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional int32 userId = 1;</code>
+     * <code>int32 userId = 1;</code>
      */
     int getUserId();
 
     /**
-     * <code>optional string userName = 2;</code>
+     * <code>string userName = 2;</code>
      */
     java.lang.String getUserName();
     /**
-     * <code>optional string userName = 2;</code>
+     * <code>string userName = 2;</code>
      */
     com.google.protobuf.ByteString
         getUserNameBytes();
 
     /**
-     * <code>optional string userEmail = 4;</code>
+     * <code>string userEmail = 4;</code>
      */
     java.lang.String getUserEmail();
     /**
-     * <code>optional string userEmail = 4;</code>
+     * <code>string userEmail = 4;</code>
      */
     com.google.protobuf.ByteString
         getUserEmailBytes();
 
     /**
-     * <code>optional string userPhone = 5;</code>
+     * <code>string userPhone = 5;</code>
      */
     java.lang.String getUserPhone();
     /**
-     * <code>optional string userPhone = 5;</code>
+     * <code>string userPhone = 5;</code>
      */
     com.google.protobuf.ByteString
         getUserPhoneBytes();
@@ -60,12 +60,12 @@ public final class Datamodel {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:org.github.felipegutierrez.explore.akka.classic.remote.serialization.OnlineStoreUser)
       OnlineStoreUserOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use OnlineStoreUser.newBuilder() to construct.
     private OnlineStoreUser(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
     private OnlineStoreUser() {
-      userId_ = 0;
       userName_ = "";
       userEmail_ = "";
       userPhone_ = "";
@@ -74,14 +74,19 @@ public final class Datamodel {
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private OnlineStoreUser(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -90,12 +95,6 @@ public final class Datamodel {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 8: {
 
               userId_ = input.readInt32();
@@ -119,6 +118,13 @@ public final class Datamodel {
               userPhone_ = s;
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -127,6 +133,7 @@ public final class Datamodel {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -135,6 +142,7 @@ public final class Datamodel {
       return org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.internal_static_org_github_felipegutierrez_explore_akka_classic_remote_serialization_OnlineStoreUser_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.internal_static_org_github_felipegutierrez_explore_akka_classic_remote_serialization_OnlineStoreUser_fieldAccessorTable
@@ -145,7 +153,7 @@ public final class Datamodel {
     public static final int USERID_FIELD_NUMBER = 1;
     private int userId_;
     /**
-     * <code>optional int32 userId = 1;</code>
+     * <code>int32 userId = 1;</code>
      */
     public int getUserId() {
       return userId_;
@@ -154,7 +162,7 @@ public final class Datamodel {
     public static final int USERNAME_FIELD_NUMBER = 2;
     private volatile java.lang.Object userName_;
     /**
-     * <code>optional string userName = 2;</code>
+     * <code>string userName = 2;</code>
      */
     public java.lang.String getUserName() {
       java.lang.Object ref = userName_;
@@ -169,7 +177,7 @@ public final class Datamodel {
       }
     }
     /**
-     * <code>optional string userName = 2;</code>
+     * <code>string userName = 2;</code>
      */
     public com.google.protobuf.ByteString
         getUserNameBytes() {
@@ -188,7 +196,7 @@ public final class Datamodel {
     public static final int USEREMAIL_FIELD_NUMBER = 4;
     private volatile java.lang.Object userEmail_;
     /**
-     * <code>optional string userEmail = 4;</code>
+     * <code>string userEmail = 4;</code>
      */
     public java.lang.String getUserEmail() {
       java.lang.Object ref = userEmail_;
@@ -203,7 +211,7 @@ public final class Datamodel {
       }
     }
     /**
-     * <code>optional string userEmail = 4;</code>
+     * <code>string userEmail = 4;</code>
      */
     public com.google.protobuf.ByteString
         getUserEmailBytes() {
@@ -222,7 +230,7 @@ public final class Datamodel {
     public static final int USERPHONE_FIELD_NUMBER = 5;
     private volatile java.lang.Object userPhone_;
     /**
-     * <code>optional string userPhone = 5;</code>
+     * <code>string userPhone = 5;</code>
      */
     public java.lang.String getUserPhone() {
       java.lang.Object ref = userPhone_;
@@ -237,7 +245,7 @@ public final class Datamodel {
       }
     }
     /**
-     * <code>optional string userPhone = 5;</code>
+     * <code>string userPhone = 5;</code>
      */
     public com.google.protobuf.ByteString
         getUserPhoneBytes() {
@@ -254,6 +262,7 @@ public final class Datamodel {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -263,6 +272,7 @@ public final class Datamodel {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (userId_ != 0) {
@@ -277,8 +287,10 @@ public final class Datamodel {
       if (!getUserPhoneBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, userPhone_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -297,11 +309,11 @@ public final class Datamodel {
       if (!getUserPhoneBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, userPhone_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -312,16 +324,16 @@ public final class Datamodel {
       }
       org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser other = (org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser) obj;
 
-      boolean result = true;
-      result = result && (getUserId()
-          == other.getUserId());
-      result = result && getUserName()
-          .equals(other.getUserName());
-      result = result && getUserEmail()
-          .equals(other.getUserEmail());
-      result = result && getUserPhone()
-          .equals(other.getUserPhone());
-      return result;
+      if (getUserId()
+          != other.getUserId()) return false;
+      if (!getUserName()
+          .equals(other.getUserName())) return false;
+      if (!getUserEmail()
+          .equals(other.getUserEmail())) return false;
+      if (!getUserPhone()
+          .equals(other.getUserPhone())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -330,7 +342,7 @@ public final class Datamodel {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + USERID_FIELD_NUMBER;
       hash = (53 * hash) + getUserId();
       hash = (37 * hash) + USERNAME_FIELD_NUMBER;
@@ -344,6 +356,17 @@ public final class Datamodel {
       return hash;
     }
 
+    public static org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -403,6 +426,7 @@ public final class Datamodel {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -410,6 +434,7 @@ public final class Datamodel {
     public static Builder newBuilder(org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -433,6 +458,7 @@ public final class Datamodel {
         return org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.internal_static_org_github_felipegutierrez_explore_akka_classic_remote_serialization_OnlineStoreUser_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.internal_static_org_github_felipegutierrez_explore_akka_classic_remote_serialization_OnlineStoreUser_fieldAccessorTable
@@ -455,6 +481,7 @@ public final class Datamodel {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         userId_ = 0;
@@ -468,15 +495,18 @@ public final class Datamodel {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.internal_static_org_github_felipegutierrez_explore_akka_classic_remote_serialization_OnlineStoreUser_descriptor;
       }
 
+      @java.lang.Override
       public org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser getDefaultInstanceForType() {
         return org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser build() {
         org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser result = buildPartial();
         if (!result.isInitialized()) {
@@ -485,6 +515,7 @@ public final class Datamodel {
         return result;
       }
 
+      @java.lang.Override
       public org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser buildPartial() {
         org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser result = new org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser(this);
         result.userId_ = userId_;
@@ -495,32 +526,39 @@ public final class Datamodel {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser) {
           return mergeFrom((org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser)other);
@@ -547,14 +585,17 @@ public final class Datamodel {
           userPhone_ = other.userPhone_;
           onChanged();
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -575,13 +616,13 @@ public final class Datamodel {
 
       private int userId_ ;
       /**
-       * <code>optional int32 userId = 1;</code>
+       * <code>int32 userId = 1;</code>
        */
       public int getUserId() {
         return userId_;
       }
       /**
-       * <code>optional int32 userId = 1;</code>
+       * <code>int32 userId = 1;</code>
        */
       public Builder setUserId(int value) {
         
@@ -590,7 +631,7 @@ public final class Datamodel {
         return this;
       }
       /**
-       * <code>optional int32 userId = 1;</code>
+       * <code>int32 userId = 1;</code>
        */
       public Builder clearUserId() {
         
@@ -601,7 +642,7 @@ public final class Datamodel {
 
       private java.lang.Object userName_ = "";
       /**
-       * <code>optional string userName = 2;</code>
+       * <code>string userName = 2;</code>
        */
       public java.lang.String getUserName() {
         java.lang.Object ref = userName_;
@@ -616,7 +657,7 @@ public final class Datamodel {
         }
       }
       /**
-       * <code>optional string userName = 2;</code>
+       * <code>string userName = 2;</code>
        */
       public com.google.protobuf.ByteString
           getUserNameBytes() {
@@ -632,7 +673,7 @@ public final class Datamodel {
         }
       }
       /**
-       * <code>optional string userName = 2;</code>
+       * <code>string userName = 2;</code>
        */
       public Builder setUserName(
           java.lang.String value) {
@@ -645,7 +686,7 @@ public final class Datamodel {
         return this;
       }
       /**
-       * <code>optional string userName = 2;</code>
+       * <code>string userName = 2;</code>
        */
       public Builder clearUserName() {
         
@@ -654,7 +695,7 @@ public final class Datamodel {
         return this;
       }
       /**
-       * <code>optional string userName = 2;</code>
+       * <code>string userName = 2;</code>
        */
       public Builder setUserNameBytes(
           com.google.protobuf.ByteString value) {
@@ -670,7 +711,7 @@ public final class Datamodel {
 
       private java.lang.Object userEmail_ = "";
       /**
-       * <code>optional string userEmail = 4;</code>
+       * <code>string userEmail = 4;</code>
        */
       public java.lang.String getUserEmail() {
         java.lang.Object ref = userEmail_;
@@ -685,7 +726,7 @@ public final class Datamodel {
         }
       }
       /**
-       * <code>optional string userEmail = 4;</code>
+       * <code>string userEmail = 4;</code>
        */
       public com.google.protobuf.ByteString
           getUserEmailBytes() {
@@ -701,7 +742,7 @@ public final class Datamodel {
         }
       }
       /**
-       * <code>optional string userEmail = 4;</code>
+       * <code>string userEmail = 4;</code>
        */
       public Builder setUserEmail(
           java.lang.String value) {
@@ -714,7 +755,7 @@ public final class Datamodel {
         return this;
       }
       /**
-       * <code>optional string userEmail = 4;</code>
+       * <code>string userEmail = 4;</code>
        */
       public Builder clearUserEmail() {
         
@@ -723,7 +764,7 @@ public final class Datamodel {
         return this;
       }
       /**
-       * <code>optional string userEmail = 4;</code>
+       * <code>string userEmail = 4;</code>
        */
       public Builder setUserEmailBytes(
           com.google.protobuf.ByteString value) {
@@ -739,7 +780,7 @@ public final class Datamodel {
 
       private java.lang.Object userPhone_ = "";
       /**
-       * <code>optional string userPhone = 5;</code>
+       * <code>string userPhone = 5;</code>
        */
       public java.lang.String getUserPhone() {
         java.lang.Object ref = userPhone_;
@@ -754,7 +795,7 @@ public final class Datamodel {
         }
       }
       /**
-       * <code>optional string userPhone = 5;</code>
+       * <code>string userPhone = 5;</code>
        */
       public com.google.protobuf.ByteString
           getUserPhoneBytes() {
@@ -770,7 +811,7 @@ public final class Datamodel {
         }
       }
       /**
-       * <code>optional string userPhone = 5;</code>
+       * <code>string userPhone = 5;</code>
        */
       public Builder setUserPhone(
           java.lang.String value) {
@@ -783,7 +824,7 @@ public final class Datamodel {
         return this;
       }
       /**
-       * <code>optional string userPhone = 5;</code>
+       * <code>string userPhone = 5;</code>
        */
       public Builder clearUserPhone() {
         
@@ -792,7 +833,7 @@ public final class Datamodel {
         return this;
       }
       /**
-       * <code>optional string userPhone = 5;</code>
+       * <code>string userPhone = 5;</code>
        */
       public Builder setUserPhoneBytes(
           com.google.protobuf.ByteString value) {
@@ -805,14 +846,16 @@ public final class Datamodel {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -831,11 +874,12 @@ public final class Datamodel {
 
     private static final com.google.protobuf.Parser<OnlineStoreUser>
         PARSER = new com.google.protobuf.AbstractParser<OnlineStoreUser>() {
+      @java.lang.Override
       public OnlineStoreUser parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new OnlineStoreUser(input, extensionRegistry);
+        return new OnlineStoreUser(input, extensionRegistry);
       }
     };
 
@@ -848,6 +892,7 @@ public final class Datamodel {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -859,21 +904,21 @@ public final class Datamodel {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional string ssn = 1;</code>
+     * <code>string ssn = 1;</code>
      */
     java.lang.String getSsn();
     /**
-     * <code>optional string ssn = 1;</code>
+     * <code>string ssn = 1;</code>
      */
     com.google.protobuf.ByteString
         getSsnBytes();
 
     /**
-     * <code>optional string candidate = 2;</code>
+     * <code>string candidate = 2;</code>
      */
     java.lang.String getCandidate();
     /**
-     * <code>optional string candidate = 2;</code>
+     * <code>string candidate = 2;</code>
      */
     com.google.protobuf.ByteString
         getCandidateBytes();
@@ -885,6 +930,7 @@ public final class Datamodel {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:org.github.felipegutierrez.explore.akka.classic.remote.serialization.ProtobufVote)
       ProtobufVoteOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use ProtobufVote.newBuilder() to construct.
     private ProtobufVote(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -897,14 +943,19 @@ public final class Datamodel {
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private ProtobufVote(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -913,12 +964,6 @@ public final class Datamodel {
             case 0:
               done = true;
               break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
@@ -931,6 +976,13 @@ public final class Datamodel {
               candidate_ = s;
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -939,6 +991,7 @@ public final class Datamodel {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -947,6 +1000,7 @@ public final class Datamodel {
       return org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.internal_static_org_github_felipegutierrez_explore_akka_classic_remote_serialization_ProtobufVote_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.internal_static_org_github_felipegutierrez_explore_akka_classic_remote_serialization_ProtobufVote_fieldAccessorTable
@@ -957,7 +1011,7 @@ public final class Datamodel {
     public static final int SSN_FIELD_NUMBER = 1;
     private volatile java.lang.Object ssn_;
     /**
-     * <code>optional string ssn = 1;</code>
+     * <code>string ssn = 1;</code>
      */
     public java.lang.String getSsn() {
       java.lang.Object ref = ssn_;
@@ -972,7 +1026,7 @@ public final class Datamodel {
       }
     }
     /**
-     * <code>optional string ssn = 1;</code>
+     * <code>string ssn = 1;</code>
      */
     public com.google.protobuf.ByteString
         getSsnBytes() {
@@ -991,7 +1045,7 @@ public final class Datamodel {
     public static final int CANDIDATE_FIELD_NUMBER = 2;
     private volatile java.lang.Object candidate_;
     /**
-     * <code>optional string candidate = 2;</code>
+     * <code>string candidate = 2;</code>
      */
     public java.lang.String getCandidate() {
       java.lang.Object ref = candidate_;
@@ -1006,7 +1060,7 @@ public final class Datamodel {
       }
     }
     /**
-     * <code>optional string candidate = 2;</code>
+     * <code>string candidate = 2;</code>
      */
     public com.google.protobuf.ByteString
         getCandidateBytes() {
@@ -1023,6 +1077,7 @@ public final class Datamodel {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -1032,6 +1087,7 @@ public final class Datamodel {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!getSsnBytes().isEmpty()) {
@@ -1040,8 +1096,10 @@ public final class Datamodel {
       if (!getCandidateBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, candidate_);
       }
+      unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -1053,11 +1111,11 @@ public final class Datamodel {
       if (!getCandidateBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, candidate_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -1068,12 +1126,12 @@ public final class Datamodel {
       }
       org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.ProtobufVote other = (org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.ProtobufVote) obj;
 
-      boolean result = true;
-      result = result && getSsn()
-          .equals(other.getSsn());
-      result = result && getCandidate()
-          .equals(other.getCandidate());
-      return result;
+      if (!getSsn()
+          .equals(other.getSsn())) return false;
+      if (!getCandidate()
+          .equals(other.getCandidate())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -1082,7 +1140,7 @@ public final class Datamodel {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + SSN_FIELD_NUMBER;
       hash = (53 * hash) + getSsn().hashCode();
       hash = (37 * hash) + CANDIDATE_FIELD_NUMBER;
@@ -1092,6 +1150,17 @@ public final class Datamodel {
       return hash;
     }
 
+    public static org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.ProtobufVote parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.ProtobufVote parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
     public static org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.ProtobufVote parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1151,6 +1220,7 @@ public final class Datamodel {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -1158,6 +1228,7 @@ public final class Datamodel {
     public static Builder newBuilder(org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.ProtobufVote prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -1181,6 +1252,7 @@ public final class Datamodel {
         return org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.internal_static_org_github_felipegutierrez_explore_akka_classic_remote_serialization_ProtobufVote_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.internal_static_org_github_felipegutierrez_explore_akka_classic_remote_serialization_ProtobufVote_fieldAccessorTable
@@ -1203,6 +1275,7 @@ public final class Datamodel {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         ssn_ = "";
@@ -1212,15 +1285,18 @@ public final class Datamodel {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.internal_static_org_github_felipegutierrez_explore_akka_classic_remote_serialization_ProtobufVote_descriptor;
       }
 
+      @java.lang.Override
       public org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.ProtobufVote getDefaultInstanceForType() {
         return org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.ProtobufVote.getDefaultInstance();
       }
 
+      @java.lang.Override
       public org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.ProtobufVote build() {
         org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.ProtobufVote result = buildPartial();
         if (!result.isInitialized()) {
@@ -1229,6 +1305,7 @@ public final class Datamodel {
         return result;
       }
 
+      @java.lang.Override
       public org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.ProtobufVote buildPartial() {
         org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.ProtobufVote result = new org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.ProtobufVote(this);
         result.ssn_ = ssn_;
@@ -1237,32 +1314,39 @@ public final class Datamodel {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
+          java.lang.Object value) {
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.ProtobufVote) {
           return mergeFrom((org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.ProtobufVote)other);
@@ -1282,14 +1366,17 @@ public final class Datamodel {
           candidate_ = other.candidate_;
           onChanged();
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1310,7 +1397,7 @@ public final class Datamodel {
 
       private java.lang.Object ssn_ = "";
       /**
-       * <code>optional string ssn = 1;</code>
+       * <code>string ssn = 1;</code>
        */
       public java.lang.String getSsn() {
         java.lang.Object ref = ssn_;
@@ -1325,7 +1412,7 @@ public final class Datamodel {
         }
       }
       /**
-       * <code>optional string ssn = 1;</code>
+       * <code>string ssn = 1;</code>
        */
       public com.google.protobuf.ByteString
           getSsnBytes() {
@@ -1341,7 +1428,7 @@ public final class Datamodel {
         }
       }
       /**
-       * <code>optional string ssn = 1;</code>
+       * <code>string ssn = 1;</code>
        */
       public Builder setSsn(
           java.lang.String value) {
@@ -1354,7 +1441,7 @@ public final class Datamodel {
         return this;
       }
       /**
-       * <code>optional string ssn = 1;</code>
+       * <code>string ssn = 1;</code>
        */
       public Builder clearSsn() {
         
@@ -1363,7 +1450,7 @@ public final class Datamodel {
         return this;
       }
       /**
-       * <code>optional string ssn = 1;</code>
+       * <code>string ssn = 1;</code>
        */
       public Builder setSsnBytes(
           com.google.protobuf.ByteString value) {
@@ -1379,7 +1466,7 @@ public final class Datamodel {
 
       private java.lang.Object candidate_ = "";
       /**
-       * <code>optional string candidate = 2;</code>
+       * <code>string candidate = 2;</code>
        */
       public java.lang.String getCandidate() {
         java.lang.Object ref = candidate_;
@@ -1394,7 +1481,7 @@ public final class Datamodel {
         }
       }
       /**
-       * <code>optional string candidate = 2;</code>
+       * <code>string candidate = 2;</code>
        */
       public com.google.protobuf.ByteString
           getCandidateBytes() {
@@ -1410,7 +1497,7 @@ public final class Datamodel {
         }
       }
       /**
-       * <code>optional string candidate = 2;</code>
+       * <code>string candidate = 2;</code>
        */
       public Builder setCandidate(
           java.lang.String value) {
@@ -1423,7 +1510,7 @@ public final class Datamodel {
         return this;
       }
       /**
-       * <code>optional string candidate = 2;</code>
+       * <code>string candidate = 2;</code>
        */
       public Builder clearCandidate() {
         
@@ -1432,7 +1519,7 @@ public final class Datamodel {
         return this;
       }
       /**
-       * <code>optional string candidate = 2;</code>
+       * <code>string candidate = 2;</code>
        */
       public Builder setCandidateBytes(
           com.google.protobuf.ByteString value) {
@@ -1445,14 +1532,16 @@ public final class Datamodel {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -1471,11 +1560,12 @@ public final class Datamodel {
 
     private static final com.google.protobuf.Parser<ProtobufVote>
         PARSER = new com.google.protobuf.AbstractParser<ProtobufVote>() {
+      @java.lang.Override
       public ProtobufVote parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ProtobufVote(input, extensionRegistry);
+        return new ProtobufVote(input, extensionRegistry);
       }
     };
 
@@ -1488,6 +1578,7 @@ public final class Datamodel {
       return PARSER;
     }
 
+    @java.lang.Override
     public org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.ProtobufVote getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
