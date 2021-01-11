@@ -8,4 +8,5 @@ sudo unzip -o $PROTOC_ZIP -d /usr/local 'include/*'
 rm -f $PROTOC_ZIP
 sudo whereis protoc
 sudo chmod +x /usr/local/bin/protoc
+sudo protoc --version
 
