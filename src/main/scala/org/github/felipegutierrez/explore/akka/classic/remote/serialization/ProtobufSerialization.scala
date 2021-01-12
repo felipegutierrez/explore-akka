@@ -1,13 +1,14 @@
 package org.github.felipegutierrez.explore.akka.classic.remote.serialization
 
 import akka.actor.{ActorSystem, Props}
+import com.google.protobuf.util.JsonFormat
 import com.typesafe.config.ConfigFactory
 import org.github.felipegutierrez.explore.akka.classic.remote.serialization.Datamodel.OnlineStoreUser
 
 object ProtobufSerialization_Local {
-  //  def main(args: Array[String]): Unit = {
-  //    run()
-  //  }
+  //    def main(args: Array[String]): Unit = {
+  //      run()
+  //    }
 
   def run() = {
     val config = ConfigFactory.parseString(
@@ -25,14 +26,15 @@ object ProtobufSerialization_Local {
       .setUserEmail("Felipe@rocktheJVM.com")
       .setUserPhone("1234-7890")
       .build()
+    println(s"sending message:\n${JsonFormat.printer().print(onlineStoreUser)}")
     actorSelection ! onlineStoreUser
   }
 }
 
 object ProtobufSerialization_Remote {
-  //  def main(args: Array[String]): Unit = {
-  //    run()
-  //  }
+  //    def main(args: Array[String]): Unit = {
+  //      run()
+  //    }
 
   def run() = {
     // println("sudo apt install protobuf-compiler")
