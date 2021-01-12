@@ -17,6 +17,7 @@ lazy val cassandraVersion = "0.91"
 lazy val json4sVersion = "3.2.11"
 lazy val kamonVersion = "2.1.9"
 lazy val protobufVersion = "3.7.1"
+lazy val gRpcVersion = "1.34.1"
 
 // some libs are available in Bintray's JCenter
 resolvers += Resolver.jcenterRepo
@@ -122,4 +123,10 @@ libraryDependencies ++= Seq(
   // Metrics: Kamon + Prometheus
   "io.kamon" %% "kamon-bundle" % kamonVersion,
   "io.kamon" %% "kamon-prometheus" % kamonVersion,
+
+  // gRPC
+  "io.grpc" % "grpc-netty-shaded" % gRpcVersion,
+  "io.grpc" % "grpc-protobuf" % gRpcVersion,
+  "io.grpc" % "grpc-stub" % gRpcVersion,
+  "io.grpc" % "grpc-services" % gRpcVersion,
 )

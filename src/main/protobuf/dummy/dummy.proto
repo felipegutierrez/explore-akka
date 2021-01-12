@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package org.github.felipegutierrez.explore.dummy;
+
+option java_package = "org.github.felipegutierrez.explore.dummy";
+option java_multiple_files = true;
+
+message DummyMessage {}
+
+service DummyService {}

@@ -52,6 +52,7 @@ sbt test
 sbt package
 sbt run
 sbt clean assembly
+sbt protobuf:protobufGenerate
 sbt docker:stage
 tree target/docker/stage
 sbt docker:publishLocal

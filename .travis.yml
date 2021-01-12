@@ -14,6 +14,7 @@ script:
   - sbt ++$TRAVIS_SCALA_VERSION compile
   - sbt ++$TRAVIS_SCALA_VERSION test
 # - sbt ++$TRAVIS_SCALA_VERSION package
+# - sbt ++$TRAVIS_SCALA_VERSION protobuf:protobufGenerate
 
 after_success:
   - sbt ++$TRAVIS_SCALA_VERSION docker:stage
