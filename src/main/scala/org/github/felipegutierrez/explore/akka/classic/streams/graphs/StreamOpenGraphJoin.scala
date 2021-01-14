@@ -11,9 +11,9 @@ import scala.concurrent.duration._
 
 object StreamOpenGraphJoin {
 
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+//  def main(args: Array[String]): Unit = {
+//    run()
+//  }
 
   def run() = {
     implicit val system = ActorSystem("StreamOpenGraphJoin")

@@ -3,7 +3,7 @@ package org.github.felipegutierrez.explore.akka.classic.http.server.highlevel
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
-import akka.http.scaladsl.server.Directives.{parameter, _}
+import akka.http.scaladsl.server.Directives._
 import akka.pattern.ask
 import akka.util.Timeout
 import spray.json._
@@ -12,8 +12,10 @@ import scala.concurrent.Future
 import scala.concurrent.duration._
 
 // case class Player(nickname: String, characterClass: String, level: Int)
-case class Chat(sender:String,receiver:String,message:String, groupChatName:String)
+case class Chat(sender: String, receiver: String, message: String, groupChatName: String)
+
 case object GetAllUsersInChat
+
 case class AddUsers(player: Chat)
 
 // step 2 - the JSON protocol
@@ -23,6 +25,7 @@ trait ChatJsonProtocol extends DefaultJsonProtocol {
 
 class ChatActor extends Actor with ActorLogging {
   var users = Map[String, Chat]()
+
   override def receive: Receive = {
     case GetAllUsersInChat =>
       log.info(s"getting all users")
@@ -52,16 +55,20 @@ object ChatMarshallingJSON extends ChatJsonProtocol with SprayJsonSupport {
   implicit val defaultTimeout = Timeout(2 seconds)
 
   val chatRoutes = {
-      path("api" / "chat") {
-        get {
-            // 3: get all users in the chat
-            val allUsersInChatFuture: Future[List[Chat]] = (chatActor ? GetAllUsersInChat).mapTo[List[Chat]]
-            complete(allUsersInChatFuture)
-        }
+    path("api" / "chat") {
+      get {
+        // 3: get all users in the chat
+        val allUsersInChatFuture: Future[List[Chat]] = (chatActor ? GetAllUsersInChat).mapTo[List[Chat]]
+        complete(allUsersInChatFuture)
       }
+    }
   }
 
-  def main(args: Array[String]): Unit = {
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
+
+  def run() = {
     println("http GET localhost:8080/api/chat")
     Http()
       .newServerAt("localhost", 8080)

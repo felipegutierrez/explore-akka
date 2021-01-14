@@ -1,9 +1,9 @@
 package org.github.felipegutierrez.explore.recap
 
 object AdvancedHighOrderFunction {
-  def main(args: Array[String]): Unit = {
-    run()
-  }
+//  def main(args: Array[String]): Unit = {
+//    run()
+//  }
 
   def run() = {
     val simpleFunction = (x: Int) => x + 1
