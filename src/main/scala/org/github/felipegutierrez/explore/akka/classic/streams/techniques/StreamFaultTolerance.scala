@@ -1,7 +1,7 @@
 package org.github.felipegutierrez.explore.akka.classic.streams.techniques
 
 import akka.actor.ActorSystem
-import akka.stream.scaladsl.{RestartSource, Sink, Source}
+import akka.stream.scaladsl.{Flow, RestartSource, Sink, Source}
 import akka.stream.{ActorAttributes, RestartSettings}
 import com.typesafe.config.ConfigFactory
 
@@ -9,10 +9,6 @@ import scala.concurrent.duration._
 import scala.util.Random
 
 object StreamFaultTolerance {
-  //  def main(args: Array[String]): Unit = {
-  //    run()
-  //  }
-
   def run() = {
     val configString =
       """
@@ -28,14 +24,14 @@ object StreamFaultTolerance {
     faultySource
       .log("tracking elements")
       .to(Sink.foreach(v => println(s"value: $v")))
-      .run()
+    // .run()
 
     // 2 - gracefully terminating a stream
     faultySource.recover {
       case _: RuntimeException => Int.MinValue
     }.log("gracefully source")
       .to(Sink.foreach(v => println(s"value: $v")))
-      .run()
+    // .run()
 
     // 3 - recover with another stream
     faultySource.recoverWithRetries(3, {
@@ -43,7 +39,7 @@ object StreamFaultTolerance {
     })
       .log("recoverWithRetries")
       .to(Sink.foreach(v => println(s"value: $v")))
-      .run()
+    // .run()
 
     // 4 - backoff supervision
     val restartSource = RestartSource
@@ -54,7 +50,7 @@ object StreamFaultTolerance {
     restartSource
       .log("onFailuresWithBackoff")
       .to(Sink.foreach(v => println(s"value: $v")))
-      .run()
+    //    .run()
 
     // 5 - supervision strategy
     val numbers = Source(1 to 20).map(n => if (n == 13) throw new RuntimeException("bad luck") else n).log("supervision")
@@ -69,6 +65,29 @@ object StreamFaultTolerance {
     })
     supervisedNumbers
       .to(Sink.foreach(v => println(s"value: $v")))
+    // .run()
+
+    // 6 - recover error on the Flow
+    val multiNumbers = Source(1 to 100).throttle(1, 1 second)
+    val multiplyFlow = Flow[Int].map{ x =>
+      if (x % 5 == 0) throw new RuntimeException("bad luck")
+      else x * 2
+    }
+    val supervisedmultiplyFlow = multiplyFlow.withAttributes(ActorAttributes.supervisionStrategy {
+      case _: RuntimeException =>
+        println(s"catch runtime exception")
+        akka.stream.Supervision.Resume
+      case _ =>
+        println(s"stream ended")
+        akka.stream.Supervision.Stop
+    })
+    multiNumbers
+      .via(supervisedmultiplyFlow)
+      .to(Sink.foreach(v => println(s"value: $v")))
       .run()
   }
+
+//  def main(args: Array[String]): Unit = {
+//    run()
+//  }
 }
