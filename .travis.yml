@@ -11,9 +11,9 @@ jdk:
 branches:
   only:
     - master
-#before_install:
-#  - chmod +x install-protobuf.sh
-#  - ./install-protobuf.sh
+before_install:
+  - chmod +x install-protobuf.sh
+  - ./install-protobuf.sh
 #script:
 #  - sbt ++$TRAVIS_SCALA_VERSION compile
 #  - sbt ++$TRAVIS_SCALA_VERSION test
