@@ -2,19 +2,23 @@ dist: xenial
 language: scala
 sudo: true
 scala: 2.12.7
+addons:
+  apt:
+    packages:
+      - conntrack
 jdk:
   - openjdk8
 branches:
   only:
     - master
-before_install:
-  - chmod +x install-protobuf.sh
-  - ./install-protobuf.sh
-script:
-  - sbt ++$TRAVIS_SCALA_VERSION compile
-  - sbt ++$TRAVIS_SCALA_VERSION test
-# - sbt ++$TRAVIS_SCALA_VERSION package
-# - sbt ++$TRAVIS_SCALA_VERSION protobuf:protobufGenerate
+#before_install:
+#  - chmod +x install-protobuf.sh
+#  - ./install-protobuf.sh
+#script:
+#  - sbt ++$TRAVIS_SCALA_VERSION compile
+#  - sbt ++$TRAVIS_SCALA_VERSION test
+#  - sbt ++$TRAVIS_SCALA_VERSION package
+#  - sbt ++$TRAVIS_SCALA_VERSION protobuf:protobufGenerate
 
 after_success:
   - sbt ++$TRAVIS_SCALA_VERSION docker:stage
