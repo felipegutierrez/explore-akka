@@ -1,5 +1,6 @@
 
 [![Build Status](https://travis-ci.com/felipegutierrez/explore-akka.svg?branch=master)](https://travis-ci.com/felipegutierrez/explore-akka)
+[![Coverage Status](https://coveralls.io/repos/github/felipegutierrez/explore-akka/badge.svg?branch=master)](https://coveralls.io/github/felipegutierrez/explore-akka?branch=master)
 
 Exploring [Akka 2.6.10](https://akka.io/) with Scala 2.12.7 and Java 8. The docker images are available at [docker hub](https://hub.docker.com/repository/docker/felipeogutierrez/explore-akka).
 

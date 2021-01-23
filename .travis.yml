@@ -14,13 +14,15 @@ branches:
 before_install:
   - chmod +x install-protobuf.sh
   - ./install-protobuf.sh
-#script:
+script:
+  - sbt coverage test
 #  - sbt ++$TRAVIS_SCALA_VERSION compile
 #  - sbt ++$TRAVIS_SCALA_VERSION test
 #  - sbt ++$TRAVIS_SCALA_VERSION package
 #  - sbt ++$TRAVIS_SCALA_VERSION protobuf:protobufGenerate
 
 after_success:
+  - sbt coverageReport coveralls
   - sbt ++$TRAVIS_SCALA_VERSION docker:stage
   - sbt ++$TRAVIS_SCALA_VERSION docker:publishLocal
   # Log in to the docker CLI. Log in to docker in a single command line
