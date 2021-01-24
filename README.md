@@ -3,7 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/felipegutierrez/explore-akka/badge.svg?branch=master)](https://coveralls.io/github/felipegutierrez/explore-akka?branch=master)
 ![GitHub issues](https://img.shields.io/github/issues-raw/felipegutierrez/explore-akka?style=plastic)
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/felipegutierrez/explore-akka?style=plastic)
-
+![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/felipeogutierrez/explore-akka)
 
 Exploring [Akka 2.6.10](https://akka.io/) with Scala 2.12.7 and Java 8. The docker images are available at [docker hub](https://hub.docker.com/repository/docker/felipeogutierrez/explore-akka).
 
