@@ -89,7 +89,8 @@ object StreamIntegrationWithExternalServices {
     import scala.concurrent.duration._
     implicit val timeout = Timeout(3 seconds)
     val pagerActor = system.actorOf(Props[PagerActor], "pagerActor")
-    val alternativePagedEngineerEmails = infraEvents.mapAsync(parallelism = 4)(event => (pagerActor ? event).mapTo[String])
+    val alternativePagedEngineerEmails = infraEvents
+      .mapAsync(parallelism = 4)(event => (pagerActor ? event).mapTo[String])
     alternativePagedEngineerEmails.to(pagedEmailsSink).run()
   }
 
