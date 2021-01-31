@@ -1,8 +1,8 @@
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/417e5ba0ae1f4d46b0c38bff142dc661)](https://app.codacy.com/gh/felipegutierrez/explore-akka?utm_source=github.com&utm_medium=referral&utm_content=felipegutierrez/explore-akka&utm_campaign=Badge_Grade)
 [![Build Status](https://travis-ci.com/felipegutierrez/explore-akka.svg?branch=master)](https://travis-ci.com/felipegutierrez/explore-akka)
 [![Coverage Status](https://coveralls.io/repos/github/felipegutierrez/explore-akka/badge.svg?branch=master)](https://coveralls.io/github/felipegutierrez/explore-akka?branch=master)
 [![CodeFactor](https://www.codefactor.io/repository/github/felipegutierrez/explore-akka/badge)](https://www.codefactor.io/repository/github/felipegutierrez/explore-akka)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/417e5ba0ae1f4d46b0c38bff142dc661)](https://app.codacy.com/gh/felipegutierrez/explore-akka?utm_source=github.com&utm_medium=referral&utm_content=felipegutierrez/explore-akka&utm_campaign=Badge_Grade)
 ![GitHub issues](https://img.shields.io/github/issues-raw/felipegutierrez/explore-akka?style=plastic)
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/felipegutierrez/explore-akka?style=plastic)
 ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/felipeogutierrez/explore-akka)
