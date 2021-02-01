@@ -8,6 +8,12 @@ object AdvancedPartialFunctions {
     case 5 => 55
   }
 
+  val myPartialFunctionLifted = myPartialFunction.lift
+
+  val myPartialFunctionChained = myPartialFunction.orElse[Int, Int] {
+    case 3 => 33
+  }
+
   //  def main(args: Array[String]): Unit = {
   //    run()
   //  }
@@ -24,15 +30,11 @@ object AdvancedPartialFunctions {
     } else {
       println(s"partial function not defined for 3")
     }
-    val liftPartialFunction = myPartialFunction.lift
-    println(s"but now I don't care if the partial function does not define 3: ${liftPartialFunction(3)}")
-    println(s"or 1: ${liftPartialFunction(1)}")
+    println(s"but now I don't care if the partial function does not define 3: ${myPartialFunctionLifted(3)}")
+    println(s"or 1: ${myPartialFunctionLifted(1)}")
 
-    val pfChain = myPartialFunction.orElse[Int, Int] {
-      case 45 => 67
-    }
-    println(s"partial function chain 5 : ${pfChain(5)}")
-    println(s"partial function chain 45: ${pfChain(45)}")
+    println(s"partial function chain 5 : ${myPartialFunctionChained(5)}")
+    println(s"partial function chain 45: ${myPartialFunctionChained(45)}")
 
 
     val advancedPartialFunctions = new AdvancedPartialFunctions()
@@ -46,6 +48,7 @@ object AdvancedPartialFunctions {
     println(res01)
     val res02 = advancedPartialFunctions.myDumbChatbot("How old are you?")
     println(res02)
+
     scala.io.Source.stdin.getLines().foreach({
       line =>
         println(s"you asked: $line")
