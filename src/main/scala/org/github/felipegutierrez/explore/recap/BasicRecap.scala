@@ -4,12 +4,14 @@ import scala.annotation.tailrec
 import scala.util.Try
 
 object BasicRecap {
-
-  //  def main(args: Array[String]): Unit = {
-  //    run()
-  //  }
+//  def main(args: Array[String]): Unit = {
+//    run()
+//  }
 
   def run(): Unit = {
+    testForComprehensions(List(1, 2, 3, 4, 5), List("a", "b"), "-")
+    testFlatMap(List(1, 2, 3, 4, 5), List("a", "b"), "-")
+
     val aCondition: Boolean = false
 
     val aExpression = if (aCondition) 1 else 0
@@ -21,7 +23,6 @@ object BasicRecap {
 
     println(s"factorial of 6: ${factorial(6)}")
     println(s"factorialWithTailrec of 6: ${factorialWithTailrec(6)}")
-
 
     val aTypeUnit = println("Hello Scala")
     val aDog: Animal = new Dog
@@ -41,37 +42,22 @@ object BasicRecap {
     }
 
     // functional programming
-    val incrementer = new Function[Int, Int] {
-      override def apply(v1: Int): Int = v1 + 1
-    }
     val incremented = incrementer(42)
     println(incremented)
     val incrementedAgain = incrementer.apply(42)
     println(incrementedAgain)
 
-    val anonymousIncrementer = (x: Int) => x + 1
     val anonymousIncremented = anonymousIncrementer(42)
     println(anonymousIncremented)
 
     val myIncrementedList = List(40, 100, 3, 20, 38).map(anonymousIncrementer)
     println(myIncrementedList)
 
-    // for comprehensions
-    println("for comprehensions")
-    val pairs = for {
-      num <- List(1, 2, 3, 4, 5)
-      char <- List('a', 'b')
-    } yield num + "-" + char
-    println(pairs)
-    val pairsAgain = List(1, 2, 3, 4, 5).flatMap(num => List('a', 'b').map(char => num + "-" + char))
-    println(pairsAgain)
-
     // Option and Try
     val anOption = Some(2)
     val aTry = Try {
       throw new RuntimeException
     }
-
 
     // functions
     def aFunction(x: Int): Int = x + 1
@@ -80,7 +66,46 @@ object BasicRecap {
     aCrocodile eat aDog
     aCarnivore eat aDog
 
+  }
 
+  val incrementer = new Function[Int, Int] {
+    override def apply(v1: Int): Int = v1 + 1
+  }
+
+  val anonymousIncrementer = (x: Int) => x + 1
+
+  def testForComprehensions(listOne: List[Int], listTwo: List[String], separator: String): List[String] = {
+    println("for comprehensions")
+    val pairs = for {
+      num <- listOne
+      char <- listTwo
+    } yield num + separator + char
+    println(pairs)
+    pairs
+  }
+
+  def testFlatMap(listOne: List[Int], listTwo: List[String], separator: String): List[String] = {
+    println("flatMap")
+    val pairs = listOne.flatMap(num => listTwo.map(char => num + separator + char))
+    println(pairs)
+    pairs
+  }
+
+  def factorial(n: Int): Int = {
+    def factorial(n: Int, acc: Int): Int = {
+      if (n <= 0) acc
+      else factorial(n - 1, acc * n)
+    }
+    factorial(n, 1)
+  }
+
+  def factorialWithTailrec(n: Int): Int = {
+    // recursion: stack and tail
+    @tailrec def factorialWithTailrec(n: Int, accumulator: Int): Int = {
+      if (n <= 0) accumulator
+      else factorialWithTailrec(n - 1, n * accumulator)
+    }
+    factorialWithTailrec(n, 1)
   }
 
   // Object oriented
@@ -104,22 +129,4 @@ object BasicRecap {
 
   // companion objects
   object MyList
-
-  def factorial(n: Int): Int = {
-    def factorial(n: Int, acc: Int): Int = {
-      if (n <= 0) acc
-      else factorial(n - 1, acc * n)
-    }
-
-    factorial(n, 1)
-  }
-
-  def factorialWithTailrec(n: Int): Int = {
-    // recursion: stack and tail
-    @tailrec def factorialWithTailrec(n: Int, accumulator: Int): Int = {
-      if (n <= 0) accumulator
-      else factorialWithTailrec(n - 1, n * accumulator)
-    }
-    factorialWithTailrec(n, 1)
-  }
 }
