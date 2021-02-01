@@ -6,6 +6,28 @@ class AdvancedCurriesPAFSpec extends AnyFlatSpec {
 
   import AdvancedCurriesPAF._
 
+  "my curried function" should
+    "return same result of a simple method" in {
+    val advancedCurriesPAF = new AdvancedCurriesPAF()
+    val curriedAdd4Function: Int => Int = advancedCurriesPAF.superAdder(4)
+    val simpleAddFunction = advancedCurriesPAF.simpleAddFunction
+    val simpleAdd4Function = (x: Int) => advancedCurriesPAF.simpleAddFunction(4, x)
+    assert(curriedAdd4Function(2) == simpleAddFunction(4, 2))
+    assert(curriedAdd4Function(2) == simpleAdd4Function(2))
+
+    val curriedAddMethod = advancedCurriesPAF.curriedAdded(4)(2)
+    val simpleAddMethod = advancedCurriesPAF.simpleAddMethod(4, 2)
+    assert(curriedAddMethod == simpleAddMethod)
+  }
+  "my curried function" should
+    "convert the expression using ETA-expansion automatically for me when using _ (underscore) after a curried function with only one parameter defined" in {
+    val advancedCurriesPAF = new AdvancedCurriesPAF()
+    val curriedAdd4FunctionWithETAexpasion = advancedCurriesPAF.curriedAdded(4) _
+    assert(curriedAdd4FunctionWithETAexpasion(2) == 6)
+
+    val curriedAdd4FunctionWithETAexpasion2 = advancedCurriesPAF.curriedAdded(4)(_)
+    assert(curriedAdd4FunctionWithETAexpasion2(2) == 6)
+  }
   "my set implementation of Set" should
     "add values and another set" in {
     val advancedCurriesPAF = new AdvancedCurriesPAF()

@@ -2,45 +2,27 @@ package org.github.felipegutierrez.explore.recap
 
 object AdvancedMonads {
 
-  //  def main(args: Array[String]): Unit = {
-  //    run()
-  //  }
+  //    def main(args: Array[String]): Unit = {
+  //      run()
+  //    }
+
+  val attemptRuntimeException = AttemptMonad {
+    throw new RuntimeException("My own monad, yes!")
+  }
 
   def run() = {
-    /*
-        left-identity
-        unit.flatMap(f) = f(x)
-        Attempt(x).flatMap(f) = f(x) // Success case!
-        Success(x).flatMap(f) = f(x) // proved.
-        right-identity
-        attempt.flatMap(unit) = attempt
-        Success(x).flatMap(x => Attempt(x)) = Attempt(x) = Success(x)
-        Fail(e).flatMap(...) = Fail(e)
-        associativity
-        attempt.flatMap(f).flatMap(g) == attempt.flatMap(x => f(x).flatMap(g))
-        Fail(e).flatMap(f).flatMap(g) = Fail(e)
-        Fail(e).flatMap(x => f(x).flatMap(g)) = Fail(e)
-        Success(v).flatMap(f).flatMap(g) =
-          f(v).flatMap(g) OR Fail(e)
-        Success(v).flatMap(x =>  f(x).flatMap(g)) =
-          f(v).flatMap(g) OR Fail(e)
-       */
 
-    val attempt = Attempt {
-      throw new RuntimeException("My own monad, yes!")
-    }
+    println(attemptRuntimeException)
 
-    println(attempt)
-
-    val lazyInstance = Lazy {
+    val lazyInstance = LazyMonad {
       println("Today I don't feel like doing anything")
       42
     }
 
-    val flatMappedInstance = lazyInstance.flatMap(x => Lazy {
+    val flatMappedInstance = lazyInstance.flatMap(x => LazyMonad {
       10 * x
     })
-    val flatMappedInstance2 = lazyInstance.flatMap(x => Lazy {
+    val flatMappedInstance2 = lazyInstance.flatMap(x => LazyMonad {
       10 * x
     })
     flatMappedInstance.use
@@ -48,72 +30,45 @@ object AdvancedMonads {
   }
 
   // our own Try monad
-
-  trait Attempt[+A] {
-    def flatMap[B](f: A => Attempt[B]): Attempt[B]
+  trait AttemptMonad[+A] {
+    def flatMap[B](f: A => AttemptMonad[B]): AttemptMonad[B]
   }
 
-  case class Success[+A](value: A) extends Attempt[A] {
-    def flatMap[B](f: A => Attempt[B]): Attempt[B] =
+  case class SuccessMonad[+A](value: A) extends AttemptMonad[A] {
+    def flatMap[B](f: A => AttemptMonad[B]): AttemptMonad[B] =
       try {
         f(value)
       } catch {
-        case e: Throwable => Fail(e)
+        case e: Throwable => FailMonad(e)
       }
   }
 
-  case class Fail(e: Throwable) extends Attempt[Nothing] {
-    def flatMap[B](f: Nothing => Attempt[B]): Attempt[B] = this
+  case class FailMonad(e: Throwable) extends AttemptMonad[Nothing] {
+    def flatMap[B](f: Nothing => AttemptMonad[B]): AttemptMonad[B] = this
   }
 
   // 1 - Lazy monad
-  class Lazy[+A](value: => A) {
-    // call by need
+  class LazyMonad[+A](value: => A) {
     private lazy val internalValue = value
 
     def use: A = internalValue
 
-    def flatMap[B](f: (=> A) => Lazy[B]): Lazy[B] = f(internalValue)
+    // flatMap is using call by need
+    def flatMap[B](f: (=> A) => LazyMonad[B]): LazyMonad[B] = f(internalValue)
   }
 
-  /*
-    EXERCISE:
-    1) implement a Lazy[T] monad = computation which will only be executed when it's needed.
-      unit/apply
-      flatMap
-    2) Monads = unit + flatMap
-       Monads = unit + map + flatten
-       Monad[T] {
-        def flatMap[B](f: T => Monad[B]): Monad[B] = ... (implemented)
-        def map[B](f: T => B): Monad[B] = ???
-        def flatten(m: Monad[Monad[T]]): Monad[T] = ???
-        (have List in mind)
-   */
-
-  object Attempt {
-    def apply[A](a: => A): Attempt[A] =
+  object AttemptMonad {
+    def apply[A](a: => A): AttemptMonad[A] =
       try {
-        Success(a)
+        SuccessMonad(a)
       } catch {
-        case e: Throwable => Fail(e)
+        case e: Throwable => FailMonad(e)
       }
   }
 
-  object Lazy {
-    def apply[A](value: => A): Lazy[A] = new Lazy(value) // unit
+  object LazyMonad {
+    def apply[A](value: => A): LazyMonad[A] = new LazyMonad(value) // unit
   }
-
-  /*
-    left-identity
-    unit.flatMap(f) = f(v)
-    Lazy(v).flatMap(f) = f(v)
-    right-identity
-    l.flatMap(unit) = l
-    Lazy(v).flatMap(x => Lazy(x)) = Lazy(v)
-    associativity: l.flatMap(f).flatMap(g) = l.flatMap(x => f(x).flatMap(g))
-    Lazy(v).flatMap(f).flatMap(g) = f(v).flatMap(g)
-    Lazy(v).flatMap(x => f(x).flatMap(g)) = f(v).flatMap(g)
-   */
 
   // 2: map and flatten in terms  of flatMap
   /*
@@ -125,5 +80,4 @@ object AdvancedMonads {
       List(List(1, 2), List(3, 4)).flatten = List(List(1, 2), List(3, 4)).flatMap(x => x) = List(1,2,3,4)
     }
    */
-
 }
