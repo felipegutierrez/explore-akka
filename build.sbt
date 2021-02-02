@@ -7,6 +7,9 @@ val akkaVersion = "2.6.10"
 val scalaBinVersion = "2.12"
 val scalaTestVersion = "3.2.0"
 val logbackVersion = "1.2.3"
+val scalaLoggingVersion = "3.9.2"
+lazy val mockitoAllVersion = "1.10.19"
+lazy val mockitoScalaVersion = "1.16.5"
 lazy val akkaHttpVersion = "10.2.2"
 lazy val akkaManagementVersion = "1.0.9"
 lazy val aeronVersion = "1.30.0"
@@ -84,9 +87,10 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion,
   "com.typesafe.akka" %% "akka-http2-support" % akkaHttpVersion,
 
-  // Akka log
+  // Scala and Akka log
   "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
   "ch.qos.logback" % "logback-classic" % logbackVersion,
+  "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion,
 
   // Akka management
   "com.lightbend.akka.management" %% "akka-management" % akkaManagementVersion,
@@ -115,7 +119,10 @@ libraryDependencies ++= Seq(
 
   // Scala test
   "org.scalatest" %% "scalatest" % scalaTestVersion,
+  // "org.mockito" % "mockito-all" % mockitoAllVersion % Test,
+  "org.mockito" %% "mockito-scala" % mockitoScalaVersion,
   "junit" % "junit" % "4.13" % Test,
+  "org.scalatestplus" %% "junit-4-13" % "3.2.3.0" % "test",
 
   // JWT
   "com.pauldijou" %% "jwt-spray-json" % "4.3.0",

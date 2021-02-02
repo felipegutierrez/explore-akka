@@ -1,16 +1,17 @@
 package org.github.felipegutierrez.explore.recap
 
+import com.typesafe.scalalogging.LazyLogging
+
 import java.time.LocalDateTime
 import java.util.concurrent.{Executors, TimeUnit}
-
 import scala.collection.mutable
 import scala.util.Random
 
 object AdvancedThreads {
 
-  //  def main(args: Array[String]): Unit = {
-  //    run()
-  //  }
+//  def main(args: Array[String]): Unit = {
+//    run()
+//  }
 
   def run() = {
     val myThread = new AdvancedThreads()
@@ -23,11 +24,12 @@ object AdvancedThreads {
     // myThread.smartProdCons()
     // println
     // myThread.prodConsLargeBuffer()
-    println
-    myThread.multiProdCons(3, 6)
+    // println
+    // myThread.multiProdCons(3, 6)
   }
 
-  class AdvancedThreads {
+  class AdvancedThreads extends LazyLogging {
+
     val pool = Executors.newFixedThreadPool(10)
 
     def usingThePool() = {
@@ -45,6 +47,7 @@ object AdvancedThreads {
       pool.awaitTermination(4500, TimeUnit.MILLISECONDS)
       Thread.sleep(5000)
       println(s"pool.isTerminated: ${pool.isTerminated}")
+      logger.info("using the thread pool")
     }
 
     def inceptionThreads(maxThreads: Int, i: Int = 1): Thread = new Thread(() => {
@@ -53,22 +56,8 @@ object AdvancedThreads {
         newThread.start()
         newThread.join()
       }
-      println(s"Hello from thread $i")
+      logger.info(s"Hello from thread $i")
     })
-
-    class SimpleContainer {
-      private var value: Int = 0
-
-      def isEmpty: Boolean = value == 0
-
-      def set(newValue: Int) = value = newValue
-
-      def get = {
-        val result = value
-        value = 0
-        result
-      }
-    }
 
     def naiveProdCons(): Unit = {
       val container = new SimpleContainer
@@ -186,6 +175,21 @@ object AdvancedThreads {
       (1 to nConsumers).foreach(i => new Consumer(i, buffer).start())
       (1 to nProducers).foreach(i => new Producer(i, buffer, capacity).start())
     }
+
+    class SimpleContainer {
+      private var value: Int = 0
+
+      def isEmpty: Boolean = value == 0
+
+      def set(newValue: Int) = value = newValue
+
+      def get = {
+        val result = value
+        value = 0
+        result
+      }
+    }
+
   }
 
   /**
