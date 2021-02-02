@@ -13,7 +13,7 @@ class AdvancedThreadsSpec extends AnyFlatSpec with Matchers with MockitoSugar {
 
   import AdvancedThreads._
 
-  def initTestable(mocked: Underlying): AdvancedThreads = {
+  def initTestableAdvancedThreads(mocked: Underlying): AdvancedThreads = {
     new AdvancedThreads() {
       override lazy val logger = Logger(mocked)
     }
@@ -24,14 +24,19 @@ class AdvancedThreadsSpec extends AnyFlatSpec with Matchers with MockitoSugar {
     val mocked = Mockito.mock(classOf[Underlying])
     when(mocked.isInfoEnabled()).thenReturn(true)
 
-    initTestable(mocked).usingThePool()
+    initTestableAdvancedThreads(mocked).usingThePool()
     verify(mocked).info("using the thread pool")
   }
-
   "the inception Threads methods" should
     "print in reverse order" in {
-    val myThread = new AdvancedThreads()
-    myThread.inceptionThreads(50).start()
+    val mocked = Mockito.mock(classOf[Underlying])
+    when(mocked.isInfoEnabled()).thenReturn(true)
+
+    initTestableAdvancedThreads(mocked).inceptionThreads(10).start()
+    Thread.sleep(2000)
+    (10 to 1).foreach { i =>
+      verify(mocked).info(s"Hello from thread $i")
+    }
   }
   "a thread pool" should
     "run threads in parallel" in {
@@ -40,5 +45,31 @@ class AdvancedThreadsSpec extends AnyFlatSpec with Matchers with MockitoSugar {
     myThread.usingThePool()
     val elapse = System.currentTimeMillis() - time
     println(elapse)
+  }
+  "the naive producers and consumer" should
+    "log something on the producer and consumer and compute the result" in {
+    val mocked = Mockito.mock(classOf[Underlying])
+    when(mocked.isInfoEnabled()).thenReturn(true)
+
+    initTestableAdvancedThreads(mocked).naiveProdCons(new SimpleContainer(), 42)
+
+    Thread.sleep(2000)
+    verify(mocked).info("[consumer] waiting...")
+    // verify(mocked).info("[consumer] actively waiting...")
+    verify(mocked).info("[producer] computing...")
+    verify(mocked).info("[producer] I have produced, after long work, the value 42")
+  }
+  "the smart producers and consumer" should
+    "log something on the producer and consumer and compute the result with notify" in {
+    val mocked = Mockito.mock(classOf[Underlying])
+    when(mocked.isInfoEnabled()).thenReturn(true)
+
+    initTestableAdvancedThreads(mocked).smartProdCons(new SimpleContainer(), 42)
+
+    Thread.sleep(2000)
+    verify(mocked).info("[consumer] waiting...")
+    verify(mocked).info("[consumer] I have consumed 42")
+    verify(mocked).info("[producer] Hard at work...")
+    verify(mocked).info("[producer] I'm producing 42")
   }
 }

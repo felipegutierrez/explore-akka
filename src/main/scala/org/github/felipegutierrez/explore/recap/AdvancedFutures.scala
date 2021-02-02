@@ -164,7 +164,7 @@ object AdvancedFutures {
       42
     }
 
-    // insequence
+    // inSequence
     def inSequence[A, B](first: Future[A], second: Future[B]): Future[B] = first.flatMap(_ => second)
 
     def alwaysFutureFirstFinished[A](future1: Future[A], future2: Future[A]): Future[A] = {
@@ -286,7 +286,7 @@ object AdvancedFutures {
     }
 
     def purchase(username: String, item: String, merchantName: String, cost: Double): String = {
-      val transactionStatusFuture = for {
+      val transactionStatusFuture: Future[String] = for {
         user <- fetchUser(username) // fetch the user from the DB
         transaction <- createTransaction(user, merchantName, cost) // create a transaction
       } yield transaction.status

@@ -9,23 +9,23 @@ import scala.util.Random
 
 object AdvancedThreads {
 
-//  def main(args: Array[String]): Unit = {
-//    run()
-//  }
+  //  def main(args: Array[String]): Unit = {
+  //    run()
+  //  }
 
   def run() = {
     val myThread = new AdvancedThreads()
     myThread.usingThePool()
     println
     myThread.inceptionThreads(50).start()
-    // println
-    // myThread.naiveProdCons()
-    // println
-    // myThread.smartProdCons()
-    // println
-    // myThread.prodConsLargeBuffer()
-    // println
-    // myThread.multiProdCons(3, 6)
+    println
+    myThread.naiveProdCons(new SimpleContainer(), 42)
+    println
+    myThread.smartProdCons(new SimpleContainer(), 52)
+    println
+    myThread.prodConsLargeBuffer()
+    println
+    myThread.multiProdCons(3, 6)
   }
 
   class AdvancedThreads extends LazyLogging {
@@ -59,23 +59,19 @@ object AdvancedThreads {
       logger.info(s"Hello from thread $i")
     })
 
-    def naiveProdCons(): Unit = {
-      val container = new SimpleContainer
-
+    def naiveProdCons(container: SimpleContainer, value: Int): Unit = {
       val consumer = new Thread(() => {
-        println("[consumer] waiting...")
+        logger.info("[consumer] waiting...")
         while (container.isEmpty) {
-          println("[consumer] actively waiting...")
+          logger.info("[consumer] actively waiting...")
         }
-
-        println("[consumer] I have consumed " + container.get)
+        logger.info("[consumer] I have consumed " + container.get)
       })
 
       val producer = new Thread(() => {
-        println("[producer] computing...")
+        logger.info("[producer] computing...")
         Thread.sleep(500)
-        val value = 42
-        println("[producer] I have produced, after long work, the value " + value)
+        logger.info("[producer] I have produced, after long work, the value " + value)
         container.set(value)
       })
 
@@ -84,26 +80,22 @@ object AdvancedThreads {
     }
 
     // wait and notify
-    def smartProdCons(): Unit = {
-      val container = new SimpleContainer
+    def smartProdCons(container: SimpleContainer, value: Int): Unit = {
 
       val consumer = new Thread(() => {
-        println("[consumer] waiting...")
+        logger.info("[consumer] waiting...")
         container.synchronized {
           container.wait()
         }
-
         // container must have some value
-        println("[consumer] I have consumed " + container.get)
+        logger.info("[consumer] I have consumed " + container.get)
       })
 
       val producer = new Thread(() => {
-        println("[producer] Hard at work...")
-        Thread.sleep(2000)
-        val value = 42
-
+        logger.info("[producer] Hard at work...")
+        Thread.sleep(1000)
         container.synchronized {
-          println("[producer] I'm producing " + value)
+          logger.info("[producer] I'm producing " + value)
           container.set(value)
           container.notify()
         }
@@ -175,21 +167,20 @@ object AdvancedThreads {
       (1 to nConsumers).foreach(i => new Consumer(i, buffer).start())
       (1 to nProducers).foreach(i => new Producer(i, buffer, capacity).start())
     }
+  }
 
-    class SimpleContainer {
-      private var value: Int = 0
+  class SimpleContainer {
+    private var value: Int = 0
 
-      def isEmpty: Boolean = value == 0
+    def isEmpty: Boolean = value == 0
 
-      def set(newValue: Int) = value = newValue
+    def set(newValue: Int) = value = newValue
 
-      def get = {
-        val result = value
-        value = 0
-        result
-      }
+    def get = {
+      val result = value
+      value = 0
+      result
     }
-
   }
 
   /**
