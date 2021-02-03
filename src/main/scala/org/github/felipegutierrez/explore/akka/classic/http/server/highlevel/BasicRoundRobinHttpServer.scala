@@ -13,39 +13,44 @@ import scala.concurrent.Future
 import scala.concurrent.duration._
 
 object BasicRoundRobinHttpServer {
-  //  def main(args: Array[String]): Unit = {
-  //    run()
-  //  }
+//    def main(args: Array[String]): Unit = {
+//      run()
+//    }
+
+  implicit val system = ActorSystem("BasicRoundRobinHttpServer")
+
+  import system.dispatcher
+
+  implicit val timeout = Timeout(3 seconds)
+
+  val myServiceActor = system.actorOf(RoundRobinPool(5).props(Props[MyService]), "myServiceActor")
+
+  val simpleRoute: Route =
+    (path("reference") & get) {
+      val validResponseFuture: Option[Future[HttpResponse]] = {
+        // construct the HTTP response
+        val actorPathResponse: Future[Option[ActorPath]] = (myServiceActor ? "reference").mapTo[Option[ActorPath]]
+        Option(actorPathResponse.map(ref => HttpResponse(
+          StatusCodes.OK,
+          entity = HttpEntity(
+            ContentTypes.`text/html(UTF-8)`,
+            s"""
+               |<html>
+               | <body>I got the actor reference: ${ref} </body>
+               |</html>
+               |""".stripMargin
+          ))))
+      }
+      val entityFuture: Future[HttpResponse] = validResponseFuture.getOrElse(Future(HttpResponse(StatusCodes.BadRequest)))
+      complete(entityFuture)
+    } ~ {
+      complete(StatusCodes.Forbidden)
+    }
 
   def run() = {
-    implicit val system = ActorSystem("BasicRoundRobinHttpServer")
-    import system.dispatcher
-    implicit val timeout = Timeout(3 seconds)
-
-    val myServiceActor = system.actorOf(RoundRobinPool(5).props(Props[MyService]), "myServiceActor")
     //    for (i <- 1 to 10) {
     //      myServiceActor ! s"[$i] hello from a programmatically round-robin router Actor!"
     //    }
-
-    val simpleRoute: Route =
-      (path("reference") & get) {
-        val validResponseFuture: Option[Future[HttpResponse]] = {
-          // construct the HTTP response
-          val actorPathResponse: Future[Option[ActorPath]] = (myServiceActor ? "reference").mapTo[Option[ActorPath]]
-          Option(actorPathResponse.map(ref => HttpResponse(
-            StatusCodes.OK,
-            entity = HttpEntity(
-              ContentTypes.`text/html(UTF-8)`,
-              s"""
-                 |<html>
-                 | <body>I got the actor reference: ${ref} </body>
-                 |</html>
-                 |""".stripMargin
-            ))))
-        }
-        val entityFuture: Future[HttpResponse] = validResponseFuture.getOrElse(Future(HttpResponse(StatusCodes.BadRequest)))
-        complete(entityFuture)
-      }
     println("http GET localhost:8080/reference")
     Http().newServerAt("localhost", 8080).bind(simpleRoute)
   }

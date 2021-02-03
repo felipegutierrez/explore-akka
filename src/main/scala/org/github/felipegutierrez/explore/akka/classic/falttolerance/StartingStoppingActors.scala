@@ -1,12 +1,12 @@
 package org.github.felipegutierrez.explore.akka.classic.falttolerance
 
-import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Kill, PoisonPill, Props, Terminated}
+import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Kill, PoisonPill, Props}
 
 object StartingStoppingActors {
 
-  //  def main(args: Array[String]): Unit = {
-  //    run()
-  //  }
+//  def main(args: Array[String]): Unit = {
+//    run()
+//  }
 
   def run() = {
     import Parent._
@@ -22,34 +22,28 @@ object StartingStoppingActors {
     for (_ <- 1 to 50) child ! "are you still there?"
     //*/
 
-    /* stopping parent makes all its children stop as well
+    ///* stopping parent makes all its children stop as well
     parentActor ! StartChild("child2")
     val child2 = system.actorSelection("/user/parent/child2")
     child2 ! "hi kid 2!"
     parentActor ! Stop
     for (_ <- 1 to 10) parentActor ! "Parent, are you still there?"
     for (i <- 1 to 100) child2 ! s"[$i] are you still there second kid?"
-    */
+    //*/
 
-    /*  stopping actors using the PoisonPill
+    ///*  stopping actors using the PoisonPill
     val childWithoutParent = system.actorOf(Props[Child], "childWithoutParent")
     childWithoutParent ! "hello child without a parent, are you there?"
     childWithoutParent ! PoisonPill
     childWithoutParent ! "hello child without a parent, are you still...... there?"
-    */
+    //*/
 
-    /* killing the actor with kill message
+    ///* killing the actor with kill message
     val abruptlyTerminatedActor = system.actorOf(Props[Child])
     abruptlyTerminatedActor ! "you are about to be terminated!"
     abruptlyTerminatedActor ! Kill
     abruptlyTerminatedActor ! "have you been terminated?"
-    */
-  }
-
-  object Parent {
-    case class StartChild(name: String)
-    case class StopChild(name: String)
-    case object Stop
+    //*/
   }
 
   class Parent extends Actor with ActorLogging {
@@ -80,6 +74,16 @@ object StartingStoppingActors {
     override def receive: Receive = {
       case message => log.info(message.toString)
     }
+  }
+
+  object Parent {
+
+    case class StartChild(name: String)
+
+    case class StopChild(name: String)
+
+    case object Stop
+
   }
 
 }
