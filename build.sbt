@@ -3,7 +3,7 @@ name := """explore-akka"""
 version := "1.1"
 scalaVersion := "2.12.7"
 
-val akkaVersion = "2.6.10"
+val akkaVersion = "2.6.12"
 val scalaBinVersion = "2.12"
 val scalaTestVersion = "3.2.0"
 val logbackVersion = "1.2.3"

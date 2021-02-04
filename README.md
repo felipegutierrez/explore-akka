@@ -8,7 +8,7 @@
 ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/felipeogutierrez/explore-akka)
 ![Lines of code](https://img.shields.io/tokei/lines/github/felipegutierrez/explore-akka)
 
-Exploring [Akka 2.6.10](https://akka.io/) with Scala 2.12.7 and Java 8. The docker images are available at [docker hub](https://hub.docker.com/repository/docker/felipeogutierrez/explore-akka).
+Exploring [Akka 2.6.12](https://akka.io/) with Scala 2.12.7 and Java 8. The docker images are available at [docker hub](https://hub.docker.com/repository/docker/felipeogutierrez/explore-akka).
 
 ## In action
 
