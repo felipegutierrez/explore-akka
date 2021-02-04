@@ -3,11 +3,11 @@ package org.github.felipegutierrez.explore.akka.classic.http.server.highlevel
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.event.LoggingAdapter
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpRequest, StatusCodes}
 import akka.http.scaladsl.server.Directives.{parameter, _}
 import akka.pattern.ask
 import akka.util.Timeout
-import org.github.felipegutierrez.explore.akka.classic.http.server.highlevel.PersonDomain.CreatePerson
 import spray.json.{DefaultJsonProtocol, _}
 
 import scala.concurrent.Future
@@ -64,71 +64,75 @@ class PersonActor extends Actor with ActorLogging {
   }
 }
 
-object PersonRestApi extends PersonJsonProtocol {
-  //  def main(args: Array[String]): Unit = {
-  //    run()
-  //  }
+object PersonRestApi extends PersonJsonProtocol with SprayJsonSupport {
+  //    def main(args: Array[String]): Unit = {
+  //      run()
+  //    }
+
+  implicit val system = ActorSystem("PersonRestApi")
+  implicit val defaultTimeout = Timeout(2 seconds)
+
+  import PersonDomain._
+  import system.dispatcher
+
+  val personActor = system.actorOf(Props[PersonActor], "PersonActor")
+  val people = List(Person(1, "Alice"), Person(2, "Bob"), Person(3, "Charlie"))
+  people.foreach { p =>
+    personActor ! CreatePerson(p)
+  }
+
+  val personRoutes =
+    (pathPrefix("api" / "people")) {
+      get {
+        (path(IntNumber) | parameter('pin.as[Int])) { pin: Int =>
+          println(s"retrieve the person with that PIN $pin")
+          val entityFuture: Future[HttpEntity.Strict] = (personActor ? FindPerson(pin))
+            .mapTo[Option[Person]]
+            .map(_.toJson.prettyPrint)
+            .map(toHttpEntity)
+          complete(entityFuture)
+        } ~ pathEndOrSingleSlash {
+          println(s"retrieve all people")
+          val entityFuture: Future[HttpEntity.Strict] = (personActor ? FindAllPeople)
+            .mapTo[List[Person]]
+            .map(_.toJson.prettyPrint)
+            .map(toHttpEntity)
+          complete(entityFuture)
+        }
+      } ~ (post & extractRequest & extractLog) { (httpRequest: HttpRequest, log: LoggingAdapter) =>
+        val strictEntityFuture: Future[HttpEntity.Strict] = httpRequest.entity.toStrict(3 seconds)
+        val entity: Future[PersonCreated] = strictEntityFuture.flatMap { strictEntity =>
+          val personJsonString: String = strictEntity.data.utf8String
+          val person: Person = personJsonString.parseJson.convertTo[Person]
+          val personCreatedFuture: Future[PersonCreated] = (personActor ? CreatePerson(person)).mapTo[PersonCreated]
+          personCreatedFuture
+        }
+        onComplete(entity) {
+          case Success(person) =>
+            log.info(s"got person $person")
+            complete(StatusCodes.OK)
+          case Failure(exception) =>
+            failWith(exception)
+        }
+        //          entity.onComplete {
+        //            case Success(value) =>
+        //              log.info(s"got person $value")
+        //            case Failure(exception) =>
+        //              log.warning(s"failed to add a person because: $exception")
+        //          }
+        //          complete(entity
+        //            .map(_ => StatusCodes.OK)
+        //            .recover {
+        //              case _ => StatusCodes.InternalServerError
+        //            })
+      }
+    } ~ {
+      complete(StatusCodes.NotFound)
+    }
+
+  def toHttpEntity(payload: String) = HttpEntity(ContentTypes.`application/json`, payload)
 
   def run() = {
-    implicit val system = ActorSystem("PersonRestApi")
-    import system.dispatcher
-
-    val personActor = system.actorOf(Props[PersonActor], "PersonActor")
-    List(Person(1, "Alice"), Person(2, "Bob"), Person(3, "Charlie"))
-      .foreach { p =>
-        personActor ! CreatePerson(p)
-      }
-
-    def toHttpEntity(payload: String) = HttpEntity(ContentTypes.`application/json`, payload)
-
-    implicit val defaultTimeout = Timeout(2 seconds)
-    import PersonDomain._
-    val personRoutes =
-      (pathPrefix("api" / "people")) {
-        get {
-          (path(IntNumber) | parameter('pin.as[Int])) { pin: Int =>
-            println(s"retrieve the person with that PIN $pin")
-            val entityFuture: Future[HttpEntity.Strict] = (personActor ? FindPerson(pin))
-              .mapTo[Option[Person]]
-              .map(_.toJson.prettyPrint)
-              .map(toHttpEntity)
-            complete(entityFuture)
-          } ~ pathEndOrSingleSlash {
-            println(s"retrieve all people")
-            val entityFuture: Future[HttpEntity.Strict] = (personActor ? FindAllPeople)
-              .mapTo[List[Person]]
-              .map(_.toJson.prettyPrint)
-              .map(toHttpEntity)
-            complete(entityFuture)
-          }
-        } ~ (post & extractRequest & extractLog) { (httpRequest: HttpRequest, log: LoggingAdapter) =>
-          val strictEntityFuture: Future[HttpEntity.Strict] = httpRequest.entity.toStrict(3 seconds)
-          val entity: Future[PersonCreated] = strictEntityFuture.flatMap { strictEntity =>
-            val personJsonString: String = strictEntity.data.utf8String
-            val person: Person = personJsonString.parseJson.convertTo[Person]
-            val personCreatedFuture: Future[PersonCreated] = (personActor ? CreatePerson(person)).mapTo[PersonCreated]
-            personCreatedFuture
-          }
-          onComplete(entity) {
-            case Success(person) =>
-              log.info(s"got person $person")
-              complete(StatusCodes.OK)
-            case Failure(exception) =>
-              failWith(exception)
-          }
-          //          entity.onComplete {
-          //            case Success(value) =>
-          //              log.info(s"got person $value")
-          //            case Failure(exception) =>
-          //              log.warning(s"failed to add a person because: $exception")
-          //          }
-          //          complete(entity
-          //            .map(_ => StatusCodes.OK)
-          //            .recover {
-          //              case _ => StatusCodes.InternalServerError
-          //            })
-        }
-      }
 
     println("http GET localhost:8080/api/people")
     println("http GET localhost:8080/api/people/1")

@@ -27,7 +27,7 @@ import org.github.felipegutierrez.explore.akka.classic.streams.basics.{Backpress
 import org.github.felipegutierrez.explore.akka.classic.streams.graphs._
 import org.github.felipegutierrez.explore.akka.classic.streams.monitoring.FirstStreamMonitoring
 import org.github.felipegutierrez.explore.akka.classic.streams.techniques.{StreamBackpressure, StreamFaultTolerance, StreamIntegrationWithActors, StreamIntegrationWithExternalServices}
-import org.github.felipegutierrez.explore.akka.recap._
+import org.github.felipegutierrez.explore.recap._
 import org.github.felipegutierrez.explore.akka.typed.basics.{BankAccountActorTyped, CounterActorTypedDemo}
 import org.github.felipegutierrez.explore.akka.typed.monitoring.AkkaQuickstart
 import org.github.felipegutierrez.explore.akka.typed.patterns.VendingMachineTypedDemo

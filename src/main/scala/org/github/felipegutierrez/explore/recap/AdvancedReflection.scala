@@ -17,7 +17,7 @@ object AdvancedReflection {
     // 1- create a mirror
     val mirror = ru.runtimeMirror(getClass.getClassLoader)
     // 2- create a class object by its name
-    val clazz = mirror.staticClass("org.github.felipegutierrez.explore.akka.recap.AdvancedReflection.Person")
+    val clazz = mirror.staticClass("org.github.felipegutierrez.explore.recap.AdvancedReflection.Person")
     // 3- create a reflected mirror
     val reflectedMirror = mirror.reflectClass(clazz)
     // 4- get the constructor

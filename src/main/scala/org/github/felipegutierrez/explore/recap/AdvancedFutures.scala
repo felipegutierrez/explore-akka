@@ -94,23 +94,6 @@ object AdvancedFutures {
 
     println()
     println("promises....")
-    val promise = Promise[Int]() // "controller" over a future
-    val consumerFuture = promise.future
-
-    // thread 1 - "consumer"
-    consumerFuture.onComplete {
-      case Success(r) => println("[consumerFuture] I've received " + r)
-    }
-
-    // thread 2 - "producer"
-    val producer = new Thread(() => {
-      println("[producer] crunching numbers...")
-      Thread.sleep(500)
-      // "fulfilling" the promise
-      promise.success(42)
-      println("[producer] done")
-    }).start()
-    Thread.sleep(1000)
 
     println()
     val fast = Future {
@@ -182,6 +165,7 @@ object AdvancedFutures {
         }
       }
 
+      // step 1 - create the promise
       val promise = Promise[A]
       future1.onComplete(tryComplete(promise, _))
       future2.onComplete(tryComplete(promise, _))

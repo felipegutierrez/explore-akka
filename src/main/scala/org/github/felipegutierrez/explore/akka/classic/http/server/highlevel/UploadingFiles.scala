@@ -15,13 +15,9 @@ import scala.concurrent.duration._
 import scala.util.{Failure, Success}
 
 object UploadingFiles {
-    def main(args: Array[String]): Unit = {
-      run()
-    }
+  val NO_OF_MESSAGES = 1
 
   implicit val system = ActorSystem("UploadingFiles")
-
-  val NO_OF_MESSAGES = 1
   val filesRoutes = {
     (pathEndOrSingleSlash & get) {
       complete(
@@ -65,10 +61,16 @@ object UploadingFiles {
         val writeOperationFuture = partsSource.runWith(filePartsSink)
         onComplete(writeOperationFuture) {
           case Success(value) => complete("file uploaded =)")
-          case Failure(exception) => complete(s"file failed to upload: $exception")
+          case Failure(exception) =>
+            println(s"file failed to upload: $exception")
+            complete("file failed to upload")
         }
       }
     }
+  }
+
+  def main(args: Array[String]): Unit = {
+    run()
   }
 
   def run() = {

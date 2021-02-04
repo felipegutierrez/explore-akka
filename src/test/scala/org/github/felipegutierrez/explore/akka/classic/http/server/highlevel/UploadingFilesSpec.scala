@@ -1,6 +1,7 @@
 package org.github.felipegutierrez.explore.akka.classic.http.server.highlevel
 
-import akka.http.scaladsl.model.StatusCodes
+import akka.http.scaladsl.model._
+import akka.http.scaladsl.server.UnsupportedRequestContentTypeRejection
 import akka.http.scaladsl.testkit.{RouteTestTimeout, ScalatestRouteTest}
 import org.github.felipegutierrez.explore.akka.classic.http.server.highlevel.UploadingFiles.filesRoutes
 import org.scalatest.matchers.should.Matchers
@@ -21,24 +22,22 @@ class UploadingFilesSpec extends AnyWordSpec
       }
     }
   }
-  "A POST request upload the file" should {
-    "return OK" in {
+  "A POST request upload without a file" should {
+    "return NOT OK" in {
       Post("/upload") ~> filesRoutes ~> check {
         handled should ===(false)
+        rejections should not be empty // "natural language" style
+        rejections.should(not).be(empty) // same
 
-        // rejection should ===(UnsupportedRequestContentTypeRejection(Set(ContentTypes.`text/plain(UTF-8)`)))
+        val methodRejections = rejections.collect {
+          case rejection: UnsupportedRequestContentTypeRejection => rejection
+        }
+        methodRejections.length shouldBe 1
 
-        //        println(rejections)
-        //        rejections.foreach { e: Rejection =>
-        //          println(e.toString)
-        //          println(e.asInstanceOf[UnsupportedRequestContentTypeRejection].contentType)
-        //        }
-        //        rejections should contain (
-        //          UnsupportedRequestContentTypeRejection(
-        //            Set(ContentTypes.`text/plain(UTF-8)`),
-        //            Some(ContentTypes.`text/plain(UTF-8)`)
-        //          )
-        //        )
+        rejection should ===(UnsupportedRequestContentTypeRejection(
+          Set(ContentTypeRange(MediaRange.apply(MediaTypes.`multipart/form-data`))),
+          Some(ContentTypes.NoContentType))
+        )
       }
     }
   }

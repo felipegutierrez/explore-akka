@@ -1,6 +1,5 @@
 package org.github.felipegutierrez.explore.recap;
 
-import org.github.felipegutierrez.explore.akka.recap.FactorialCalculatorFutureDemo;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;

@@ -1,4 +1,4 @@
-package org.github.felipegutierrez.explore.akka.recap;
+package org.github.felipegutierrez.explore.recap;
 
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
