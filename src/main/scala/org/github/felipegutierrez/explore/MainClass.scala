@@ -27,11 +27,10 @@ import org.github.felipegutierrez.explore.akka.classic.streams.basics.{Backpress
 import org.github.felipegutierrez.explore.akka.classic.streams.graphs._
 import org.github.felipegutierrez.explore.akka.classic.streams.monitoring.FirstStreamMonitoring
 import org.github.felipegutierrez.explore.akka.classic.streams.techniques.{StreamBackpressure, StreamFaultTolerance, StreamIntegrationWithActors, StreamIntegrationWithExternalServices}
-import org.github.felipegutierrez.explore.recap._
 import org.github.felipegutierrez.explore.akka.typed.basics.{BankAccountActorTyped, CounterActorTypedDemo}
-import org.github.felipegutierrez.explore.akka.typed.monitoring.AkkaQuickstart
+import org.github.felipegutierrez.explore.akka.typed.monitoring.AkkaQuickStartWithKamon
 import org.github.felipegutierrez.explore.akka.typed.patterns.VendingMachineTypedDemo
-import org.github.felipegutierrez.explore.recap.{AdvancedCurriesPAF, AdvancedFunctionalCollections, AdvancedFutures, AdvancedImplicits, AdvancedLazyEvaluation, AdvancedMonads, AdvancedParallelCollections, AdvancedPartialFunctions, AdvancedPatternMatching, AdvancedRecap, AdvancedStreamLazyEvaluation, AdvancedThreads, AdvancedTypeClassJsonSerialization, AdvancedTypeClassMagnetPattern, AdvancedTypeClasses, BasicRecap, MultiThreadRecap}
+import org.github.felipegutierrez.explore.recap._
 
 import java.util.Scanner
 
@@ -316,7 +315,7 @@ object MainClass {
       case "78" => StreamBatchTimerFlowGraphOperators.run()
       case "79" => StreamOpenGraphWindow.run()
       case "80" => WindowGroupEventFlow.run()
-      case "81" => AkkaQuickstart.run()
+      case "81" => AkkaQuickStartWithKamon.run()
       case "82" => FirstStreamMonitoring.run()
       case "83" => org.github.felipegutierrez.explore.akka.classic.http.Playground.run()
       case "83.1" => WebServerK8s.run()

@@ -58,10 +58,10 @@ object GreeterMain {
   final case class SayHello(name: String)
 }
 
-object AkkaQuickstart {
-  //  def main(args: Array[String]): Unit = {
-  //    run()
-  //  }
+object AkkaQuickStartWithKamon {
+    def main(args: Array[String]): Unit = {
+      run()
+    }
 
   def run() = {
     Kamon.init()
