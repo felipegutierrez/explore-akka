@@ -8,7 +8,7 @@ object BankAccountActorTyped {
   import BankAccountDomain._
   import PersonDomain._
 
-  val person: Behavior[PersonTxn] = Behaviors.setup { context =>
+  def apply(): Behavior[PersonTxn] = Behaviors.setup { context =>
     Behaviors.receiveMessage {
       case LiveTheLife(account) =>
         context.log.info(s"received live the life with account: $account")
@@ -37,7 +37,7 @@ object BankAccountActorTyped {
     import PersonDomain._
 
     val bankAccountActor = ActorSystem(bankAccount(0), "BankAccountSystem")
-    val actorPerson = ActorSystem(person, "BankAccountSystem")
+    val actorPerson = ActorSystem(BankAccountActorTyped(), "BankAccountSystem")
     actorPerson ! LiveTheLife(bankAccountActor)
 
     Thread.sleep(5000)
