@@ -16,10 +16,13 @@ object CounterActorTypedDemo {
     val specialConfig = ConfigFactory.load().getConfig("mySpecialConfig")
     val countActor = ActorSystem(CounterActorTyped(), "CounterSystem", specialConfig)
     (1 to 5).foreach(_ => countActor ! Increment)
+    println(s"incrementing done")
     (1 to 3).foreach(_ => countActor ! Decrement)
+    println(s"decrementing done")
     countActor ! Print
+    println(s"printing done")
 
-    Thread.sleep(5000)
+    Thread.sleep(10000)
     countActor.terminate
   }
 }
@@ -49,13 +52,16 @@ class CounterActorTyped(context: ActorContext[Counter.CounterMsg]) extends Abstr
   override def onMessage(msg: CounterMsg): Behavior[CounterMsg] = msg match {
     case Increment =>
       context.log.debug(s"incrementing $count ...")
+      Thread.sleep(1000)
       count += 1
       Behaviors.same
     case Decrement =>
       context.log.debug(s"decrementing $count ...")
+      Thread.sleep(1000)
       count -= 1
       Behaviors.same
     case Print =>
+      Thread.sleep(10)
       context.log.debug(s"current count is: $count")
       Behaviors.same
   }
