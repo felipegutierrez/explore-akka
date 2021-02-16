@@ -30,30 +30,12 @@ import org.github.felipegutierrez.explore.akka.classic.streams.techniques.{Strea
 import org.github.felipegutierrez.explore.akka.typed.basics.{BankAccountActorTyped, CounterActorTypedDemo}
 import org.github.felipegutierrez.explore.akka.typed.monitoring.AkkaQuickStartWithKamon
 import org.github.felipegutierrez.explore.akka.typed.patterns.VendingMachineTypedDemo
-import org.github.felipegutierrez.explore.recap._
 
 import java.util.Scanner
 
 object MainClass {
   def main(args: Array[String]): Unit = {
     println(s"0 - out")
-    println(s"1 - BasicRecap")
-    println(s"2 - AdvancedRecap")
-    println(s"2.1 - AdvancedPatternMatching")
-    println(s"2.2 - AdvancedPartialFunctions")
-    println(s"2.3 - AdvancedFunctionalCollections")
-    println(s"2.4 - AdvancedCurriesPAF")
-    println(s"2.5 - AdvancedLazyEvaluation")
-    println(s"2.6 - AdvancedStreamLazyEvaluation")
-    println(s"2.7 - AdvancedMonads")
-    println(s"2.8 - AdvancedImplicits")
-    println(s"2.9 - AdvancedTypeClasses")
-    println(s"2.10 - AdvancedTypeClassJsonSerialization")
-    println(s"2.11 - AdvancedTypeClassMagnetPattern")
-    println(s"3 - MultiThreadRecap")
-    println(s"3.1 - AdvancedThreads")
-    println(s"3.2 - AdvancedFutures")
-    println(s"3.3 - AdvancedParallelCollections")
     println(s"4 - Simple actor")
     println(s"5 - ActorsIntro")
     println(s"6 - ActorsCapabilities")
@@ -178,23 +160,6 @@ object MainClass {
     println(s"option02      : $option02")
     option01 match {
       case "0" => println(s"Bye, see you next time.")
-      case "1" => BasicRecap.run()
-      case "2" => AdvancedRecap.run()
-      case "2.1" => AdvancedPatternMatching.run()
-      case "2.2" => AdvancedPartialFunctions.run()
-      case "2.3" => AdvancedFunctionalCollections.run()
-      case "2.4" => AdvancedCurriesPAF.run()
-      case "2.5" => AdvancedLazyEvaluation.run()
-      case "2.6" => AdvancedStreamLazyEvaluation.run()
-      case "2.7" => AdvancedMonads.run()
-      case "2.8" => AdvancedImplicits.run()
-      case "2.9" => AdvancedTypeClasses.run()
-      case "2.10" => AdvancedTypeClassJsonSerialization.run()
-      case "2.11" => AdvancedTypeClassMagnetPattern.run()
-      case "3" => MultiThreadRecap.run()
-      case "3.1" => AdvancedThreads.run()
-      case "3.2" => AdvancedFutures.run()
-      case "3.3" => AdvancedParallelCollections.run()
       case "4" => Playground.run()
       case "5" => ActorsIntro.run()
       case "6" => ActorCapabilities.run()
